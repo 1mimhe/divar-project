@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
+const createError = require('http-errors');
+const authMessages = require("../constants/auth.messages");
 
 const OTPSchema = new mongoose.Schema({
-    mobile: {
-        type: String,
-        required: true,
-        unique: true
-    },
     code: {
         type: String,
         required: false,
@@ -40,6 +37,12 @@ const userSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+userSchema.statics.findByMobile = async function (mobile) {
+    const user = await this.find({mobile});
+    if (!user) throw new createError.NotFound(authMessages.NotFound);
+    return user;
+}
 
 const UserModel = mongoose.model("User", userSchema);
 module.exports = UserModel;
