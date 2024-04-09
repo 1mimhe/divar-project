@@ -1,7 +1,7 @@
-const router = require('express').Router();
+const {Router} = require('express');
+const allRouters = Router();
+const authRouter = require("./auth.route");
 
-router.get('/', (req, res, next) => {
-  res.send("Home");
-});
+allRouters.use("/auth", authRouter);
 
-module.exports = {allRouters: router};
+module.exports = allRouters;
