@@ -1,8 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const {allRouters} = require("./src/routes/index.route");
-const {notFoundError, errorHandler} = require("./src/middlewares/errorHandler.middleware");
+const allRouters = require("./src/routes/index.route");
+const {notFoundError, allErrorHandler} = require("./src/middlewares/errorHandler.middleware");
 const SwaggerConfig = require("./src/config/swagger.config");
 
 const app = express();
@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(allRouters);
 SwaggerConfig(app); // Swagger configuration
 app.use(notFoundError);
-app.use(errorHandler);
+app.use(allErrorHandler);
 
 // Setup Express server
 const PORT = process.env.PORT || 3000;

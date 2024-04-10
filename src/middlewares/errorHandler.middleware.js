@@ -8,11 +8,12 @@ const notFoundError = (req, res) => {
     });
 }
 
-const errorHandler = (err, req, res) => {
-    return res.json({
-        statusCode: err?.status ?? err?.statusCode ?? 500,
+const allErrorHandler = (err, req, res) => {
+    const statusCode = err?.status ?? err?.statusCode ?? err?.code ?? 500;
+    return res.status(statusCode).json({
+        statusCode,
         error: {
-            message: err?.message ?? "internalServerError",
+            message: err?.message ?? err?.stack ?? "InternalServerError",
             invalidParams: err?.error
         }
     });
@@ -20,5 +21,5 @@ const errorHandler = (err, req, res) => {
 
 module.exports = {
     notFoundError,
-    errorHandler
+    allErrorHandler
 };
