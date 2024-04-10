@@ -4,10 +4,10 @@ const authMessages = require("../constants/auth.messages");
 async function sendOTP(req, res, next) {
     try {
         const {mobile} = req.body;
-        const result = await authService.sendOTP(mobile);
-        return {
-            message: authMessages
-        }
+        await authService.sendOTP(mobile);
+        return res.json({
+            message: authMessages.SendOTPSuccessfully
+        });
     } catch (error) {
         next(error);
     }
@@ -15,7 +15,11 @@ async function sendOTP(req, res, next) {
 
 async function checkOTP(req, res, next) {
     try {
-
+        const {mobile, code} = req.body;
+        await authService.checkOTP(mobile, code);
+        return res.json({
+            message: authMessages.LoginSuccessfully
+        });
     } catch (error) {
         next(error);
     }
