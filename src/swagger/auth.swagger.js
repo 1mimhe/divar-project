@@ -16,7 +16,7 @@
  *              properties:
  *                  mobile:
  *                      type: string
- *          SendOTP:
+ *          CheckOTP:
  *              type: object
  *              required:
  *                  -   mobile
@@ -61,10 +61,10 @@
  *          content:
  *              application/x-www-form-urlencoded:
  *                  schema:
- *                      $ref: '#/components/schemas/SendOTP'
+ *                      $ref: '#/components/schemas/CheckOTP'
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/SendOTP'
+ *                      $ref: '#/components/schemas/CheckOTP'
  *      responses:
  *          200:
  *              description: successful

@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.statics.findByMobile = async function (mobile) {
-    const user = await this.find({mobile});
+    const user = await this.findOne({mobile});
     if (!user) throw new createError.NotFound(authMessages.NotFound);
     return user;
 }

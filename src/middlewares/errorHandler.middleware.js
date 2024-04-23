@@ -1,4 +1,4 @@
-const notFoundError = (req, res) => {
+const notFoundError = (req, res, next) => {
     return res.status(404).json({
         statusCode: res.statusCode,
         error: {
@@ -8,7 +8,7 @@ const notFoundError = (req, res) => {
     });
 }
 
-const allErrorHandler = (err, req, res) => {
+const allErrorHandler = (err, req, res, next) => {
     const statusCode = err?.status ?? err?.statusCode ?? err?.code ?? 500;
     return res.status(statusCode).json({
         statusCode,
