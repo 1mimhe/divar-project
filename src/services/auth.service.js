@@ -45,7 +45,7 @@ async function checkOTP(mobile, code) {
 }
 
 function signJWT(payload) {
-    return jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn: "1w"});
+    return jwt.sign(payload, process.env.JWT_PRIVATE_KEY, { expiresIn: "1w" });
 }
 
 module.exports = {

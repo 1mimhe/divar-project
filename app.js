@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const path = require('path');
 const allRouters = require("./src/routes/index.route");
@@ -13,6 +14,7 @@ require("./src/config/mongoose.config");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser(process.env.COOKIE_PRIVATE_KEY));
 
 // Routers
 app.use(allRouters);
