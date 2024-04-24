@@ -16,9 +16,10 @@ async function sendOTP(req, res, next) {
 async function checkOTP(req, res, next) {
     try {
         const {mobile, code} = req.body;
-        await authService.checkOTP(mobile, code);
+        const token = await authService.checkOTP(mobile, code);
         return res.json({
-            message: authMessages.LoginSuccessfully
+            message: authMessages.LoginSuccessfully,
+            token
         });
     } catch (error) {
         next(error);

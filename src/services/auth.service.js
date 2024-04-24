@@ -1,5 +1,6 @@
 const {randomInt} = require('crypto');
 const createError = require('http-errors');
+const jwt = require('jsonwebtoken');
 const User = require("../models/user.model");
 const authMessages = require("../constants/auth.messages");
 
@@ -39,10 +40,16 @@ async function checkOTP(mobile, code) {
         user.verifiedMobile = true;
         await user.save();
     }
-    return user;
+
+    return signJWT({mobile, id: user._id});
+}
+
+function signJWT(payload) {
+    return jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn: "1w"});
 }
 
 module.exports = {
     sendOTP,
-    checkOTP
+    checkOTP,
+    signJWT
 }
