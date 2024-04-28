@@ -6,5 +6,6 @@ module.exports = Object.freeze({
     LoginSuccessfully: "User login successfully.",
     Unauthorized: "Unauthorized. Please login on your account.",
     UserNotFound: "User Not Found.",
-    InvalidToken: "Invalid token."
+    InvalidToken: "Invalid token.",
+    LogoutSuccessfully: "User successfully logged out."
 });

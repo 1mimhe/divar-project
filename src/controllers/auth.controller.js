@@ -1,6 +1,7 @@
 const authService = require("../services/auth.service");
 const authMessages = require("../constants/auth.messages");
 const NodeEnv = require("../constants/env.enum");
+const cookieNames = require("../constants/cookie.enum");
 
 async function sendOTP(req, res, next) {
     try {
@@ -19,7 +20,7 @@ async function checkOTP(req, res, next) {
         const {mobile, code} = req.body;
         const token = await authService.checkOTP(mobile, code);
 
-        res.cookie('access_token', token, {
+        res.cookie(cookieNames.AccessToken, token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === NodeEnv.Production
         });
@@ -31,7 +32,18 @@ async function checkOTP(req, res, next) {
     }
 }
 
+async function logOut(req, res, next) {
+    try {
+        return res.clearCookie(cookieNames.AccessToken).status(200).json({
+            message: authMessages.LogoutSuccessfully
+        });
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     sendOTP,
-    checkOTP
+    checkOTP,
+    logOut
 }

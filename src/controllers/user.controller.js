@@ -1,5 +1,3 @@
-const userService = require("../services/user.service");
-
 async function whoAmI(req, res, next) {
     try {
         return res.json(req.user);
