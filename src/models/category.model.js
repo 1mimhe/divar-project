@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require("slugify");
 
 const categorySchema = new mongoose.Schema({
     name: {type: String, required: true},
@@ -15,8 +16,7 @@ const categorySchema = new mongoose.Schema({
 });
 
 categorySchema.pre("save", function () {
-    const name = this.name;
-    this.slug = name.replace(/\s+/g, ' ').trim();
+    this.slug = slugify(this.name);
 });
 
 categorySchema.virtual("children", {
