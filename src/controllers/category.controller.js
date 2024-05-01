@@ -3,8 +3,8 @@ const categoryMessages = require("../constants/category.messages");
 
 async function createCategory(req, res, next) {
     try {
-        const { name, icon, parent } = req.body;
-        await categoryService.createCategory({ name, icon, parent });
+        const { name, slug, icon, parent } = req.body;
+        await categoryService.createCategory({ name, slug, icon, parent });
         return res.status(201).json({
             message: categoryMessages.CategoryCreated
         });

@@ -2,11 +2,13 @@ const createHttpError = require('http-errors');
 const mongoose = require('mongoose');
 const Category = require("../models/category.model");
 const CategoryMessages = require("../constants/category.messages");
+const slugify = require("slugify");
 
 async function createCategory(category) {
-    if (category) {
-        const cat = await Category.findOne({ name: category.name });
-        if (cat) throw new Error(CategoryMessages.CategoryExists);
+    if (category?.slug) {
+        category.slug = slugify(category.slug);
+        const cat = await Category.findBySlug(category.slug);
+        if (cat) throw new createHttpError.Conflict(CategoryMessages.SlugExists);
     }
 
     if (category?.parent && mongoose.isValidObjectId(category.parent)) {
@@ -25,7 +27,7 @@ async function createCategory(category) {
 }
 
 async function findAllCategories(){
-    const categories = await Category.find({});
+    const categories = await Category.find({ parent: { $exists: false } });
     return categories;
 }
 

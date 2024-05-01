@@ -1,5 +1,5 @@
 module.exports = Object.freeze({
    CategoryCreated: "Category created successfully.",
-   CategoryExists: "This Category exists already.",
+   SlugExists: "This slug exists already. Try another.",
    CategoryNotFound: "Category not found."
 });

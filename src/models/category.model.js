@@ -16,14 +16,26 @@ const categorySchema = new mongoose.Schema({
 });
 
 categorySchema.pre("save", function () {
-    this.slug = slugify(this.name);
+    if (!this.slug) {
+        this.slug = slugify(this.name);
+    }
 });
+
+function autoPopulate(next) {
+    this.populate([{ path: "children" }]);
+    next();
+}
+categorySchema.pre(["find", "findOne"], autoPopulate);
 
 categorySchema.virtual("children", {
     ref: "Category",
     localField: "_id",
     foreignField: "parent"
 });
+
+categorySchema.statics.findBySlug = async function (slug) {
+    return await this.findOne({ slug });
+}
 
 const CategoryModel = mongoose.model("Category", categorySchema);
 module.exports = CategoryModel;
