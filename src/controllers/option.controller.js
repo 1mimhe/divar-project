@@ -24,7 +24,37 @@ async function findOptions(req, res, next) {
     }
 }
 
+async function findOptionById(req, res, next) {
+    try {
+        const option = await OptionService.findOptionById(req.params.id);
+        return res.json(option);
+    } catch (err) {
+        next(err);
+    }
+}
+
+async function findOptionByCategorySlug(req, res, next) {
+    try {
+        const options = await OptionService.findOptionByCategorySlug(req.params.slug);
+        return res.json(options);
+    } catch (err) {
+        next(err);
+    }
+}
+
+async function findAllOptions(req, res, next) {
+    try {
+        const options = await OptionService.findAllOptions();
+        return res.json(options);
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     createOption,
-    findOptions
+    findOptions,
+    findOptionByCategorySlug,
+    findOptionById,
+    findAllOptions
 }

@@ -61,7 +61,7 @@
 /**
  * @swagger
  *
- * /option/{categoryId}:
+ * /option/by-category/{categoryId}:
  *  get:
  *      summary: get all options of a category
  *      tags:
@@ -70,6 +70,53 @@
  *          -   in: path
  *              name: categoryId
  *              type: string
+ *      responses:
+ *          200:
+ *              description: successful
+ */
+
+/**
+ * @swagger
+ *
+ * /option/by-category-slug/{slug}:
+ *  get:
+ *      summary: get all options of a category by slug
+ *      tags:
+ *          -   Option
+ *      parameters:
+ *          -   in: path
+ *              name: slug
+ *              type: string
+ *      responses:
+ *          200:
+ *              description: successful
+ */
+
+/**
+ * @swagger
+ *
+ * /option/{id}:
+ *  get:
+ *      summary: get option by id
+ *      tags:
+ *          -   Option
+ *      parameters:
+ *          -   in: path
+ *              name: id
+ *              type: string
+ *      responses:
+ *          200:
+ *              description: successful
+ */
+
+/**
+ * @swagger
+ *
+ * /option:
+ *  get:
+ *      summary: get all options
+ *      tags:
+ *          -   Option
  *      responses:
  *          200:
  *              description: successful
