@@ -39,5 +39,6 @@ async function checkExistsById(_id) {
 
 module.exports = {
     createCategory,
-    findAllCategories
+    findAllCategories,
+    checkExistsById
 }

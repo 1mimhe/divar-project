@@ -4,8 +4,8 @@ const Option = require("../models/option.model");
 
 async function createOption(req, res, next) {
     try {
-        const {title, key, type, enum_, guide, category} = req.body;
-        await OptionService.createOption({title, key, type, enum_, guide, category});
+        const {title, key, type, enum: list, guide, category} = req.body;
+        await OptionService.createOption({title, key, type, enum: list, guide, category});
         return res.status(201).json({
             message: OptionMessages.Created
         });
@@ -16,7 +16,7 @@ async function createOption(req, res, next) {
 
 async function findOptions(req, res, next) {
     try {
-        const categoryId = req.body.categoryId;
+        const categoryId = req.params.categoryId;
         const categoryOptions = await Option.findOptions(categoryId);
         return res.json(categoryOptions);
     } catch (err) {

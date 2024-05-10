@@ -1,12 +1,12 @@
-const categoryService = require("../services/category.service");
-const categoryMessages = require("../constants/category.messages");
+const CategoryService = require("../services/category.service");
+const CategoryMessages = require("../constants/category.messages");
 
 async function createCategory(req, res, next) {
     try {
         const { name, slug, icon, parent } = req.body;
-        await categoryService.createCategory({ name, slug, icon, parent });
+        await CategoryService.createCategory({ name, slug, icon, parent });
         return res.status(201).json({
-            message: categoryMessages.CategoryCreated
+            message: CategoryMessages.CategoryCreated
         });
     } catch (err) {
         next(err);
@@ -15,7 +15,7 @@ async function createCategory(req, res, next) {
 
 async function findAllCategories(req, res, next) {
     try {
-        const categories = await categoryService.findAllCategories();
+        const categories = await CategoryService.findAllCategories();
         return res.status(201).json(categories);
     } catch (err) {
         next(err);

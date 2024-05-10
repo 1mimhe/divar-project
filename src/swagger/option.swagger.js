@@ -27,13 +27,13 @@
  *                          -   number
  *                          -   string
  *                          -   boolean
+ *                  category:
+ *                      type: string
  *                  enum:
  *                      type:   array
  *                      items:
  *                          type: string
  *                  guide:
- *                      type: string
- *                  category:
  *                      type: string
  */
 

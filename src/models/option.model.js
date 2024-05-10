@@ -6,9 +6,9 @@ const optionSchema = new mongoose.Schema({
     title: {type: String, required: true},
     key: {type: String, required: true},
     type: {type: String, enum: ["number", "string", "boolean"], required: true},
+    category: {type: mongoose.Types.ObjectId, ref: "Category", required: true},
     enum: {type: Array, default: []},
-    guide: {type: String, required: false},
-    category: {type: mongoose.Types.ObjectId, ref: "Category", required: true}
+    guide: {type: String, required: false}
 });
 
 optionSchema.statics.findOptions = async function(categoryId) {

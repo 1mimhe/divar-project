@@ -4,6 +4,6 @@ const optionController = require("../controllers/option.controller");
 const authorization = require("../middlewares/auth.middleware");
 
 optionRouter.post("/", authorization, optionController.createOption);
-optionRouter.get("/", authorization, optionController.findOptions);
+optionRouter.get("/:categoryId", authorization, optionController.findOptions);
 
 module.exports = optionRouter;
