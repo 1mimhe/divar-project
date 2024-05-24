@@ -8,5 +8,7 @@ optionRouter.get("/by-category/:categoryId", optionController.findOptions);
 optionRouter.get("/by-category-slug/:slug", optionController.findOptionByCategorySlug);
 optionRouter.get("/:id", optionController.findOptionById);
 optionRouter.get("/", optionController.findAllOptions);
+optionRouter.put("/:id", optionController.updateOption);
+optionRouter.delete("/:id", optionController.removeOption);
 
 module.exports = optionRouter;

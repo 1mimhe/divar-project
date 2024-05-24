@@ -3,5 +3,7 @@ module.exports = Object.freeze({
     AlreadyExists: "This option for this category already exists.",
     Created: "New option created successfully.",
     NotFound: "Option with given id not found.",
-    NotFoundAny: "Not found any option."
+    NotFoundAny: "Not found any option.",
+    Update: "Option updated successfully.",
+    Deleted: "Option deleted successfully."
 });

@@ -3,6 +3,7 @@ const slugify = require('slugify');
 const Option = require("../models/option.model");
 const OptionMessages = require("../constants/option.messages");
 const CategoryService = require("../services/category.service");
+const {isValidObjectId} = require("mongoose");
 
 async function createOption(option) {
     const category = await CategoryService.checkExistsById(option.category);
@@ -15,8 +16,9 @@ async function createOption(option) {
         option.enum = option.enum.split(",");
     }
 
-    const newOption = await Option.create(option);
-    return newOption;
+    option.required = option?.required === "true" || option?.required === true;
+
+    return Option.create(option);
 }
 
 async function checkExistsByKeyAndCategory(key, category) {
@@ -69,10 +71,44 @@ async function findAllOptions() {
     return options;
 }
 
+async function updateOption(id, option) {
+    const theOption = await Option.findById(id);
+
+    if (option?.category && isValidObjectId(option.category)) {
+        const category = await CategoryService.checkExistsById(option.category);
+        option.category = category._id;
+    } else {
+        delete option.category;
+    }
+
+    if (option?.key) {
+        option.key = slugify(option.key, {lower: true, replacement: "_"});
+        const categoryId = option.category || theOption.category;
+        await checkExistsByKeyAndCategory(option.key, categoryId);
+    }
+
+    if (option?.enum && typeof option.enum === "string") {
+        option.enum = option.enum.split(",");
+    }
+
+    if (option?.required !== undefined)
+        option.required = option?.required === "true" || option?.required === true;
+
+    return Option.findOneAndUpdate({_id: id}, {$set: option});
+}
+
+async function removeOption(id) {
+    const deletedOption = await Option.findOneAndDelete(id);
+    if (!deletedOption) throw new createHttpError.NotFound(OptionMessages.NotFound);
+    return deletedOption;
+}
+
 module.exports = {
     createOption,
     checkExistsByKeyAndCategory,
     findOptionByCategorySlug,
     findOptionById,
-    findAllOptions
+    findAllOptions,
+    updateOption,
+    removeOption
 }

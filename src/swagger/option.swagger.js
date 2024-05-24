@@ -1,7 +1,7 @@
 /**
  * @swagger
  * tags:
- *  name: Category
+ *  name: Option
  *  description: Option Modules and Routes
  */
 
@@ -16,6 +16,7 @@
  *                  -   key
  *                  -   type
  *                  -   category
+ *                  -   required
  *              properties:
  *                  title:
  *                      type: string
@@ -29,6 +30,37 @@
  *                          -   boolean
  *                  category:
  *                      type: string
+ *                  required:
+ *                      type: boolean
+ *                  enum:
+ *                      type:   array
+ *                      items:
+ *                          type: string
+ *                  guide:
+ *                      type: string
+ */
+
+/**
+ * @swagger
+ *  components:
+ *      schemas:
+ *          UpdateOption:
+ *              type: object
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                  key:
+ *                      type: string
+ *                  type:
+ *                      type: string
+ *                      enum:
+ *                          -   number
+ *                          -   string
+ *                          -   boolean
+ *                  category:
+ *                      type: string
+ *                  required:
+ *                      type: boolean
  *                  enum:
  *                      type:   array
  *                      items:
@@ -117,6 +149,48 @@
  *      summary: get all options
  *      tags:
  *          -   Option
+ *      responses:
+ *          200:
+ *              description: successful
+ */
+
+/**
+ * @swagger
+ *
+ * /option/{id}:
+ *  put:
+ *      summary: update an option
+ *      tags:
+ *          -   Option
+ *      parameters:
+ *          -   in: path
+ *              name: id
+ *              type: string
+ *      requestBody:
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      $ref: '#/components/schemas/UpdateOption'
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/UpdateOption'
+ *      responses:
+ *          200:
+ *              description: successful
+ */
+
+/**
+ * @swagger
+ *
+ * /option/{id}:
+ *  delete:
+ *      summary: delete an option by id
+ *      tags:
+ *          -   Option
+ *      parameters:
+ *          -   in: path
+ *              name: id
+ *              type: string
  *      responses:
  *          200:
  *              description: successful
