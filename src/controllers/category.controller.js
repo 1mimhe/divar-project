@@ -22,7 +22,21 @@ async function findAllCategories(req, res, next) {
     }
 }
 
+async function removeCategory(req, res, next) {
+    try {
+        const {id} = req.params;
+        const deletedCategory = await CategoryService.removeCategory(id);
+        return res.join({
+            message: CategoryMessages.CategoryDeleted,
+            deletedCategory
+        })
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     createCategory,
+    removeCategory,
     findAllCategories
 }

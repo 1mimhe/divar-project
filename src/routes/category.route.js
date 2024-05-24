@@ -5,5 +5,6 @@ const authorization = require("../middlewares/auth.middleware");
 
 categoryRouter.post("/", authorization, categoryController.createCategory);
 categoryRouter.get("/", categoryController.findAllCategories);
+categoryRouter.delete("/:id", authorization, categoryController.removeCategory);
 
 module.exports = categoryRouter;

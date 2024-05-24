@@ -1,6 +1,7 @@
 const createHttpError = require('http-errors');
 const mongoose = require('mongoose');
 const Category = require("../models/category.model");
+const Option = require("../models/option.model");
 const CategoryMessages = require("../constants/category.messages");
 const slugify = require("slugify");
 
@@ -31,6 +32,12 @@ async function findAllCategories(){
     return categories;
 }
 
+async function removeCategory(id) {
+    const deletedCategory = await Category.findOneAndDelete({_id: id});
+    const deletedOptions = await Option.deleteMany({category: deletedCategory._id});
+    return deletedCategory;
+}
+
 async function checkExistsById(_id) {
     const category = await Category.findById(_id);
     if (!category) throw new createHttpError.NotFound(CategoryMessages.CategoryNotFound);
@@ -40,5 +47,6 @@ async function checkExistsById(_id) {
 module.exports = {
     createCategory,
     findAllCategories,
+    removeCategory,
     checkExistsById
 }

@@ -58,3 +58,16 @@
  *          200:
  *              description: successful
  */
+
+/**
+ * @swagger
+ *
+ * /category/{id}:
+ *  delete:
+ *      summary: delete a category with its option
+ *      tags:
+ *          -   Category
+ *      responses:
+ *          200:
+ *              description: successful
+ */
