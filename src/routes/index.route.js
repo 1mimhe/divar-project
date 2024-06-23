@@ -9,5 +9,8 @@ allRouters.use("/auth", authRouter);
 allRouters.use("/user", userRouter);
 allRouters.use("/category", categoryRouter);
 allRouters.use("/option", optionRouter);
+allRouters.get("/", (req, res, next) => {
+    res.render('panel.main.ejs');
+});
 
 module.exports = allRouters;

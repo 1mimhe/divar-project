@@ -15,6 +15,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser(process.env.COOKIE_PRIVATE_KEY));
+app.use(express.static('public'));
+app.set('views', path.join(__dirname, './src/views'));
+app.set('view engine', 'ejs');
 
 // Routers
 app.use(allRouters);
