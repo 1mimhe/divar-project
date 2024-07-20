@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
-const adsSchema = new mongoose.Schema({
+// Advertisement (Ad) attributes: adSchema + the category's options.
+const adSchema = new mongoose.Schema({
     title: {type: String, required: true},
     description: {type: String, required: true},
     category: {type: mongoose.Types.ObjectId, ref: "Category", required: true},
@@ -12,7 +13,9 @@ const adsSchema = new mongoose.Schema({
         district: {type: String, required: true},
         coordinate: {type: [Number], required: true}
     }
+}, {
+    timestamps: true
 });
 
-const Ads = mongoose.model("Ads", adsSchema);
-module.exports = Ads;
+const AdModel = mongoose.model("Ad", adSchema);
+module.exports = AdModel;
