@@ -1,14 +1,25 @@
 <div class="col-lg-12 d-flex align-items-stretch">
-    <div class="card w-100">
-        <div class="p-3">
-            <ul>
-                <li>
-                    <a href="/select-category" class="w-100 p-3 d-block bg-light text-dark">
-                        <span class="ti ti-users nav-small-cap-icon fs-4"></span>
-                        <span>عنوان</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+  <div class="card w-100">
+    <div class="p-3">
+        <% if (slug) { %> 
+            <a href="/ad/create" class="w-100 p-3 d-block bg-light text-dark">
+                <i class="fa-solid fa-arrow-right"></i>
+                <span>بازگشت به همه دسته‌بندی‌ها</span>
+            </a>
+            <hr class="hr-divider">
+        <% } %>    
+        <% if(categories && categories.length > 0) { %>
+      <ul>
+        <% categories.forEach((category) => { %>
+        <li>
+          <a href="/ad/create?slug=<%= category.slug %>" class="w-100 p-3 d-block bg-light text-dark">
+            <span class="ti ti-<%= category.icon %> nav-small-cap-icon fs-4"></span>
+            <span><%= category.name %></span>
+          </a>
+        </li>
+        <% }) %>
+      </ul>
+      <% } %>
     </div>
+  </div>
 </div>

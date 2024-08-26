@@ -52,10 +52,16 @@ async function checkExistsById(_id) {
     return category;
 }
 
-async function checkSlugExists(slug) {
+async function findCategoryBySlug(slug) {
     const category = await Category.findBySlug(slug);
-    if (category) throw new createHttpError.Conflict(CategoryMessages.SlugExists);
+    if (!category) throw new createHttpError.NotFound(CategoryMessages.CategoryNotFound);
     return category;
+}
+
+async function checkSlugExists(slug) {
+    const category = await findCategoryBySlug(slug);
+    if (category) throw new createHttpError.Conflict(CategoryMessages.SlugExists);
+    return false;
 }
 
 module.exports = {
@@ -63,5 +69,6 @@ module.exports = {
     findAllCategories,
     removeCategory,
     checkExistsById,
+    findCategoryBySlug,
     checkSlugExists
 }
