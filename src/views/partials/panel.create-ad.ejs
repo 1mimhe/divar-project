@@ -7,18 +7,35 @@
                 <span>بازگشت به همه دسته‌بندی‌ها</span>
             </a>
             <hr class="hr-divider">
-        <% } %>    
-        <% if(categories && categories.length > 0) { %>
-      <ul>
-        <% categories.forEach((category) => { %>
-        <li>
-          <a href="/ad/create?slug=<%= category.slug %>" class="w-100 p-3 d-block bg-light text-dark">
-            <span class="ti ti-<%= category.icon %> nav-small-cap-icon fs-4"></span>
-            <span><%= category.name %></span>
-          </a>
-        </li>
+        <% } %>
+        <% if(!options || !options?.length) { %>
+          <% if(categories && categories?.length) { %>
+        <ul>
+          <% categories.forEach((category) => { %>
+          <li>
+            <a href="/ad/create?slug=<%= category.slug %>" class="w-100 p-3 d-block bg-light text-dark">
+              <span class="ti ti-<%= category.icon %> nav-small-cap-icon fs-4"></span>
+              <span><%= category.name %></span>
+            </a>
+          </li>
+          <% }) %>
+        </ul>
+        <% } %>
+      <% } else { %>
+        <% options.forEach(option => { %>
+          <label for="<%= option.key %>"><%= option.title %><%= option.required ? " * " || "" %></label>
+          <div class="p-2">
+            <% if (option.type === "array") { %>
+              <select name="<%= option.key %>" class="form-select">
+                <% option.enum.forEach(item => { %>
+                  <option value="<%= item %>"><%= item %></option>
+                <% }) %>
+              </select>
+            <% } else { %>
+              <input type="text" name="<%= option.key %>" class="form-control" placeholder="<%= option.guide %>">
+            <% } %>
+          </div>
         <% }) %>
-      </ul>
       <% } %>
     </div>
   </div>
