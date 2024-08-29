@@ -3,16 +3,17 @@ const slugify = require('slugify');
 const Option = require("../models/option.model");
 const OptionMessages = require("../constants/option.messages");
 const CategoryService = require("../services/category.service");
-const {isValidObjectId} = require("mongoose");
+const { isValidObjectId } = require("mongoose");
 
 async function createOption(option) {
     const category = await CategoryService.checkExistsById(option.category);
-    option.category = category._id;
+    if (!category.children?.length) throw new createHttpError.BadRequest(OptionMessages.CantCreateOption);
 
-    option.key = slugify(option.key, {lower: true, replacement: "_"});
+    option.category = category._id;
+    option.key = slugify(option.key, { lower: true, replacement: "_" });
     await checkExistsByKeyAndCategory(option.key, option.category);
 
-    if (option?.enum && typeof option.enum === "string") {
+    if (option?.type === "array" && option?.enum && typeof option.enum === "string") {
         option.enum = option.enum.split(",");
     }
 
@@ -21,15 +22,21 @@ async function createOption(option) {
     return Option.create(option);
 }
 
+async function findCategoryOptions(categoryId) {
+    const options = await Option.findCategoryOptions(categoryId);
+    if (!options.length) throw new createHttpError.NotFound(OptionMessages.NoOptionsFound);
+    return options;
+}
+
 async function checkExistsByKeyAndCategory(key, category) {
-    const findOpt = await Option.findOne({key, category});
-    if (findOpt) throw new createHttpError.Conflict(OptionMessages.AlreadyExists);
+    const findOpt = await Option.findOne({ key, category });
+    if (findOpt) throw new createHttpError.Conflict(OptionMessages.OptionAlreadyExists);
     return false;
 }
 
 async function findOptionById(id) {
-    const option = await Option.findById(id).populate([{path: "category", select: {name: 1, slug: 1}}])
-    if (!option) throw new createHttpError.NotFound(OptionMessages.NotFound);
+    const option = await Option.findById(id).populate([{ path: "category", select: { name: 1, slug: 1 } }])
+    if (!option) throw new createHttpError.NotFound(OptionMessages.OptionNotFound);
     return option;
 }
 
@@ -61,13 +68,13 @@ async function findOptionByCategorySlug(slug) {
             }
         }
     ]);
-    if (!option) throw new createHttpError.NotFound(OptionMessages.NotFound);
+    if (!option) throw new createHttpError.NotFound(OptionMessages.OptionNotFound);
     return option;
 }
 
 async function findAllOptions() {
     const options = await Option.find({});
-    if (!options.length) throw new createHttpError.NotFound(OptionMessages.NotFoundAny);
+    if (!options.length) throw new createHttpError.NotFound(OptionMessages.NoOptions);
     return options;
 }
 
@@ -82,7 +89,7 @@ async function updateOption(id, option) {
     }
 
     if (option?.key) {
-        option.key = slugify(option.key, {lower: true, replacement: "_"});
+        option.key = slugify(option.key, { lower: true, replacement: "_" });
         const categoryId = option.category || theOption.category;
         await checkExistsByKeyAndCategory(option.key, categoryId);
     }
@@ -94,17 +101,18 @@ async function updateOption(id, option) {
     if (option?.required !== undefined)
         option.required = option?.required === "true" || option?.required === true;
 
-    return Option.findOneAndUpdate({_id: id}, {$set: option});
+    return Option.findOneAndUpdate({ _id: id }, { $set: option });
 }
 
 async function removeOption(id) {
     const deletedOption = await Option.findOneAndDelete(id);
-    if (!deletedOption) throw new createHttpError.NotFound(OptionMessages.NotFound);
+    if (!deletedOption) throw new createHttpError.NotFound(OptionMessages.OptionNotFound);
     return deletedOption;
 }
 
 module.exports = {
     createOption,
+    findCategoryOptions,
     checkExistsByKeyAndCategory,
     findOptionByCategorySlug,
     findOptionById,

@@ -1,4 +1,4 @@
-const {Router} = require('express');
+const { Router } = require('express');
 const allRouters = Router();
 const authRouter = require("./auth.route");
 const userRouter = require("./user.route");

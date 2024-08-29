@@ -17093,3 +17093,10 @@ ul {
 .timeline-widget .timeline-item .timeline-badge.badge-primary {
     border: 2px solid #5d87ff;
 }
+.hr-divider {
+    background-color: rgb(180, 180, 180);
+    border: none;
+    box-sizing: border-box;
+    height: 2px;
+    margin: 0;
+}

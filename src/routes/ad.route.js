@@ -1,4 +1,4 @@
-const {Router} = require('express');
+const { Router } = require('express');
 const adRouter = Router();
 const adController = require("../controllers/ad.controller");
 

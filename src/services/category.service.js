@@ -19,6 +19,9 @@ async function createCategory(category) {
 
     if (category?.parent && mongoose.isValidObjectId(category.parent)) {
         const parentCategory = await checkExistsById(category.parent);
+        const parentOptions = await Option.findCategoryOptions(category._id);
+        if (parentOptions.length) throw new createHttpError.BadRequest(CategoryMessages.CategoryCantBeParent);
+
         category.parent = parentCategory._id;
         category.parents = [
             ...new Set([

@@ -1,6 +1,5 @@
 const OptionService = require("../services/option.service");
 const OptionMessages = require("../constants/option.messages");
-const Option = require("../models/option.model");
 
 async function createOption(req, res, next) {
     try {
@@ -14,10 +13,10 @@ async function createOption(req, res, next) {
     }
 }
 
-async function findOptions(req, res, next) {
+async function findCategoryOptions(req, res, next) {
     try {
         const categoryId = req.params.categoryId;
-        const categoryOptions = await Option.findOptions(categoryId);
+        const categoryOptions = await OptionService.findCategoryOptions(categoryId);
         return res.json(categoryOptions);
     } catch (err) {
         next(err);
@@ -57,7 +56,7 @@ async function updateOption(req, res, next) {
         const {title, key, type, enum: list, guide, category, required} = req.body;
         const updatedOption = await OptionService.updateOption(id, {title, key, type, enum: list, guide, category, required});
         return res.json({
-            message: OptionMessages.Update,
+            message: OptionMessages.OptionUpdated,
             updatedOption
         });
     } catch (err) {
@@ -70,7 +69,7 @@ async function removeOption(req, res, next) {
         const {id} = req.params;
         const deletedOption = await OptionService.removeById(id);
         return res.json({
-            message: OptionMessages.Deleted,
+            message: OptionMessages.OptionDeleted,
             deletedOption
         });
     } catch (err) {
@@ -80,7 +79,7 @@ async function removeOption(req, res, next) {
 
 module.exports = {
     createOption,
-    findOptions,
+    findCategoryOptions,
     findOptionByCategorySlug,
     findOptionById,
     findAllOptions,

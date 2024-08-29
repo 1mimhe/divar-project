@@ -28,6 +28,7 @@
  *                          -   number
  *                          -   string
  *                          -   boolean
+ *                          -   array
  *                  category:
  *                      type: string
  *                  required:
