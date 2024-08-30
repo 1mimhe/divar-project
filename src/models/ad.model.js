@@ -12,7 +12,11 @@ const adSchema = new mongoose.Schema({
         city: { type: String, required: true },
         district: { type: String, required: true },
         coordinate: { type: [Number], required: true }
-    }
+    },
+    phoneNumber: { type: String, required: false },
+    price: { type: number, required: false, default: 0 },
+    showNumber: { type: Boolean, required: false, default: false },
+    isActiveChat: { type: Boolean, required: false, default: false }
 }, {
     timestamps: true
 });

@@ -22,6 +22,23 @@
         </ul>
         <% } %>
       <% } else { %>
+        <!-- Map -->
+         <div class="p-2">
+          <label for="images">تصاویر آگهی</label>
+          <input type="file" name="images" multiple class="form-control">
+         </div>
+         <div class="p-2">
+          <label for="title">عنوان آگهی</label>
+          <input type="text" name="title" multiple class="form-control">
+         </div>
+         <div class="p-2">
+          <label for="description">توضیحات آگهی</label>
+          <textarea name="description" placeholder="توضیحات آگهی"></textarea>
+         </div>
+         <div class="p-2">
+          <label for="price">قیمت</label>
+          <input type="number" name="price" multiple class="form-control" value="0" placeholder="مقدار 0 یعنی قیمت توافقی است.">
+         </div>
         <% options.forEach(option => { %>
           <label for="<%= option.key %>"><%= option.title %><%= option.required ? " * " || "" %></label>
           <div class="p-2">
@@ -36,6 +53,14 @@
             <% } %>
           </div>
         <% }) %>
+        <div class="p-2">
+          <label for="showNumber">نمایش شماره تماس آگهی دهنده</label>
+          <input type="checkbox" name="showNumber" value="true"/>
+        </div>
+        <div class="p-2">
+          <label for="showNumber">فعال بودن چت دیوار</label>
+          <input type="checkbox" name="isActiveChat" value="true"/>
+        </div>
       <% } %>
     </div>
   </div>
