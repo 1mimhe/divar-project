@@ -16,7 +16,8 @@ const adSchema = new mongoose.Schema({
     phoneNumber: { type: String, required: false },
     price: { type: number, required: false, default: 0 },
     showNumber: { type: Boolean, required: false, default: false },
-    isActiveChat: { type: Boolean, required: false, default: false }
+    isActiveChat: { type: Boolean, required: false, default: false },
+    options: { type: Object, required: false, default: {} }
 }, {
     timestamps: true
 });

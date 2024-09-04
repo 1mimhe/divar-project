@@ -7,6 +7,8 @@
     <title>دیوار - پنل مدیریت</title>
     <link rel="shortcut icon" type="image/png" href="/assets/images/logos/DivarLogo.png"/>
     <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="stylesheet" href="/dist/css/mapp.min.css">
+    <link rel="stylesheet" href="/dist/css/fa/style.css">
 </head>
 
 <body>
@@ -30,6 +32,49 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/dist/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/dist/js/mapp.env.js"></script>
+<script type="text/javascript" src="/dist/js/mapp.min.js"></script>
+<script>
+    $(document).ready(function() {
+    const app = new Mapp({
+        element: '#map-element',
+        presets: {
+            latlng: {
+                lat: 32,
+                lng: 52,
+            },
+            zoom: 5
+        },
+        apiKey: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjkyZDExNWNiMmRiZjNlNzA3OTRmYmQxNTVhMTc2YmRlNmE4NmZmNDQyNTA1NGMxM2ZiYzYxZTIxMWM4NzIyZGNkMmQzZTRiODE0Yjc0MWFiIn0.eyJhdWQiOiIyODY0OSIsImp0aSI6IjkyZDExNWNiMmRiZjNlNzA3OTRmYmQxNTVhMTc2YmRlNmE4NmZmNDQyNTA1NGMxM2ZiYzYxZTIxMWM4NzIyZGNkMmQzZTRiODE0Yjc0MWFiIiwiaWF0IjoxNzI1MzQ4NDc0LCJuYmYiOjE3MjUzNDg0NzQsImV4cCI6MTcyNzk0MDQ3NCwic3ViIjoiIiwic2NvcGVzIjpbImJhc2ljIl19.AVaEVkwyUSmLyJnvuNWSrwNBLLzrfzoruhEWZkhJY6pUWgvYQtwff5bn0FyCi7Ct0KpzJMTfo2kkhz1bBnQTm6VlnRa1uvhlRCvQ8vcW6fBHtCBZZZyhVFcb3AKdcMveEXH6t5_pncwGsLd4mnKQ2i1vON03gk8staNlQmiTlzp9Ke0WymY56jGiKetZ7rHVzPS6_2NzZbZV1l1Tny0VnO1bXAJWhlUN3z8rY48d9OiNjWaGIcbJuR3piPL8FfncwGVyxeObicucpuIXX2pWJ4mcFLNkhXseHZMnpdnBB1EdDfNYFeHQfRqPbUyTcjaZNHEnQ2uoTlyUWt84fLyXHw",
+        gestureHandling: true,
+        gestureHandlingOptions: {
+            duration: 1200,
+            text: {
+                touch: "نقشه را با دو انگشت حرکت دهید.",
+                scroll: "برای بزرگنمایی نقشه از Ctrl + scroll استفاده کنید.",
+                scrollMac: "برای بزرگنمایی نقشه از \u2318 + scroll استفاده کنید."
+            }
+        }
+    });
+    app.addLayers();
+    app.mapp.on("click", function (e) {
+        app.addMarker({
+            name: "advanced-marker",
+            latlng: {
+                lat: e.latlng.lat,
+                lng: e.latlng.lng
+            },
+            icon: app.icons.red,
+            popup: false
+        });
+        console.log(e.latlng);
+        let { lat, lng } = e.latlng;
+        document.getElementById("lat").value = lat;
+        document.getElementById("lng").value = lng;
+    });
+});
+</script>
 <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
 <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/assets/js/sidebarmenu.js"></script>
