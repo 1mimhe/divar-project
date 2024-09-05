@@ -7,14 +7,13 @@ const adSchema = new mongoose.Schema({
     category: { type: mongoose.Types.ObjectId, ref: "Category", required: true },
     images: { type: [String], required: false, default: [] },
     address: {
-        required: true,
         province: { type: String, required: true },
         city: { type: String, required: true },
-        district: { type: String, required: true },
-        coordinate: { type: [Number], required: true }
+        district: { type: String, required: false },
+        details: { type: String, required: false }
     },
     phoneNumber: { type: String, required: false },
-    price: { type: number, required: false, default: 0 },
+    price: { type: Number, required: false, default: 0 },
     showNumber: { type: Boolean, required: false, default: false },
     isActiveChat: { type: Boolean, required: false, default: false },
     options: { type: Object, required: false, default: {} }
