@@ -32,14 +32,15 @@ async function createAdForm(req, res, next) {
 
 async function createAd(req, res, next) {
     try {
-        const { title, description, category, images, province, city, district, address,
+        const { title, description, images, province, city, district, address,
             phoneNumber, showNumber, isActiveChat } = req.body;
+        const category = new Types.ObjectId(req.body.category);
+        const options = AdService.getOptionsFromBody(req.body, category);
         const publishedBy = req.user;
-        
+
         await AdService.createAd({
-            title, description,
-            category: new Types.ObjectId(category),
-            images, province, city, district, address, phoneNumber, showNumber, isActiveChat, publishedBy
+            title, description, category, images, province, city, district, address,
+            phoneNumber, showNumber, isActiveChat, options, publishedBy
         });
 
         return res.status(201).json({
