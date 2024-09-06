@@ -44,16 +44,36 @@ async function createAd(req, res, next) {
             title, description, category, images, province, city, district, address,
             phoneNumber, showNumber, isActiveChat, options, publishedBy
         });
+        const ads = await AdService.getMyAds(req.user._id);
 
-        return res.status(201).json({
-            message: AdMessages.AdCreated
-        })
+        return res.render("panel.main.ejs", {
+            operation: "show-ads",
+            message: AdMessages.AdCreated,
+            ads,
+            count: 2
+        });
     } catch (err) {
         next(err);         
     }
 }
 
+async function getMyAds(req, res, next) {
+    try {
+        const ads = await AdService.getMyAds(req.user._id);
+        
+        return res.render("panel.main.ejs", {
+            operation: "show-ads",
+            message: null,
+            ads,
+            count: 2
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     createAdForm,
-    createAd
+    createAd,
+    getMyAds
 }

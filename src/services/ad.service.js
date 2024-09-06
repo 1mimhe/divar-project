@@ -1,13 +1,15 @@
 const createHttpError = require("http-errors");
 const utf8 = require("utf8");
+const { isValidObjectId, Types } = require("mongoose");
 const Ad = require("../models/ad.model");
 const Option = require("../models/option.model");
 const AdMessages = require("../constants/ad.messages");
+const AuthMessages = require("../constants/auth.messages");
 const CategoryService = require("../services/category.service");
 
 async function createAd(adDTO) {
     await CategoryService.checkExistsById(adDTO.category);
-    
+
     if (adDTO?.images) {
         adDTO.images = adDTO.images.map(image => image.path?.replace("public", ""));
     } else delete adDTO.images;
@@ -26,7 +28,7 @@ async function createAd(adDTO) {
 
 async function getOptionsFromBody(body, categoryId) {
     const commonOptions = ["title", "description", "category", "images", "province", "city", "district", "address",
-            "phoneNumber", "showNumber", "isActiveChat"];
+        "phoneNumber", "showNumber", "isActiveChat"];
     commonOptions.forEach(value => delete body[value]);
 
     const categoryOptions = await Option.findCategoryOptions(categoryId);
@@ -46,7 +48,18 @@ async function getOptionsFromBody(body, categoryId) {
     return options;
 }
 
+async function getAllAds() {
+    return Ad.find({});
+}
+
+async function getMyAds(userId) {
+    if (!isValidObjectId(userId)) throw new createHttpError.BadRequest(AuthMessages.UserIdIsInvalid);
+    return Ad.find({ "publishedBy._id": userId });
+}
+
 module.exports = {
     createAd,
-    getOptionsFromBody
+    getOptionsFromBody,
+    getAllAds,
+    getMyAds
 }

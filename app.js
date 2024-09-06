@@ -2,6 +2,7 @@ require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const path = require('path');
+const moment = require("jalali-moment");
 const allRouters = require("./src/routes/index.route");
 const {notFoundError, allErrorHandler} = require("./src/middlewares/errorHandler.middleware");
 const SwaggerConfig = require("./src/config/swagger.config");
@@ -18,6 +19,7 @@ app.use(cookieParser(process.env.COOKIE_PRIVATE_KEY));
 app.use(express.static('public'));
 app.set('views', path.join(__dirname, './src/views'));
 app.set('view engine', 'ejs');
+app.locals.moment = moment;
 
 // Routers
 app.use(allRouters);

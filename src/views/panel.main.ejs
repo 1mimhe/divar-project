@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="fa">
 
 <head>
     <meta charset="utf-8">
@@ -22,10 +22,12 @@
         <%- include("./partials/panel.header.ejs") %>
         <!--  Header End -->
         <div class="container-fluid">
-            <% if(operation === "create-ad") { %>
-                <%- include("./partials/panel.create-ad.ejs") %>
-            <% } else { %>
+            <% if (operation === "home") { %>
                 <%- include("./partials/panel.dashboard.ejs") %>
+            <% } else if(operation === "create-ad") { %>
+                <%- include("./partials/panel.create-ad.ejs") %>
+            <% } else if (operation === "show-ads") { %>
+                <%- include("./partials/panel.ads.ejs") %>
             <% } %>
         </div>
     </div>

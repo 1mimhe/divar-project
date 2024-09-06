@@ -6,5 +6,6 @@ const authorization = require("../middlewares/auth.middleware");
 
 adRouter.get("/create", authorization, adController.createAdForm);
 adRouter.post("/create", authorization, upload.array("images", 10), adController.createAd);
+adRouter.get("/my", authorization, adController.getMyAds);
 
 module.exports = adRouter;
