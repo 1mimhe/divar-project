@@ -57,9 +57,25 @@ async function getMyAds(userId) {
     return Ad.find({ "publishedBy._id": userId });
 }
 
+async function getAdById(adId) {
+    if (!isValidObjectId(adId)) throw new createHttpError.BadRequest(AdMessages.AdIdIsInvalid);
+    const ad = await Ad.findOne({ _id: adId });
+    if (!ad) throw new createHttpError.NotFound(AdMessages.AdNotFound);
+    return ad;
+}
+
+async function deleteAdById(adId) {
+    if (!isValidObjectId(adId)) throw new createHttpError.BadRequest(AdMessages.AdIdIsInvalid);
+    const result = await Ad.deleteOne({ _id: adId });
+    if (!result) throw new createHttpError.NotFound(AdMessages.AdNotFound);
+    return result;
+}
+
 module.exports = {
     createAd,
     getOptionsFromBody,
     getAllAds,
-    getMyAds
+    getMyAds,
+    getAdById,
+    deleteAdById
 }

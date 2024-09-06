@@ -3,6 +3,7 @@ const Option = require("../models/option.model.js");
 const AdMessages = require("../constants/ad.messages.js");
 const AdService = require("../services/ad.service.js");
 const { Types } = require("mongoose");
+let message = null;
 
 async function createAdForm(req, res, next) {
     try {
@@ -19,7 +20,7 @@ async function createAdForm(req, res, next) {
             categories = await CategoryService.findAllCategories();
         }
 
-        res.render('panel.main.ejs', {
+        return res.render('panel.main.ejs', {
            operation: "create-ad",
            category,
            categories,
@@ -44,16 +45,21 @@ async function createAd(req, res, next) {
             title, description, category, images, province, city, district, address,
             phoneNumber, showNumber, isActiveChat, options, publishedBy
         });
-        const ads = await AdService.getMyAds(req.user._id);
 
-        return res.render("panel.main.ejs", {
-            operation: "show-ads",
-            message: AdMessages.AdCreated,
-            ads,
-            count: 2
-        });
+        message = AdMessages.AdCreated;
+        return res.redirect("/ad/my");
     } catch (err) {
         next(err);         
+    }
+}
+
+async function getAllAds(req, res, next) {
+    try {
+        const ads = await AdService.getAllAds();
+        
+        return res.json(ads);
+    } catch (error) {
+        next(error);
     }
 }
 
@@ -61,12 +67,35 @@ async function getMyAds(req, res, next) {
     try {
         const ads = await AdService.getMyAds(req.user._id);
         
-        return res.render("panel.main.ejs", {
+        res.render("panel.main.ejs", {
             operation: "show-ads",
-            message: null,
-            ads,
-            count: 2
+            message,
+            ads
         });
+        message = null;
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function getAdById(req, res, next) {
+    try {
+        const { adId } = req.params;
+        const ad = await AdService.getAdById(adId);
+        
+        return res.json(ad);
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function deleteAdById(req, res, next) {
+    try {
+        const { adId } = req.params;
+        await AdService.deleteAdById(adId);
+        
+        message = AdMessages.AdDeleted;
+        return res.redirect("/ad/my");
     } catch (error) {
         next(error);
     }
@@ -75,5 +104,8 @@ async function getMyAds(req, res, next) {
 module.exports = {
     createAdForm,
     createAd,
-    getMyAds
+    getAllAds,
+    getMyAds,
+    getAdById,
+    deleteAdById
 }

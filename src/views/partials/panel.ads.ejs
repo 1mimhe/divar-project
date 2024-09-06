@@ -51,9 +51,9 @@
                             <td><%= ad.description %></td>
                             <td><%= moment(ad.createdAt).locale("fa").format("HH:mm ,jDD jMMMM jYYYY") %></td>
                             <td>
-                                <form action="/ad/<%= ad._id %>" method="delete" class="d-inline">
-                                    <button type="submit" class="btn btn-danger">حذف</button>
-                                </form>
+                                <form action="/ad/<%= ad._id %>?_method=delete" method="post" class="d-inline">
+                                  <button type="submit" class="btn btn-danger">حذف</button>
+                                </form>                              
                                 <a href="/ad/<%= ad._id %>" class="btn btn-success">مشاهده</a>
                             </td>
                         </tr>
