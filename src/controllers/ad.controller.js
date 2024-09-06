@@ -32,13 +32,14 @@ async function createAdForm(req, res, next) {
 
 async function createAd(req, res, next) {
     try {
-        const { lat, lng, title, description, category, phoneNumber, price, showNumber, isActiveChat } = req.body;
-        const options = req.body;
+        const { title, description, category, images, province, city, district, address,
+            phoneNumber, showNumber, isActiveChat } = req.body;
+        const publishedBy = req.user;
+        
         await AdService.createAd({
-            address: { coordinate: [lat, lng] },
             title, description,
             category: new Types.ObjectId(category),
-            phoneNumber, price, showNumber, isActiveChat, options
+            images, province, city, district, address, phoneNumber, showNumber, isActiveChat, publishedBy
         });
 
         return res.status(201).json({

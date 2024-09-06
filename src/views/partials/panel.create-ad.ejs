@@ -1,10 +1,11 @@
+<h4>ثبت آگهی</h4>
 <div class="col-lg-12 d-flex align-items-stretch">
   <div class="card w-100">
     <div class="p-3">
         <% if (category) { %> 
             <a href="/ad/create" class="w-100 p-3 d-block bg-light text-dark">
                 <i class="fa-solid fa-arrow-right"></i>
-                <span>بازگشت به همه دسته‌بندی‌ها</span>
+                <span> بازگشت به همه دسته‌بندی‌ها</span>
             </a>
             <hr class="hr-divider">
         <% } %>
@@ -22,16 +23,15 @@
         </ul>
         <% } %>
       <% } else { %>
+        <h6 class="p-2">دسته‌بندی آگهی: <%= category.name %></h6>
         <form action="/ad/create" method="post" enctype="multipart/form-data; charset=utf-8">
           <input id="category" type="hidden" name="category" value="<%= category._id %>">
-          <input id="lat" type="hidden" name="lat">
-          <input id="lng" type="hidden" name="lng">
           <div class="p-2">
-            <h5>آدرس آگهی *</h5>
+            <h6>موقعیت آگهی *</h6>
             <div class="p-2">
               <label for="province">استان * </label>
 	            <select name="province" id="province" class="form-control">
-                <option value="0">لطفا یک استان را انتخاب کنید.</option>
+                <option value="">لطفا یک استان را انتخاب کنید.</option>
               </select>
             </div>
             <div class="p-2">
@@ -43,48 +43,46 @@
               <input type="text" name="district" class="form-control">
             </div>
             <div class="p-2">
-              <label for="details">آدرس دقیق </label>
+              <label for="address">آدرس </label>
               <input type="text" name="details" class="form-control">
             </div>
           </div>
           <div class="p-2">
-            <label for="images">تصاویر آگهی</label>
+            <h6>تصاویر آگهی</h6>
             <input type="file" name="images" multiple class="form-control">
           </div>
           <div class="p-2">
-            <label for="title">عنوان آگهی *</label>
+            <h6>عنوان آگهی *</h6>
             <input type="text" name="title" class="form-control">
           </div>
           <div class="p-2">
-            <label for="description">توضیحات آگهی *</label>
-            <br>
+            <h6>توضیحات آگهی *</h6>
             <textarea name="description" placeholder="توضیحات آگهی را در اینجا وارد کنید." class="form-control"></textarea>
           </div>
           <div class="p-2">
-            <label for="price">قیمت *</label>
-            <input type="number" name="price" class="form-control" value="0" placeholder="مقدار 0 یعنی قیمت توافقی است.">
-          </div>
-          <% options.forEach(option => { %>
-            <label for="<%= option.key %>"><%= option.title %><%= option.required ? " * " : "" %></label>
+            <h6>ویژگی‌ها</h6>
+            <% options.forEach(option => { %>
+              <label for="<%= option.key %>"><%= option.title %><%= option.required ? " * " : "" %></label>
+              <div class="p-2">
+                <% if (option.type === "array") { %>
+                  <select name="<%= option.title %>" class="form-select">
+                    <% option.enum.forEach(item => { %>
+                      <option value="<%= item %>"><%= item %></option>
+                    <% }) %>
+                  </select>
+                <% } else { %>
+                  <input type="text" name="<%= option.title %>" class="form-control" placeholder="<%= option.guide %>">
+                <% } %>
+              </div>
+            <% }) %>
             <div class="p-2">
-              <% if (option.type === "array") { %>
-                <select name="<%= option.key %>" class="form-select">
-                  <% option.enum.forEach(item => { %>
-                    <option value="<%= item %>"><%= item %></option>
-                  <% }) %>
-                </select>
-              <% } else { %>
-                <input type="text" name="<%= option.key %>" class="form-control" placeholder="<%= option.guide %>">
-              <% } %>
+              <label for="showNumber">نمایش شماره تماس آگهی دهنده</label>
+              <input type="checkbox" name="showNumber" value="true"/>
             </div>
-          <% }) %>
-          <div class="p-2">
-            <label for="showNumber">نمایش شماره تماس آگهی دهنده</label>
-            <input type="checkbox" name="showNumber" value="true"/>
-          </div>
-          <div class="p-2">
-            <label for="showNumber">فعال بودن چت دیوار</label>
-            <input type="checkbox" name="isActiveChat" value="true"/>
+            <div class="p-2">
+              <label for="showNumber">فعال بودن چت دیوار</label>
+              <input type="checkbox" name="isActiveChat" value="true"/>
+            </div>
           </div>
           <button type="submit" class="btn btn-danger" style="text-align: left;">انتشار آگهی</button>
       </form>
