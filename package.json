@@ -21,7 +21,8 @@
     "slugify": "^1.6.6",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "translatte": "^3.0.1"
+    "translatte": "^3.0.1",
+    "utf8": "^3.0.0"
   },
   "keywords": [],
   "author": "Mohammad Hosseini",

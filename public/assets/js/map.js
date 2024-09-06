@@ -12,7 +12,7 @@ const selectCityElement = document.getElementById("city");
 selectProvinceElement.onchange = async function () {
     selectCityElement.innerHTML = "";
     const defaultOption = document.createElement("option");
-    defaultOption.value = 0;
+    defaultOption.value = "";
     defaultOption.text ="لطفا یک شهر را انتخاب کنید.";
     selectCityElement.appendChild(defaultOption);
 

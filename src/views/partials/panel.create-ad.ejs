@@ -4,8 +4,7 @@
     <div class="p-3">
         <% if (category) { %> 
             <a href="/ad/create" class="w-100 p-3 d-block bg-light text-dark">
-                <i class="fa-solid fa-arrow-right"></i>
-                <span> بازگشت به همه دسته‌بندی‌ها</span>
+                <span>→ بازگشت به همه دسته‌بندی‌ها</span>
             </a>
             <hr class="hr-divider">
         <% } %>
@@ -24,19 +23,19 @@
         <% } %>
       <% } else { %>
         <h6 class="p-2">دسته‌بندی آگهی: <%= category.name %></h6>
-        <form action="/ad/create" method="post" enctype="multipart/form-data; charset=utf-8">
+        <form action="/ad/create" method="post" enctype="multipart/form-data">
           <input id="category" type="hidden" name="category" value="<%= category._id %>">
           <div class="p-2">
             <h6>موقعیت آگهی *</h6>
             <div class="p-2">
               <label for="province">استان * </label>
-	            <select name="province" id="province" class="form-control">
+	            <select name="province" id="province" class="form-control" required>
                 <option value="">لطفا یک استان را انتخاب کنید.</option>
               </select>
             </div>
             <div class="p-2">
               <label for="city">شهر * </label>
-	            <select name="city" id="city" class="form-control">
+	            <select name="city" id="city" class="form-control" required>
                 <option value="">لطفا یک شهر را انتخاب کنید.</option>
               </select>
             </div>
@@ -55,11 +54,11 @@
           </div>
           <div class="p-2">
             <h6>عنوان آگهی *</h6>
-            <input type="text" name="title" class="form-control">
+            <input type="text" name="title" class="form-control" required>
           </div>
           <div class="p-2">
             <h6>توضیحات آگهی *</h6>
-            <textarea name="description" placeholder="توضیحات آگهی را در اینجا وارد کنید." class="form-control"></textarea>
+            <textarea name="description" placeholder="توضیحات آگهی را در اینجا وارد کنید." class="form-control" required></textarea>
           </div>
           <div class="p-2">
             <h6>ویژگی‌ها</h6>
@@ -69,11 +68,11 @@
                 <% if (option.type === "array") { %>
                   <select name="<%= option.title %>" class="form-select">
                     <% option.enum.forEach(item => { %>
-                      <option value="<%= item %>"><%= item %></option>
+                      <option value="<%= item %>" <%= option.required ? "required" : "" %>><%= item %></option>
                     <% }) %>
                   </select>
                 <% } else { %>
-                  <input type="text" name="<%= option.title %>" class="form-control" placeholder="<%= option.guide %>">
+                  <input type="text" name="<%= option.title %>" class="form-control" placeholder="<%= option.guide %>" <%= option.required ? "required" : "" %>>
                 <% } %>
               </div>
             <% }) %>

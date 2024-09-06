@@ -1,14 +1,17 @@
 const createHttpError = require("http-errors");
+const utf8 = require("utf8");
 const Ad = require("../models/ad.model");
 const Option = require("../models/option.model");
 const AdMessages = require("../constants/ad.messages");
 const CategoryService = require("../services/category.service");
 
 async function createAd(adDTO) {
-    const category = await CategoryService.checkExistsById(adDTO.category);
-    console.log(category);
+    await CategoryService.checkExistsById(adDTO.category);
     
-    if (!adDTO?.images) delete adDTO.images;
+    if (adDTO?.images) {
+        adDTO.images = adDTO.images.map(image => image.path?.replace("public", ""));
+    } else delete adDTO.images;
+
     if (!adDTO?.district) delete adDTO.district;
     if (!adDTO?.address) delete adDTO.address;
 
@@ -17,7 +20,6 @@ async function createAd(adDTO) {
     adDTO.showNumber = adDTO?.showNumber === "true" || adDTO?.showNumber === true;
     adDTO.isActiveChat = adDTO?.isActiveChat === "true" || adDTO?.isActiveChat === true;
 
-    console.log(adDTO);
     const result = await Ad.create(adDTO);
     return result;
 }
@@ -29,6 +31,12 @@ async function getOptionsFromBody(body, categoryId) {
 
     const categoryOptions = await Option.findCategoryOptions(categoryId);
     if (!categoryOptions.length) return;
+
+    for (let key in body) {
+        const decodedKey = utf8.decode(key);
+        body[decodedKey] = body[key];
+        delete body[key];
+    }
 
     const options = [];
     categoryOptions.forEach((option) => {
