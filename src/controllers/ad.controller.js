@@ -83,7 +83,10 @@ async function getAdById(req, res, next) {
         const { adId } = req.params;
         const ad = await AdService.getAdById(adId);
         
-        return res.json(ad);
+        return res.render("website.main.ejs", {
+            operation: "show-ad",
+            ad
+        });
     } catch (error) {
         next(error);
     }

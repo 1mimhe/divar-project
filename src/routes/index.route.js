@@ -13,7 +13,9 @@ allRouters.use("/option", optionRouter);
 allRouters.use("/ad", adRouter);
 
 allRouters.get("/", (req, res, next) => {
-    res.render('website.main.ejs');
+    res.render('website.main.ejs', {
+        operation: "home"
+    });
 });
 
 allRouters.get("/panel", (req, res, next) => {

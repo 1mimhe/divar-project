@@ -1,0 +1,71 @@
+<div class="container">
+        <div class="post">
+          <nav></nav>
+          <div class="post-content">
+            <div class="post-title">
+              <div class="post-title-h1"><%= ad.title %></div>
+              <div class="post-title-location"><%= moment(ad.createdAt).locale("fa").format("jDD jMMMM jYYYY") %> | در <%= ad.city || ad.province %></div>
+            </div>
+            <div class="post-action">
+              <button class="post-button-action button" <%= ad.showNumber ? "" : "disabled" %>>اطلاعات تماس</button>
+              <button class="post-button-chat button" <%= ad.isActiveChat ? "" : "disabled" %>>چت</button>
+              <img class="post-bookmark" src="/home/img/bookmark.svg" alt=""/>
+              <img src="/home/img/share.svg" class="post-share" alt=""/>
+            </div>
+            <div class="post-list">
+              <a href="" class="post-landing">
+                <div class="post-row">
+                  <div class="post-landing-mobile">
+                    <img src="/home/img/options.svg" alt=""/>
+                    <p>مشخصات کامل آگهی</p>
+                  </div>
+                  <div class="post-landing-arrow">
+                    <img src="/home/img/arrow-down.svg" alt=""/>
+                  </div>
+                </div>
+              </a>
+              <hr/>
+              <% for (let key in ad.options) { %>
+                <div class="post-list-item post-row">
+                  <div class="post-list-title"><%= key %></div>
+                  <div class="post-list-detail"><%= ad.options[key] %></div>
+                </div>
+                <hr/>
+              <% } %>
+            </div>
+            <div class="post-description">
+              <h2 class="post-description-title">توضیحات</h2>
+              <div class="post-description-detail">
+                <p><%= ad.description %></p>
+              </div>
+            </div>
+          </div>
+          <div class="post-image">
+            <div class="post-thumbnail">
+              <img src="<%= ad.images[0] %>" alt="<%= ad.title %>" class="post-thumbnail"/>
+            </div>
+            <div class="post-note">
+              <div class="post-note-input">
+                <textarea name="note" id="note" placeholder="یادداشت شما..."></textarea>
+              </div>
+              <p>این یادداشت تنها برای شما قابل دیدن است و پس از حذف آگهی پاک خواهد شد.</p>
+            </div>
+            <div>
+              <a href="#" class="post-privacy-link">
+                <div class="post-privacy post-row">
+                  <img src="/home/img/message.svg" alt=""/>
+                  <p>راهنمایی خرید امن</p>
+                </div>
+              </a>
+            </div>
+            <div>
+              <a href="#" class="post-privacy-link">
+                <div class="post-privacy post-row" >
+                  <img src="/home/img/message.svg" alt="">
+                  <p>ثبت تخلف و مشکل آگهی</p>
+                </div>
+               </a>
+            </div>
+          </div>
+        </div>
+</div>

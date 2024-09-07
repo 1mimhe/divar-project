@@ -18,16 +18,16 @@
     <%-include("./partials/website.header.ejs")%>
     <%-include("./partials/website.sidebar.ejs")%>
     <main>
-        <div class="main-button">
-            <a href="#">
-                <img src="/home/img/suitcase.svg" alt=""/>
-                <span>با دیوار، بگرد دنبال کار</span>
-            </a>
-        </div>
         <h1 class="main-title">دیوار تهران:‌ انواع آگهی‌ها و خدمات در تهران</h1>
-        <div class="main-grid-card">
-            <%-include("./partials/website.home.ejs")%>
-        </div>
+        <% if (operation === "home") { %>
+            <div class="main-grid-card">
+                <%-include("./partials/website.home.ejs")%>
+            </div>
+        <% } else if (operation === "show-ad") { %>
+            <div class="main-grid-card">
+                <%-include("./partials/website.ad.ejs")%>
+            </div>
+        <% } %>
     </main>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>

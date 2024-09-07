@@ -48,8 +48,13 @@
   overflow: hidden;
   padding: 0 16px;
 }
+
 .post-button-action {
   background-color: #a62626;
+}
+
+.post-button-action:disabled {
+  cursor: not-allowed;
 }
 
 .post-button-chat {
@@ -58,6 +63,10 @@
   border-color: rgba(0, 0, 0, 0.48);
   color: rgba(0, 0, 0, 0.87);
   background-color: transparent;
+}
+
+.post-button-chat:disabled {
+  cursor: not-allowed;
 }
 
 .post-button-chat:hover {
@@ -109,7 +118,7 @@ hr {
   margin-left: 10px;
 }
 
-.post-landing-arrow {
+.post-landing-arrow img {
   width: 18px;
 }
 
