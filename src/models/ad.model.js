@@ -10,7 +10,6 @@ const adSchema = new mongoose.Schema({
     city: { type: String, required: true },
     district: { type: String, required: false },
     address: { type: String, required: false },
-    phoneNumber: { type: String, required: false },
     showNumber: { type: Boolean, required: false, default: false },
     isActiveChat: { type: Boolean, required: false, default: false },
     options: { type: Object, required: false, default: {} },

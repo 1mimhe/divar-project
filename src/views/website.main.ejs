@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/home/style.css"/>
     <link rel="stylesheet" href="/home/post.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.13.3/dist/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <title>دیوار</title>
 </head>
@@ -30,7 +31,52 @@
         <% } %>
     </main>
 </section>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
 <script src="https://kit.fontawesome.com/4d7a30862b.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.13.3/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+<script type="module">
+    import Swiper from 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.mjs'
+
+    const callDetail = document.getElementById("call-detail");
+
+    let detail = "اطلاعات تماس توسط سازنده آگهی مخفی شده است.";
+    if ("<%= ad.showNumber %>" === "true") detail = "شماره تماس: <%= ad.publishedBy.mobile %>";
+
+    callDetail.onclick = function () {
+        Swal.fire({
+            showCancelButton: true,
+            title: "اطلاعات تماس",
+            text: detail,
+            confirmButtonText: "تماس",
+            cancelButtonText: "خروج"
+        }).then(result => {
+            if (result.isConfirmed) {
+                window.location.href = "tel://<%= ad.showNumber ? ad.publishedBy.mobile : 0 %>"                
+            }
+        });
+    }
+
+    const swiper = new Swiper('.swiper', {
+        // Optional parameters
+        direction: 'horizontal',
+        loop: true,
+
+        // If we need pagination
+        pagination: {
+            el: '.swiper-pagination',
+        },
+
+        // Navigation arrows
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+
+        // And if we need scrollbar
+        scrollbar: {
+            el: '.swiper-scrollbar',
+        },
+    });
+</script>
 </body>
 </html>
