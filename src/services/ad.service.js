@@ -48,8 +48,8 @@ async function getOptionsFromBody(body, categoryId) {
     return options;
 }
 
-async function getAllAds() {
-    return Ad.find({});
+async function getAllAds(filter = {}, options = {}) {
+    return Ad.find(filter, { publishedBy: 0 }, options);
 }
 
 async function getMyAds(userId) {

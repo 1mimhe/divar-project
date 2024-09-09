@@ -1,16 +1,16 @@
-<div class="main-gird-posts">
-    <div class="main-post">
-        <a href="./post.html" class="post-link">
+<% for (let i = 0; i < ads.length; i++) { %>
+    <% if (i % 3 === 0) { %><div class="main-post"><% } %>
+        <a href="/ad/<%= ads[i]._id %>">
             <article>
                 <div class="main-post-detail">
-                    <h2 class="main-post-title">آیفون ۱۶ پرومکس</h2>
-                    <div class="main-post-price">۱۰۰,۰۰۰,۰۰۰ تومان</div>
-                    <div class="main-post-time">لحظاتی پیش در ایران</div>
+                    <h2 class="main-post-title"><%= ads[i].title %></h2>
+                    <div class="main-post-price"><%= ads[i].price ? `${ads[i].price} تومان` : "قیمت توافقی" %></div>
+                    <div class="main-post-time"><%= moment(ads[i].createdAt).locale("fa").format("jDD jMMMM HH:mm") %> | در <%= ads[i].city || ads[i].province %></div>
                 </div>
                 <div class="main-post-thumbnail">
-                    <img src="./home/img/iphone-14-pro-max-purple-1.jpg" alt="">
+                    <img src="<%= ads[i].images ? ads[i].images[0] : "/home/no-image.png" %>" alt="<%= ads[i].title %>">
                 </div>
             </article>
         </a>
-    </div>
-</div>
+        <% if (i % 3 === 2) { %></div><% } %>
+<% } %>

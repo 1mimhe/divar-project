@@ -55,9 +55,12 @@ async function createAd(req, res, next) {
 
 async function getAllAds(req, res, next) {
     try {
-        const ads = await AdService.getAllAds();
+        const ads = await AdService.getAllAds({}, { sort: { _id: -1 } });
         
-        return res.json(ads);
+        return res.render('website.main.ejs', {
+            operation: "home",
+            ads
+        });
     } catch (error) {
         next(error);
     }

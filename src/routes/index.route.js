@@ -5,6 +5,7 @@ const userRouter = require("./user.route");
 const categoryRouter = require("./category.route");
 const optionRouter = require("./option.route");
 const adRouter = require("./ad.route");
+const adController = require("../controllers/ad.controller");
 
 allRouters.use("/auth", authRouter);
 allRouters.use("/user", userRouter);
@@ -12,11 +13,7 @@ allRouters.use("/category", categoryRouter);
 allRouters.use("/option", optionRouter);
 allRouters.use("/ad", adRouter);
 
-allRouters.get("/", (req, res, next) => {
-    res.render('website.main.ejs', {
-        operation: "home"
-    });
-});
+allRouters.get("/", adController.getAllAds);
 
 allRouters.get("/panel", (req, res, next) => {
     res.render('panel.main.ejs', {

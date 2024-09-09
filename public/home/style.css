@@ -147,24 +147,19 @@ main {
 }
 /* --------------------- */
 
-/* main grid card  */
-.main-gird-posts {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 16px;
-  padding: 5px;
-}
-
 .main-post {
-  max-width: 500px;
-  height: 184px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: 400px;
+  height: 150px;
   padding: 8px;
-  border: 1px solid rgba(151, 151, 151, 0.2);
   border-radius: 4px;
+  margin: 30px;
 }
 
 .main-post-thumbnail img {
-  max-width: 136px;
+  max-width: 120px;
   background-color: #f5f5f5;
   border-radius: 4px;
   flex: 0 0 136px;
@@ -177,7 +172,10 @@ main {
 
 article {
   display: flex;
+  border: 1px solid rgba(151, 151, 151, 0.2);
   height: 168px;
+  padding: 15px;
+  margin: 20px 10px;
 }
 
 .main-post-detail {
