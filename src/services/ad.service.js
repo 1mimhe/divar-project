@@ -48,8 +48,18 @@ async function getOptionsFromBody(body, categoryId) {
     return options;
 }
 
-async function getAllAds(filter = {}, options = {}) {
-    return Ad.find(filter, { publishedBy: 0 }, options);
+async function getAllAds(search, category, city) {
+    const filter = {};
+
+    if (search) {
+        filter.title = { $regex: new RegExp(`.*${search}.*`) };
+    }
+
+    if (city) {
+        filter.city = { $regex: new RegExp(`.*${city}.*`) };
+    }
+    
+    return Ad.find(filter, { publishedBy: 0 }, { sort: { _id: -1 } });
 }
 
 async function getMyAds(userId) {

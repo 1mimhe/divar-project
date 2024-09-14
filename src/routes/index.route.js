@@ -7,13 +7,12 @@ const optionRouter = require("./option.route");
 const adRouter = require("./ad.route");
 const adController = require("../controllers/ad.controller");
 
+allRouters.get("/", adController.getAllAds);
 allRouters.use("/auth", authRouter);
 allRouters.use("/user", userRouter);
 allRouters.use("/category", categoryRouter);
 allRouters.use("/option", optionRouter);
 allRouters.use("/ad", adRouter);
-
-allRouters.get("/", adController.getAllAds);
 
 allRouters.get("/panel", (req, res, next) => {
     res.render('panel.main.ejs', {

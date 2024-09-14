@@ -44,8 +44,28 @@ header hr {
   padding: 5px;
 }
 
+.category-span {
+  width: 80px;
+  border: none;
+  font-size: small;
+  margin: 10px;
+  background-color: rgb(236, 236, 236, 0.5);
+  padding: 10px 20px;
+  outline: none;
+  border-radius: 5px;
+}
+
 .input-search {
   width: 480px;
+  border: none;
+  background-color: rgb(236, 236, 236, 0.5);
+  padding: 10px 20px;
+  outline: none;
+  border-radius: 5px;
+}
+
+.input-city {
+  width: 120px;
   border: none;
   background-color: rgb(236, 236, 236, 0.5);
   padding: 10px 20px;
@@ -57,6 +77,23 @@ header hr {
   background-color: rgb(241, 241, 241);
 }
 
+.search-button {
+  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  color: black;
+  background-color: #14BB7D;
+}
+
 .navbar {
   display: flex;
   align-items: center;
@@ -66,7 +103,11 @@ header hr {
 .logo {
   display: flex;
   align-items: center;
-  width: 55%;
+  width: 70%;
+}
+
+.inline-input {
+  display: inline;
 }
 
 .btn-red {

@@ -6,18 +6,18 @@
                     <img class="logo-img" src="/home/img/download.svg" alt="" />
                 </a>
                 <hr/>
-                <button class="btn-header">
-                    <img class="icon-header" src="/home/img/location.svg" alt="" />
-                    <span>همه شهرها</span>
-                </button>
-                <button class="btn-header">
-                    <span>دسته‌ها</span>
-                    <img class="icon-header" src="/home/img/arrow-down.svg" alt="" />
-                </button>
-                <input
-                        type="text"
-                        class="input-search"
-                        placeholder="جستجو در همهٔ آگهی‌ها" />
+                <form action="/" method="get">
+                    <div class="inline-input">
+                        <input type="text" name="city" class="input-city" placeholder="<%= city ? "شهر" : "همهٔ شهرها" %>" value="<%= city %>"/>
+                    </div>
+                    <div class="category-span inline-input">
+                        <span><%= category ? category.title : "همهٔ دسته‌ها" %></span>
+                    </div>
+                    <div class="inline-input">
+                        <input type="text" name="search" class="input-search" placeholder="جستجو در همهٔ آگهی‌ها" value="<%= search %>"/>
+                    </div>
+                    <button type="submit" class="search-button inline-input"><span>جستجو</span></button>
+                </form>
             </div>
             <div class="navbar">
                 <button class="btn-header">
