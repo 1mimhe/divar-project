@@ -8,8 +8,7 @@
             </a>
             <hr class="hr-divider">
         <% } %>
-        <% if(!options || !options?.length) { %>
-          <% if(categories && categories?.length) { %>
+        <% if(categories && categories?.length) { %>
         <ul>
           <% categories.forEach((category) => { %>
           <li>
@@ -20,7 +19,6 @@
           </li>
           <% }) %>
         </ul>
-        <% } %>
       <% } else { %>
         <h6 class="p-2">دسته‌بندی آگهی: <%= category.name %></h6>
         <form action="/ad/create" method="post" enctype="multipart/form-data">
@@ -59,6 +57,9 @@
           <div class="p-2">
             <h6>توضیحات آگهی *</h6>
             <textarea name="description" placeholder="توضیحات آگهی را در اینجا وارد کنید." class="form-control" required></textarea>
+          </div>
+          <label for="price">قیمت *</label>
+          <input type="number" name="price" class="form-control" value="0" placeholder="مقدار 0 یعنی قیمت توافقی است." step="10000">
           </div>
           <div class="p-2">
             <h6>ویژگی‌ها</h6>

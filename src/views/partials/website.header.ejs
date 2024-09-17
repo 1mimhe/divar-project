@@ -11,7 +11,7 @@
                         <input type="text" name="city" class="input-city" placeholder="<%= city ? "شهر" : "همهٔ شهرها" %>" value="<%= city %>"/>
                     </div>
                     <div class="category-span inline-input">
-                        <span><%= category ? category.title : "همهٔ دسته‌ها" %></span>
+                        <span>دسته: <%= category ? category.name : "همهٔ دسته‌ها" %></span>
                     </div>
                     <div class="inline-input">
                         <input type="text" name="search" class="input-search" placeholder="جستجو در همهٔ آگهی‌ها" value="<%= search %>"/>
@@ -20,20 +20,21 @@
                 </form>
             </div>
             <div class="navbar">
-                <button class="btn-header">
-                    <img class="icon-header" src="/home/img/user.svg" alt="" />
-                    <span>دیوار من</span>
-                </button>
-                <button class="btn-header">
-                    <img class="icon-header" src="/home/img/message.svg" alt="" />
-                    <span>چت</span>
-                </button>
-                <button class="btn-header">
-                    <span>پشتیبانی</span>
-                </button>
-                <button class="btn-header btn-red">
-                    <span>ثبت آگهی</span>
-                </button>
+                <div class="btn-header">
+                    <img class="icon-header" src="/home/img/user.svg" alt=""/>
+                    <a href="/my" style="color: #777;">دیوار من</a>
+                </div>
+                <div class="btn-header">
+                    <img class="icon-header" src="/home/img/message.svg" alt=""/>
+                    <a href="/chat" style="color: #777;">چت</a>
+                </div>
+                <div class="btn-header">
+                    <img class="icon-header" src="/home/img/people.svg" alt=""/>
+                    <a href="/" style="color: #777;">پشتیبانی</a>
+                </div>
+                <div class="btn-header btn-red">
+                    <a href="/ad/create" style="color: white;">ثبت آگهی</a>
+                </div>
             </div>
         </nav>
     </div>

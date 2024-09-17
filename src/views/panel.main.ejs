@@ -4,23 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>دیوار - پنل مدیریت</title>
+    <title>دیوار من</title>
     <link rel="shortcut icon" type="image/png" href="/assets/images/logos/DivarLogo.png"/>
     <link rel="stylesheet" href="/assets/css/styles.css"/>
 </head>
 
 <body>
-<!--  Body Wrapper -->
 <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
      data-sidebar-position="fixed" data-header-position="fixed">
-    <!-- Sidebar Start -->
     <%- include("./partials/panel.sidebar.ejs") %>
-    <!--  Sidebar End -->
-    <!--  Main wrapper -->
     <div class="body-wrapper">
-        <!--  Header Start -->
-        <%- include("./partials/panel.header.ejs") %>
-        <!--  Header End -->
         <div class="container-fluid">
             <% if (operation === "home") { %>
                 <%- include("./partials/panel.dashboard.ejs") %>

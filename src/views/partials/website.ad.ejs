@@ -25,6 +25,11 @@
                 </div>
               </a>
               <hr/>
+              <div class="post-list-item post-row">
+                <div class="post-list-title">قیمت</div>
+                <div class="post-list-detail"><%= ad.price ? `${ad.price} تومان` : "قیمت توافقی" %></div>
+              </div>
+              <hr/>
               <% for (let key in ad.options) { %>
                 <div class="post-list-item post-row">
                   <div class="post-list-title"><%= key %></div>

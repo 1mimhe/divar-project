@@ -5,23 +5,15 @@ const userRouter = require("./user.route");
 const categoryRouter = require("./category.route");
 const optionRouter = require("./option.route");
 const adRouter = require("./ad.route");
-const adController = require("../controllers/ad.controller");
+const AdController = require("../controllers/ad.controller");
+const UserController = require("../controllers/user.controller");
 
-allRouters.get("/", adController.getAllAds);
+allRouters.get("/", AdController.getAllAds);
+allRouters.get("/my", UserController.whoAmI);
 allRouters.use("/auth", authRouter);
 allRouters.use("/user", userRouter);
 allRouters.use("/category", categoryRouter);
 allRouters.use("/option", optionRouter);
 allRouters.use("/ad", adRouter);
-
-allRouters.get("/panel", (req, res, next) => {
-    res.render('panel.main.ejs', {
-        operation: "home"
-    });
-});
-
-allRouters.get("/login", (req, res, next) => {
-    res.render('auth.main.ejs');
-});
 
 module.exports = allRouters;

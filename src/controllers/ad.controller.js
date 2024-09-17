@@ -11,6 +11,7 @@ async function createAdForm(req, res, next) {
         let category;
         let categories;
         let options;
+
         if (slug && slug !== "root") {
             slug = slug.trim();
             category = await CategoryService.findCategoryBySlug(slug);
@@ -34,7 +35,7 @@ async function createAdForm(req, res, next) {
 async function createAd(req, res, next) {
     try {
         const { title, description, province, city, district, address,
-            phoneNumber, showNumber, isActiveChat } = req.body;
+            price, showNumber, isActiveChat } = req.body;
         const images = req.files;
         
         const category = new Types.ObjectId(req.body.category);
@@ -43,7 +44,7 @@ async function createAd(req, res, next) {
 
         await AdService.createAd({
             title, description, category, images, province, city, district, address,
-            phoneNumber, showNumber, isActiveChat, options, publishedBy
+            price, showNumber, isActiveChat, options, publishedBy
         });
 
         message = AdMessages.AdCreated;
@@ -55,14 +56,16 @@ async function createAd(req, res, next) {
 
 async function getAllAds(req, res, next) {
     try {
-        const { search, category, city } = req.query;
-        const ads = await AdService.getAllAds(search, category, city);
+        const { search, city } = req.query;
+        let { category } = req.query;
+        if (category) category = await CategoryService.findCategoryBySlug(category);
+        const ads = await AdService.getAllAds(search, category?._id, city);
         
         return res.render('website.main.ejs', {
             operation: "home",
             ads,
             search,
-            category: undefined,
+            category,
             city
         });
     } catch (error) {
@@ -89,10 +92,14 @@ async function getAdById(req, res, next) {
     try {
         const { adId } = req.params;
         const ad = await AdService.getAdById(adId);
-        
+        const category = await CategoryService.checkExistsById(ad.category);
+
         return res.render("website.main.ejs", {
             operation: "show-ad",
-            ad
+            ad,
+            category,
+            city: ad.city,
+            search: undefined
         });
     } catch (error) {
         next(error);

@@ -5,6 +5,7 @@ const adSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     category: { type: mongoose.Types.ObjectId, ref: "Category", required: true },
+    price: { type: Number, required: false, default: 0 },
     images: { type: [String], required: false, default: [] },
     province: { type: String, required: true },
     city: { type: String, required: true },

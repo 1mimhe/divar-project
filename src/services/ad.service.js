@@ -3,6 +3,7 @@ const utf8 = require("utf8");
 const { isValidObjectId, Types } = require("mongoose");
 const Ad = require("../models/ad.model");
 const Option = require("../models/option.model");
+const Category = require("../models/category.model");
 const AdMessages = require("../constants/ad.messages");
 const AuthMessages = require("../constants/auth.messages");
 const CategoryService = require("../services/category.service");
@@ -28,7 +29,7 @@ async function createAd(adDTO) {
 
 async function getOptionsFromBody(body, categoryId) {
     const commonOptions = ["title", "description", "category", "images", "province", "city", "district", "address",
-        "phoneNumber", "showNumber", "isActiveChat"];
+        "price", "showNumber", "isActiveChat"];
     commonOptions.forEach(value => delete body[value]);
 
     const categoryOptions = await Option.findCategoryOptions(categoryId);
@@ -58,13 +59,20 @@ async function getAllAds(search, category, city) {
     if (city) {
         filter.city = { $regex: new RegExp(`.*${city}.*`) };
     }
+
+    if (category) {
+        const categories = (await Category.find({ parents: category }, { _id: 1 })).map(category => category._id);
+        filter.category = {
+            $in: [category, ...categories]
+        };        
+    }
     
     return Ad.find(filter, { publishedBy: 0 }, { sort: { _id: -1 } });
 }
 
 async function getMyAds(userId) {
     if (!isValidObjectId(userId)) throw new createHttpError.BadRequest(AuthMessages.UserIdIsInvalid);
-    return Ad.find({ "publishedBy._id": userId });
+    return Ad.find({ "publishedBy._id": userId }, {}, { sort: { _id: -1 } });
 }
 
 async function getAdById(adId) {

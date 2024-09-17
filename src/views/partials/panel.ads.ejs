@@ -47,8 +47,8 @@
                     <% ads.forEach(ad => { %>
                         <tr>
                             <td><%= ad._id %></td>
-                            <td><%= ad.title %></td>
-                            <td><%= ad.description %></td>
+                            <td><%= ad.title.slice(0, 30) %><%= ad.title.length > 30 ? "..." : "" %></td>
+                            <td><%= ad.description.slice(0, 40) %><%= ad.description.length > 30 ? "..." : "" %></td>
                             <td><%= moment(ad.createdAt).locale("fa").format("HH:mm ,jDD jMMMM jYYYY") %></td>
                             <td>
                                 <form action="/ad/<%= ad._id %>?_method=delete" method="post" class="d-inline">

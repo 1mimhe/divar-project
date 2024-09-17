@@ -1,70 +1,88 @@
 <aside>
     <div class="container sidebar-padding">
         <h2 class="sidebar-title">دسته‌ها</h2>
-
         <ul class="sidebar-ul">
-            <li class="sidebar-li">
-                <a href="#" class="sidebar-a">
-                    <img src="/home/img/home.svg" class="sidebar-img" alt="" />
-                    املاک
-                </a>
-            </li>
+            <% if (!category) { %>
+                <li class="sidebar-li">
+                    <a href="/?category=real-estate" class="sidebar-a">
+                        <img src="/home/img/home.svg" class="sidebar-img" alt="" />
+                        املاک
+                    </a>
+                </li>
 
-            <li class="sidebar-li">
-                <a href="#" class="sidebar-a">
-                    <img src="/home/img/car.svg" class="sidebar-img" alt="" />
-                    وسایل نقلیه
-                </a>
-            </li>
+                <li class="sidebar-li">
+                    <a href="/?category=vehicles" class="sidebar-a">
+                        <img src="/home/img/car.svg" class="sidebar-img" alt="" />
+                        وسایل نقلیه
+                    </a>
+                </li>
 
-            <li class="sidebar-li">
-                <a href="#" class="sidebar-a">
-                    <img src="/home/img/mobile.svg" class="sidebar-img" alt="" />
-                    کالای دیجیتال
-                </a>
-            </li>
+                <li class="sidebar-li">
+                    <a href="/?category=electronic-devices" class="sidebar-a">
+                        <img src="/home/img/mobile.svg" class="sidebar-img" alt="" />
+                        کالای دیجیتال
+                    </a>
+                </li>
 
-            <li class="sidebar-li">
-                <a href="#" class="sidebar-a">
-                    <img src="/home/img/home.svg" class="sidebar-img" alt="" />
-                    خانه و آشپزخانه
-                </a>
-            </li>
+                <li class="sidebar-li">
+                    <a href="/?category=home-kitchen" class="sidebar-a">
+                        <img src="/home/img/home.svg" class="sidebar-img" alt="" />
+                        خانه و آشپزخانه
+                    </a>
+                </li>
 
-            <li class="sidebar-li">
-                <a href="#" class="sidebar-a">
-                    <img src="/home/img/paint.svg" class="sidebar-img" alt="" />
-                    خدمات
-                </a>
-            </li>
+                <li class="sidebar-li">
+                    <a href="/?category=services" class="sidebar-a">
+                        <img src="/home/img/paint.svg" class="sidebar-img" alt="" />
+                        خدمات
+                    </a>
+                </li>
 
-            <li class="sidebar-li">
-                <a href="#" class="sidebar-a">
-                    <img src="/home/img/mobile.svg" class="sidebar-img" alt="" />
-                    وسایل شخصی
-                </a>
-            </li>
+                <li class="sidebar-li">
+                    <a href="/?category=personal-accessories" class="sidebar-a">
+                        <img src="/home/img/mobile.svg" class="sidebar-img" alt="" />
+                        وسایل شخصی
+                    </a>
+                </li>
 
-            <li class="sidebar-li">
-                <a href="#" class="sidebar-a">
-                    <img src="/home/img/dice.svg" class="sidebar-img" alt="" />
-                    سرگرمی و فراغت
-                </a>
-            </li>
+                <li class="sidebar-li">
+                    <a href="/?category=entertainment" class="sidebar-a">
+                        <img src="/home/img/dice.svg" class="sidebar-img" alt="" />
+                        سرگرمی و فراغت
+                    </a>
+                </li>
 
-            <li class="sidebar-li">
-                <a href="#" class="sidebar-a">
-                    <img src="/home/img/chair.svg" class="sidebar-img" alt="" />
-                    تجهیزات و صنعتی
-                </a>
-            </li>
+                <li class="sidebar-li">
+                    <a href="/?category=industrial-tools" class="sidebar-a">
+                        <img src="/home/img/chair.svg" class="sidebar-img" alt="" />
+                        تجهیزات و صنعتی
+                    </a>
+                </li>
 
-            <li class="sidebar-li">
-                <a href="#" class="sidebar-a">
-                    <img src="/home/img/suitcase.svg" class="sidebar-img" alt="" />
-                    استخدام و کاریابی
-                </a>
-            </li>
+                <li class="sidebar-li">
+                    <a href="/?category=jobs" class="sidebar-a">
+                        <img src="/home/img/suitcase.svg" class="sidebar-img" alt="" />
+                        استخدام و کاریابی
+                    </a>
+                </li>
+            <% } else { %>
+                <li class="sidebar-li"></li>
+                    <a href="/" class="sidebar-a">
+                        <img src="/home/img/arrow-right-solid.svg" class="sidebar-img" alt=""/>
+                        همهٔ آگهی‌ها
+                    </a>
+                </li>
+                <li class="sidebar-li">
+                    <a href="/?category=<%= category.slug %>" class="sidebar-a" style="color: black;"><%= category.name %></a>
+                </li>
+                <% if (category.children) { %>
+                    <% category.children.forEach(child => { %>
+                        <li class="sidebar-li sidebar-li-in">
+                            <a href="/?category=<%= child.slug %>" class="sidebar-a"><%= child.name %></a>
+                        </li>
+                    <%  }); %>
+                <% } %>
+            <% } %>
         </ul>
     </div>
 </aside>
