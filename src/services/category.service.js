@@ -40,7 +40,7 @@ async function findAllCategories() {
     return categories;
 }
 
-async function removeCategory(_id) {
+async function deleteCategory(_id) {
     const deletedCategory = await Category.findOneAndDelete({ _id });
     const deletedOptions = await Option.deleteMany({ category: deletedCategory._id });
     return {
@@ -70,7 +70,7 @@ async function checkSlugExists(slug) {
 module.exports = {
     createCategory,
     findAllCategories,
-    removeCategory,
+    deleteCategory,
     checkExistsById,
     findCategoryBySlug,
     checkSlugExists

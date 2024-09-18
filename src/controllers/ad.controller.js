@@ -39,7 +39,7 @@ async function createAd(req, res, next) {
         const images = req.files;
 
         const category = new Types.ObjectId(req.body.category);
-        const options = AdService.getOptionsFromBody(req.body, category);
+        const options = req.body.options ?? AdService.getOptionsFromBody(req.body, category);
         const publishedBy = req.user;
 
         await AdService.createAd({

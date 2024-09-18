@@ -22,10 +22,10 @@ async function findAllCategories(req, res, next) {
     }
 }
 
-async function removeCategory(req, res, next) {
+async function deleteCategory(req, res, next) {
     try {
-        const { id } = req.params;
-        const deletedCategory = await CategoryService.removeCategory(id);
+        const { categoryId } = req.params;
+        const deletedCategory = await CategoryService.deleteCategory(categoryId);
         return res.json({
             message: CategoryMessages.CategoryDeleted,
             deletedCategory
@@ -37,6 +37,6 @@ async function removeCategory(req, res, next) {
 
 module.exports = {
     createCategory,
-    removeCategory,
+    deleteCategory,
     findAllCategories
 }

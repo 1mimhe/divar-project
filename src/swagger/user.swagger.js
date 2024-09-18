@@ -7,12 +7,6 @@
 
 /**
  * @swagger
- *  components:
- *      schemas:
- */
-
-/**
- * @swagger
  *
  * /user/me:
  *  get:

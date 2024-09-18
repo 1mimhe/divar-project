@@ -6,12 +6,9 @@ const categoryRouter = require("./category.route");
 const optionRouter = require("./option.route");
 const adRouter = require("./ad.route");
 const AdController = require("../controllers/ad.controller");
-const UserController = require("../controllers/user.controller");
-const authorization = require("../middlewares/auth.middleware");
 const addQueryParam = require("../utils/addQueryParam.util");
 
 allRouters.get("/", addQueryParam, AdController.getAllAds);
-allRouters.get("/my", authorization, UserController.whoAmI);
 allRouters.use("/auth", authRouter);
 allRouters.use("/user", userRouter);
 allRouters.use("/category", categoryRouter);

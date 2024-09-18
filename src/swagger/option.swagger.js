@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *  name: Option
- *  description: Option Modules and Routes
+ *  description: Option (Category's options) Modules and Routes
  */
 
 /**
@@ -75,7 +75,7 @@
  *
  * /option:
  *  post:
- *      summary: create new option for a category
+ *      summary: create new option for a category.
  *      tags:
  *          -   Option
  *      requestBody:
@@ -96,13 +96,14 @@
  *
  * /option/by-category/{categoryId}:
  *  get:
- *      summary: get all options of a category
+ *      summary: get all options of a category.
  *      tags:
  *          -   Option
  *      parameters:
  *          -   in: path
  *              name: categoryId
  *              type: string
+ *              required: true
  *      responses:
  *          200:
  *              description: successful
@@ -113,13 +114,14 @@
  *
  * /option/by-category-slug/{slug}:
  *  get:
- *      summary: get all options of a category by slug
+ *      summary: get all options of a category by slug.
  *      tags:
  *          -   Option
  *      parameters:
  *          -   in: path
  *              name: slug
  *              type: string
+ *              required: true
  *      responses:
  *          200:
  *              description: successful
@@ -130,13 +132,14 @@
  *
  * /option/{id}:
  *  get:
- *      summary: get option by id
+ *      summary: get option by id.
  *      tags:
  *          -   Option
  *      parameters:
  *          -   in: path
  *              name: id
  *              type: string
+ *              required: true
  *      responses:
  *          200:
  *              description: successful
@@ -147,7 +150,7 @@
  *
  * /option:
  *  get:
- *      summary: get all options
+ *      summary: get all options.
  *      tags:
  *          -   Option
  *      responses:
@@ -160,13 +163,14 @@
  *
  * /option/{id}:
  *  put:
- *      summary: update an option
+ *      summary: update an option.
  *      tags:
  *          -   Option
  *      parameters:
  *          -   in: path
  *              name: id
  *              type: string
+ *              required: true
  *      requestBody:
  *          content:
  *              application/x-www-form-urlencoded:
@@ -185,13 +189,14 @@
  *
  * /option/{id}:
  *  delete:
- *      summary: delete an option by id
+ *      summary: delete an option by id.
  *      tags:
  *          -   Option
  *      parameters:
  *          -   in: path
  *              name: id
  *              type: string
+ *              required: true
  *      responses:
  *          200:
  *              description: successful

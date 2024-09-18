@@ -30,7 +30,7 @@
  *
  * /category:
  *  post:
- *      summary: create new category
+ *      summary: create new category.
  *      tags:
  *          -   Category
  *      requestBody:
@@ -51,7 +51,7 @@
  *
  * /category:
  *  get:
- *      summary: get all categories
+ *      summary: get all categories.
  *      tags:
  *          -   Category
  *      responses:
@@ -62,11 +62,17 @@
 /**
  * @swagger
  *
- * /category/{id}:
+ * /category/{categoryId}:
  *  delete:
- *      summary: delete a category with its option
+ *      summary: delete a category with its option.
  *      tags:
  *          -   Category
+ *      parameters:
+ *          - in: path
+ *            name: categoryId
+ *            required: true
+ *            schema:
+ *              type: string
  *      responses:
  *          200:
  *              description: successful

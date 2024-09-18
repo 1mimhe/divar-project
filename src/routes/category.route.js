@@ -1,10 +1,9 @@
 const { Router } = require('express');
 const categoryRouter = Router();
 const categoryController = require("../controllers/category.controller");
-const authorization = require("../middlewares/auth.middleware");
 
-categoryRouter.post("/", authorization, categoryController.createCategory);
+categoryRouter.post("/", categoryController.createCategory);
 categoryRouter.get("/", categoryController.findAllCategories);
-categoryRouter.delete("/:id", authorization, categoryController.removeCategory);
+categoryRouter.delete("/:categoryId", categoryController.deleteCategory);
 
 module.exports = categoryRouter;
