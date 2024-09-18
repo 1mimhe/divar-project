@@ -22,13 +22,13 @@ async function createAdForm(req, res, next) {
         }
 
         return res.render('panel.main.ejs', {
-           operation: "create-ad",
-           category,
-           categories,
-           options
+            operation: "create-ad",
+            category,
+            categories,
+            options
         });
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        next(error);
     }
 }
 
@@ -37,7 +37,7 @@ async function createAd(req, res, next) {
         const { title, description, province, city, district, address,
             price, showNumber, isActiveChat } = req.body;
         const images = req.files;
-        
+
         const category = new Types.ObjectId(req.body.category);
         const options = AdService.getOptionsFromBody(req.body, category);
         const publishedBy = req.user;
@@ -49,8 +49,8 @@ async function createAd(req, res, next) {
 
         message = AdMessages.AdCreated;
         return res.redirect("/ad/my");
-    } catch (err) {
-        next(err);         
+    } catch (error) {
+        next(error);
     }
 }
 
@@ -60,7 +60,7 @@ async function getAllAds(req, res, next) {
         let { category } = req.query;
         if (category) category = await CategoryService.findCategoryBySlug(category);
         const ads = await AdService.getAllAds(search, category?._id, city);
-        
+
         return res.render('website.main.ejs', {
             operation: "home",
             ads,
@@ -76,7 +76,7 @@ async function getAllAds(req, res, next) {
 async function getMyAds(req, res, next) {
     try {
         const ads = await AdService.getMyAds(req.user._id);
-        
+
         res.render("panel.main.ejs", {
             operation: "show-ads",
             message,
@@ -110,7 +110,7 @@ async function deleteAdById(req, res, next) {
     try {
         const { adId } = req.params;
         await AdService.deleteAdById(adId);
-        
+
         message = AdMessages.AdDeleted;
         return res.redirect("/ad/my");
     } catch (error) {

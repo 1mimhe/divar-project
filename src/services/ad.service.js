@@ -64,9 +64,9 @@ async function getAllAds(search, category, city) {
         const categories = (await Category.find({ parents: category }, { _id: 1 })).map(category => category._id);
         filter.category = {
             $in: [category, ...categories]
-        };        
+        };
     }
-    
+
     return Ad.find(filter, { publishedBy: 0 }, { sort: { _id: -1 } });
 }
 

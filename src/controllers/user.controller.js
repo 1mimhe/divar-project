@@ -4,8 +4,8 @@ async function whoAmI(req, res, next) {
             operation: "home"
         });
         return res.json(req.user);
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        next(error);
     }
 }
 

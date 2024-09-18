@@ -8,13 +8,13 @@
                 <hr/>
                 <form action="/" method="get">
                     <div class="inline-input">
-                        <input type="text" name="city" class="input-city" placeholder="<%= city ? "شهر" : "همهٔ شهرها" %>" value="<%= city %>"/>
+                        <input type="search" name="city" class="input-city" placeholder="<%= city ? "شهر" : "همهٔ شهرها" %>" value="<%= city %>"/>
                     </div>
                     <div class="category-span inline-input">
                         <span>دسته: <%= category ? category.name : "همهٔ دسته‌ها" %></span>
                     </div>
                     <div class="inline-input">
-                        <input type="text" name="search" class="input-search" placeholder="جستجو در همهٔ آگهی‌ها" value="<%= search %>"/>
+                        <input type="search" name="search" class="input-search" placeholder="جستجو در همهٔ آگهی‌ها" value="<%= search %>"/>
                     </div>
                     <button type="submit" class="search-button inline-input"><span>جستجو</span></button>
                 </form>

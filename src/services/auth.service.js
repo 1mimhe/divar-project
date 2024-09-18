@@ -1,11 +1,11 @@
-const {randomInt} = require('crypto');
+const { randomInt } = require('crypto');
 const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
 const User = require("../models/user.model");
 const authMessages = require("../constants/auth.messages");
 
 async function sendOTP(mobile) {
-    const user = await User.findOne({mobile});
+    const user = await User.findOne({ mobile });
     const now = new Date().getTime();
     const otp = {
         code: randomInt(10000, 99999),
@@ -13,7 +13,7 @@ async function sendOTP(mobile) {
     };
 
     if (!user) {
-        const newUser = await User.create({mobile, otp});
+        const newUser = await User.create({ mobile, otp });
         return newUser;
     }
     if (user.otp && user.otp.expiresIn > now) {
@@ -41,7 +41,7 @@ async function checkOTP(mobile, code) {
         await user.save();
     }
 
-    return signJWT({mobile, id: user._id});
+    return signJWT({ mobile, id: user._id });
 }
 
 function signJWT(payload) {

@@ -5,6 +5,7 @@ const authorization = require("../middlewares/auth.middleware")
 
 authRouter.post("/send-otp", authController.sendOTP);
 authRouter.post("/check-otp", authController.checkOTP);
+authRouter.get("/login", authController.logIn);
 authRouter.get("/logout", authorization, authController.logOut);
 
 module.exports = authRouter;

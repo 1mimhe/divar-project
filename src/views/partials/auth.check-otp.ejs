@@ -5,21 +5,25 @@
                 <div class="card mb-0">
                     <div class="card-body">
                         <a href="." class="text-nowrap logo-img text-center d-block py-3 w-100">
-                            <img src="./assets/images/logos/DivarLogo.png" width="120" alt="">
+                            <img src="/assets/images/logos/DivarLogo.png" width="120" alt="">
                         </a>
-                        <p class="text-center">ورود به حساب کاربری</p>
-                        <form>
+                        <p class="text-center">کد تایید را وارد کنید.</p>
+                        <form action="/auth/check-otp" method="post">
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">شماره موبایل</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                <label for="mobile" class="form-label">شماره موبایل</label>
+                                <input type="tel" class="form-control" id="mobile" name="mobile" value="<%= mobile %>" required disabled>
+                            </div>
+                            <div class="mb-3"></div>
+                                <label for="code" class="form-label">کد تایید ۵ رقمی</label>
+                                <input type="text" class="form-control" id="code" name="code" required>
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                                    <label class="form-check-label text-dark" for="flexCheckChecked">من را به خاطر بسپار</label>
+                                    <label class="form-check-label text-dark" for="flexCheckChecked" style="padding-right: 25px;">من را به خاطر بسپار</label>
                                 </div>
                             </div>
-                            <a href="./index.html" class="btn btn-red w-100 py-8 fs-4 mb-4 rounded-2">دریافت کد تایید</a>
+                            <button class="btn btn-red w-100 py-8 fs-4 mb-4 rounded-2">ورود</button>
                         </form>
                     </div>
                 </div>

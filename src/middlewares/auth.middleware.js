@@ -17,8 +17,8 @@ async function authorization(req, res, next) {
             return next();
         }
         throw new createError.Unauthorized(authMessages.InvalidToken);
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        next(error);
     }
 }
 
