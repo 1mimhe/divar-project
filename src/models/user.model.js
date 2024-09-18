@@ -6,7 +6,7 @@ const OTPSchema = new mongoose.Schema({
     code: {
         type: String,
         required: false,
-        default:  undefined
+        default: undefined
     },
     expiresIn: {
         type: Number, // milliseconds
@@ -39,8 +39,8 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.statics.findByMobile = async function (mobile) {
-    const user = await this.findOne({mobile});
-    if (!user) throw new createError.NotFound(authMessages.NotFound);
+    const user = await this.findOne({ mobile });
+    if (!user) throw new createError.NotFound(authMessages.UserNotFound);
     return user;
 }
 

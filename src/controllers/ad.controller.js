@@ -33,7 +33,7 @@ async function createAdForm(req, res, next) {
 }
 
 async function createAd(req, res, next) {
-    try {
+    try {        
         const { title, description, province, city, district, address,
             price, showNumber, isActiveChat } = req.body;
         const images = req.files;

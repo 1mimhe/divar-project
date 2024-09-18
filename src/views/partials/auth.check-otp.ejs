@@ -4,14 +4,15 @@
             <div class="col-md-8 col-lg-6 col-xxl-3">
                 <div class="card mb-0">
                     <div class="card-body">
-                        <a href="." class="text-nowrap logo-img text-center d-block py-3 w-100">
+                        <a href="/" class="text-nowrap logo-img text-center d-block py-3 w-100">
                             <img src="/assets/images/logos/DivarLogo.png" width="120" alt="">
                         </a>
                         <p class="text-center">کد تایید را وارد کنید.</p>
                         <form action="/auth/check-otp" method="post">
                             <div class="mb-3">
                                 <label for="mobile" class="form-label">شماره موبایل</label>
-                                <input type="tel" class="form-control" id="mobile" name="mobile" value="<%= mobile %>" required disabled>
+                                <input type="tel" class="form-control" id="mobile" value="<%= mobile %>" required disabled>
+                                <input type="hidden" name="mobile" value="<%= mobile %>">
                             </div>
                             <div class="mb-3"></div>
                                 <label for="code" class="form-label">کد تایید ۵ رقمی</label>
@@ -23,7 +24,7 @@
                                     <label class="form-check-label text-dark" for="flexCheckChecked" style="padding-right: 25px;">من را به خاطر بسپار</label>
                                 </div>
                             </div>
-                            <button class="btn btn-red w-100 py-8 fs-4 mb-4 rounded-2">ورود</button>
+                            <button type="submit" class="btn btn-red w-75 py-8 fs-4 mb-4 rounded-2" style="margin: 0 auto;">ورود</button>
                         </form>
                     </div>
                 </div>
