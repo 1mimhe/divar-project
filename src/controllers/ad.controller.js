@@ -47,8 +47,14 @@ async function createAd(req, res, next) {
             price, showNumber, isActiveChat, options, publishedBy
         });
 
-        message = AdMessages.AdCreated;
-        return res.redirect("/ad/my");
+        if (req.query.render === "true") {
+            message = AdMessages.AdCreated;
+            return res.redirect("/ad/my?render=true");
+        }
+
+        return res.status(201).json({
+            message: AdMessages.AdCreated
+        });
     } catch (error) {
         next(error);
     }
@@ -61,13 +67,17 @@ async function getAllAds(req, res, next) {
         if (category) category = await CategoryService.findCategoryBySlug(category);
         const ads = await AdService.getAllAds(search, category?._id, city);
 
-        return res.render('website.main.ejs', {
-            operation: "home",
-            ads,
-            search,
-            category,
-            city
-        });
+        if (req.query.render === "true") {
+            return res.render('website.main.ejs', {
+                operation: "home",
+                ads,
+                search,
+                category,
+                city
+            });
+        }
+
+        return res.json(ads);
     } catch (error) {
         next(error);
     }
@@ -77,12 +87,17 @@ async function getMyAds(req, res, next) {
     try {
         const ads = await AdService.getMyAds(req.user._id);
 
-        res.render("panel.main.ejs", {
-            operation: "show-ads",
-            message,
-            ads
-        });
-        message = null;
+        if (req.query.render === "true") {
+            res.render("panel.main.ejs", {
+                operation: "show-ads",
+                message,
+                ads
+            });
+            message = null;
+            return;
+        }
+
+        return res.json(ads);
     } catch (error) {
         next(error);
     }
@@ -92,15 +107,19 @@ async function getAdById(req, res, next) {
     try {
         const { adId } = req.params;
         const ad = await AdService.getAdById(adId);
-        const category = await CategoryService.checkExistsById(ad.category);
+        
+        if (req.query.render === "true") {
+            const category = await CategoryService.checkExistsById(ad.category);
+            return res.render("website.main.ejs", {
+                operation: "show-ad",
+                ad,
+                category,
+                city: ad.city,
+                search: undefined
+            });
+        }
 
-        return res.render("website.main.ejs", {
-            operation: "show-ad",
-            ad,
-            category,
-            city: ad.city,
-            search: undefined
-        });
+        return res.json(ad);
     } catch (error) {
         next(error);
     }
@@ -111,8 +130,14 @@ async function deleteAdById(req, res, next) {
         const { adId } = req.params;
         await AdService.deleteAdById(adId);
 
-        message = AdMessages.AdDeleted;
-        return res.redirect("/ad/my");
+        if (req.query.render === "true") {
+            message = AdMessages.AdDeleted;
+            return res.redirect("/ad/my?render=true");
+        }
+
+        return res.json({
+            message: AdMessages.AdDeleted
+        });
     } catch (error) {
         next(error);
     }

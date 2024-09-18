@@ -3,7 +3,7 @@
   <div class="card w-100">
     <div class="p-3">
         <% if (category) { %> 
-            <a href="/ad/create" class="w-100 p-3 d-block bg-light text-dark">
+            <a href="/ad/create?render=true" class="w-100 p-3 d-block bg-light text-dark">
                 <span>→ بازگشت به همه دسته‌بندی‌ها</span>
             </a>
             <hr class="hr-divider">
@@ -12,7 +12,7 @@
         <ul>
           <% categories.forEach((category) => { %>
           <li>
-            <a href="/ad/create?slug=<%= category.slug %>" class="w-100 p-3 d-block bg-light text-dark">
+            <a href="/ad/create?slug=<%= category.slug %>&render=true" class="w-100 p-3 d-block bg-light text-dark">
               <span class="ti ti-<%= category.icon %> nav-small-cap-icon fs-4"></span>
               <span><%= category.name %></span>
             </a>
@@ -21,7 +21,7 @@
         </ul>
       <% } else { %>
         <h6 class="p-2">دسته‌بندی آگهی: <%= category.name %></h6>
-        <form action="/ad/create" method="post" enctype="multipart/form-data">
+        <form action="/ad/create?render=true" method="post" enctype="multipart/form-data">
           <input id="category" type="hidden" name="category" value="<%= category._id %>">
           <div class="p-2">
             <h6>موقعیت آگهی *</h6>

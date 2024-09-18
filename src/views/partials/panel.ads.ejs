@@ -11,7 +11,7 @@
             <h5 class="card-title fw-semibold mb-4 col-lg-6">آگهی‌های من</h5>
             <span class="col-lg-6 text-left">
               <div class="w-100 text-left" style="text-align: left">
-                <a href="/ad/create" class="btn btn-info">انتشار آگهی جدید</a>
+                <a href="/ad/create?render=true" class="btn btn-info">انتشار آگهی جدید</a>
               </div>
             </span>
           </div>
@@ -51,10 +51,10 @@
                             <td><%= ad.description.slice(0, 40) %><%= ad.description.length > 30 ? "..." : "" %></td>
                             <td><%= moment(ad.createdAt).locale("fa").format("HH:mm ,jDD jMMMM jYYYY") %></td>
                             <td>
-                                <form action="/ad/<%= ad._id %>?_method=delete" method="post" class="d-inline">
+                                <form action="/ad/<%= ad._id %>?_method=delete&render=true" method="post" class="d-inline">
                                   <button type="submit" class="btn btn-danger">حذف</button>
                                 </form>                              
-                                <a href="/ad/<%= ad._id %>" class="btn btn-success">مشاهده</a>
+                                <a href="/ad/<%= ad._id %>?render=true" class="btn btn-success">مشاهده</a>
                             </td>
                         </tr>
                     <% }) %>

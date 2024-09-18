@@ -2,16 +2,17 @@
     <div class="container">
         <nav>
             <div class="logo">
-                <a href="/">
+                <a href="/?render=true">
                     <img class="logo-img" src="/home/img/download.svg" alt="" />
                 </a>
                 <hr/>
-                <form action="/" method="get">
+                <form action="/?render=true" method="get">
                     <div class="inline-input">
                         <input type="search" name="city" class="input-city" placeholder="<%= city ? "شهر" : "همهٔ شهرها" %>" value="<%= city %>"/>
                     </div>
                     <div class="category-span inline-input">
                         <span>دسته: <%= category ? category.name : "همهٔ دسته‌ها" %></span>
+                        <input type="hidden" name="category" value="<%= category ? category.slug : "" %>">
                     </div>
                     <div class="inline-input">
                         <input type="search" name="search" class="input-search" placeholder="جستجو در همهٔ آگهی‌ها" value="<%= search %>"/>
@@ -22,7 +23,7 @@
             <div class="navbar">
                 <div class="btn-header">
                     <img class="icon-header" src="/home/img/user.svg" alt=""/>
-                    <a href="/my" style="color: #777;">دیوار من</a>
+                    <a href="/my?render=true" style="color: #777;">دیوار من</a>
                 </div>
                 <div class="btn-header">
                     <img class="icon-header" src="/home/img/message.svg" alt=""/>
@@ -30,10 +31,10 @@
                 </div>
                 <div class="btn-header">
                     <img class="icon-header" src="/home/img/people.svg" alt=""/>
-                    <a href="/" style="color: #777;">پشتیبانی</a>
+                    <a href="/?render=true" style="color: #777;">پشتیبانی</a>
                 </div>
                 <div class="btn-header btn-red">
-                    <a href="/ad/create" style="color: white;">ثبت آگهی</a>
+                    <a href="/ad/create?render=true" style="color: white;">ثبت آگهی</a>
                 </div>
             </div>
         </nav>

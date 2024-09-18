@@ -8,10 +8,13 @@ async function sendOTP(req, res, next) {
         const { mobile } = req.body;
         await authService.sendOTP(mobile);
 
-        res.render("auth.main.ejs", {
-            operation: "check-otp",
-            mobile
-        });
+        if (req.query.render === "true") {
+            return res.render("auth.main.ejs", {
+                operation: "check-otp",
+                mobile
+            });
+        }
+
         return res.json({
             message: authMessages.SendOTPSuccessfully
         });
@@ -29,7 +32,11 @@ async function checkOTP(req, res, next) {
             httpOnly: true,
             secure: process.env.NODE_ENV === NodeEnv.Production
         });
-        res.redirect("/"); // will be changed!
+
+        if (req.query.render === "true") {
+            return res.redirect("/");
+        }
+
         return res.json({
             message: authMessages.LoginSuccessfully
         });
@@ -40,7 +47,10 @@ async function checkOTP(req, res, next) {
 
 async function logOut(req, res, next) {
     try {
-        res.redirect("/"); // will be changed!
+        if (req.query.render === "true") {
+            return res.redirect("/");
+        }
+        
         return res.clearCookie(cookieNames.AccessToken).status(200).json({
             message: authMessages.LogoutSuccessfully
         });

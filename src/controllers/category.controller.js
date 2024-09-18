@@ -16,7 +16,7 @@ async function createCategory(req, res, next) {
 async function findAllCategories(req, res, next) {
     try {
         const categories = await CategoryService.findAllCategories();
-        return res.status(201).json(categories);
+        return res.json(categories);
     } catch (error) {
         next(error);
     }
@@ -26,7 +26,7 @@ async function removeCategory(req, res, next) {
     try {
         const { id } = req.params;
         const deletedCategory = await CategoryService.removeCategory(id);
-        return res.join({
+        return res.json({
             message: CategoryMessages.CategoryDeleted,
             deletedCategory
         })
