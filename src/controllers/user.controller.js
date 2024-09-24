@@ -1,8 +1,21 @@
+const UserService = require("../services/user.service");
+
+async function getAllUsers(req, res, next) {
+    try {
+        const users = await UserService.getAllUsers();
+
+        return res.json(users);
+    } catch (error) {
+        next(error);
+    }
+}
+
 async function whoAmI(req, res, next) {
     try {
         if (req.query.render === "true") {
             return res.render('panel.main.ejs', {
-                operation: "home"
+                operation: "home",
+                user: req.user
             });
         }
 
@@ -12,6 +25,31 @@ async function whoAmI(req, res, next) {
     }
 }
 
+async function getUserById(req, res, next) {
+    try {
+        const { userId } = req.params;
+        const user = await UserService.getUserById(userId);
+
+        return res.json(user);
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function getUserByMobile(req, res, next) {
+    try {
+        const { mobile } = req.params;
+        const user = await UserService.getUserByMobile(mobile);
+
+        return res.json(user);
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
-    whoAmI
+    whoAmI,
+    getAllUsers,
+    getUserById,
+    getUserByMobile
 }
