@@ -15,6 +15,11 @@ const OTPSchema = new mongoose.Schema({
     }
 });
 
+const noteSchema = new mongoose.Schema({
+    content: { type: String, required: true },
+    for: { type: mongoose.Types.ObjectId, required: true }
+});
+
 const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
@@ -33,6 +38,14 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    bookmarks: {
+        type: [mongoose.Types.ObjectId],
+        default: []
+    },
+    notes: {
+        type: [noteSchema],
+        default: []
     }
 }, {
     timestamps: true
