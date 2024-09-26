@@ -7,5 +7,8 @@ module.exports = Object.freeze({
     AdIdIsInvalid: "Ad id is invalid.",
     AdBookmarked: "Ad bookmarked successfully.",
     AdUnBookmarked: "Ad unbookmarked successfully.",
-    BookmarkNotFound: "No bookmarks found."
+    BookmarkNotFound: "No bookmarks found.",
+    NoteNotFound: "No notes found.",
+    AdNoteAdded: "Ad note added.",
+    AdNoteDeleted: "Ad note deleted."
 });

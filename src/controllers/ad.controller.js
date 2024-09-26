@@ -184,6 +184,48 @@ async function getAllUserBookmarks(req, res, next) {
     }
 }
 
+async function addNote(req, res, next) {
+    try {
+        const { adId } = req.params;
+        const { content } = req.body;
+        const userId = req.user._id;
+        await AdService.addNote(adId, userId, content);
+
+        return res.json({
+            message: AdMessages.AdNoteAdded
+        });
+    } catch (error) {
+        next(error);        
+    }
+}
+
+async function deleteNote(req, res, next) {
+    try {
+        const { adId } = req.params;
+        const userId = req.user._id;
+        await AdService.deleteNote(adId, userId);
+
+        return res.json({
+            message: AdMessages.AdNoteDeleted
+        });
+    } catch (error) {
+        next(error);        
+    }
+}
+
+async function getAllUserNotes(req, res, next) {
+    try {
+        const userId = req.user._id;
+        const notes = await AdService.getAllUserNotes(userId);
+
+        return res.json({
+            notes
+        });
+    } catch (error) {
+        next(error);        
+    }
+}
+
 module.exports = {
     createAdForm,
     createAd,
@@ -193,5 +235,8 @@ module.exports = {
     deleteAdById,
     bookmarkAd,
     unBookmarkAd,
-    getAllUserBookmarks
+    getAllUserBookmarks,
+    addNote,
+    deleteNote,
+    getAllUserNotes
 }

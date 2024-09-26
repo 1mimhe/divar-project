@@ -45,7 +45,14 @@
  *                  showNumber:
  *                      type: boolean
  *                  isActiveChat:
- *                      type: boolean              
+ *                      type: boolean          
+ *          AddNote:
+ *              type: object
+ *              required:
+ *                  - content
+ *              properties:
+ *                  content:
+ *                      type: string
  */
 
 /**
@@ -194,5 +201,64 @@
  *              type: string
  *      responses:
  *          201:
+ *              description: successful
+ */
+
+/**
+ * @swagger
+ *
+ * /ad/note:
+ *  get:
+ *      summary: get all authorized user's ads notes.
+ *      tags:
+ *          -   Ad
+ *      responses:
+ *          200:
+ *              description: successful
+ */
+
+/**
+ * @swagger
+ *
+ * /ad/note/{adId}:
+ *  post:
+ *      summary: add or edit an ad note.
+ *      tags:
+ *          -   Ad
+ *      parameters:
+ *          - in: path
+ *            name: adId
+ *            required: true
+ *            schema:
+ *              type: string
+ *      requestBody:
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      $ref: '#/components/schemas/AddNote'
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/AddNote'
+ *      responses:
+ *          200:
+ *              description: successful
+ */
+
+/**
+ * @swagger
+ *
+ * /ad/note/{adId}:
+ *  delete:
+ *      summary: delete an ad note.
+ *      tags:
+ *          -   Ad
+ *      parameters:
+ *          - in: path
+ *            name: adId
+ *            required: true
+ *            schema:
+ *              type: string
+ *      responses:
+ *          200:
  *              description: successful
  */

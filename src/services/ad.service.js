@@ -8,6 +8,7 @@ const User = require("../models/user.model");
 const AdMessages = require("../constants/ad.messages");
 const AuthMessages = require("../constants/auth.messages");
 const CategoryService = require("../services/category.service");
+const UserService = require("../services/user.service");
 
 async function createAd(adDTO) {
     await CategoryService.checkExistsById(adDTO.category);
@@ -91,10 +92,8 @@ async function deleteAdById(adId) {
 }
 
 async function bookmarkAd(adId, userId) {
-    const user = await User.findOne({ _id: userId });
-    if (!user) throw new createHttpError.BadRequest(AuthMessages.UserNotFound);
+    const user = await UserService.getUserById(userId);
 
-    if (!user.bookmarks) user.bookmarks = [];
     if (adId && isValidObjectId(adId)) {
         const ad = await getAdById(adId);
         const newBookmark = {
@@ -107,10 +106,9 @@ async function bookmarkAd(adId, userId) {
 }
 
 async function unBookmarkAd(adId, userId) {
-    const user = await User.findOne({ _id: userId });
-    if (!user) throw new createHttpError.BadRequest(AuthMessages.UserNotFound);
+    const user = await UserService.getUserById(userId);
 
-    if (!user.bookmarks || !user.bookmarks.length) throw new createHttpError.BadRequest(AdMessages.BookmarkNotFound);
+    if (!user.bookmarks.length) throw new createHttpError.BadRequest(AdMessages.BookmarkNotFound);
 
     if (adId && isValidObjectId(adId)) {
         const indexToDelete = user.bookmarks.findIndex(bookmark => bookmark.adId == adId);
@@ -121,11 +119,48 @@ async function unBookmarkAd(adId, userId) {
 }
 
 async function getAllUserBookmarks(userId) {
-    const user = await User.findOne({ _id: userId });
-    if (!user) throw new createHttpError.BadRequest(AuthMessages.UserNotFound);
-    if (!user.bookmarks || !user.bookmarks.length) throw new createHttpError.BadRequest(AdMessages.BookmarkNotFound);
+    const user = await UserService.getUserById(userId);
+    if (!user.bookmarks.length) throw new createHttpError.BadRequest(AdMessages.BookmarkNotFound);
 
     return user.bookmarks;
+}
+
+async function addNote(adId, userId, content) {
+    const user = await UserService.getUserById(userId);
+
+    if (adId && isValidObjectId(adId)) {
+        const noteIndex = user.notes.findIndex(note => note.for == adId);
+        if (noteIndex === -1) {
+            user.notes.push({
+                for: adId,
+                content
+            });
+        } else {
+            user.notes[noteIndex].content = content;
+        }
+    } else throw new createHttpError.BadRequest(AdMessages.AdIdIsInvalid);
+
+    await user.save();
+}
+
+async function deleteNote(adId, userId) {
+    const user = await UserService.getUserById(userId);
+
+    if (!user.notes.length) throw new createHttpError.BadRequest(AdMessages.NoteNotFound);
+
+    if (adId && isValidObjectId(adId)) {
+        const noteIndex = user.notes.findIndex(note => note.for == adId);
+        if (noteIndex === -1) throw new createHttpError.BadRequest(AdMessages.AdIdIsInvalid);
+        user.notes.splice(noteIndex, 1);
+        await user.save();
+    } else throw new createHttpError.BadRequest(AdMessages.AdIdIsInvalid);
+}
+
+async function getAllUserNotes(userId) {
+    const user = await UserService.getUserById(userId);
+    if (!user.notes.length) throw new createHttpError.BadRequest(AdMessages.NoteNotFound);
+
+    return user.notes;
 }
 
 module.exports = {
@@ -137,5 +172,8 @@ module.exports = {
     deleteAdById,
     bookmarkAd,
     unBookmarkAd,
-    getAllUserBookmarks
+    getAllUserBookmarks,
+    addNote,
+    deleteNote,
+    getAllUserNotes
 }
