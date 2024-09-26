@@ -18,6 +18,7 @@ async function authorization(req, res, next) {
         }
         throw new createError.Unauthorized(authMessages.InvalidToken);
     } catch (error) {
+        if (req.query.render === "true") res.redirect("/auth/login");
         next(error);
     }
 }

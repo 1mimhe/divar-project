@@ -15,9 +15,29 @@ const OTPSchema = new mongoose.Schema({
     }
 });
 
+const bookmarkSchema = new mongoose.Schema({
+    adId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Ad",
+        required: true,
+    },
+    adTitle: {
+        type: String,
+        required: true
+    }
+});
+
 const noteSchema = new mongoose.Schema({
-    content: { type: String, required: true },
-    for: { type: mongoose.Types.ObjectId, required: true }
+    content: {
+        type: String,
+        required: true
+    },
+    for: {
+        type: mongoose.Types.ObjectId,
+        ref: "Ad",
+        required: true,
+        unique: true
+    }
 });
 
 const userSchema = new mongoose.Schema({
@@ -40,7 +60,7 @@ const userSchema = new mongoose.Schema({
         default: false
     },
     bookmarks: {
-        type: [mongoose.Types.ObjectId],
+        type: [bookmarkSchema],
         default: []
     },
     notes: {

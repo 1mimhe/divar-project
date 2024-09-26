@@ -1,9 +1,10 @@
 const createHttpError = require("http-errors");
 const utf8 = require("utf8");
-const { isValidObjectId, Types } = require("mongoose");
+const { isValidObjectId, Types, default: mongoose } = require("mongoose");
 const Ad = require("../models/ad.model");
 const Option = require("../models/option.model");
 const Category = require("../models/category.model");
+const User = require("../models/user.model");
 const AdMessages = require("../constants/ad.messages");
 const AuthMessages = require("../constants/auth.messages");
 const CategoryService = require("../services/category.service");
@@ -89,11 +90,52 @@ async function deleteAdById(adId) {
     return result;
 }
 
+async function bookmarkAd(adId, userId) {
+    const user = await User.findOne({ _id: userId });
+    if (!user) throw new createHttpError.BadRequest(AuthMessages.UserNotFound);
+
+    if (!user.bookmarks) user.bookmarks = [];
+    if (adId && isValidObjectId(adId)) {
+        const ad = await getAdById(adId);
+        const newBookmark = {
+            adId: ad._id,
+            adTitle: ad.title
+        }
+        user.bookmarks.push(newBookmark);
+        await user.save();
+    } else throw new createHttpError.BadRequest(AdMessages.AdIdIsInvalid);
+}
+
+async function unBookmarkAd(adId, userId) {
+    const user = await User.findOne({ _id: userId });
+    if (!user) throw new createHttpError.BadRequest(AuthMessages.UserNotFound);
+
+    if (!user.bookmarks || !user.bookmarks.length) throw new createHttpError.BadRequest(AdMessages.BookmarkNotFound);
+
+    if (adId && isValidObjectId(adId)) {
+        const indexToDelete = user.bookmarks.findIndex(bookmark => bookmark.adId == adId);
+        if (indexToDelete === -1) throw new createHttpError.BadRequest(AdMessages.AdIdIsInvalid);
+        user.bookmarks.splice(indexToDelete, 1);
+        await user.save();
+    } else throw new createHttpError.BadRequest(AdMessages.AdIdIsInvalid);
+}
+
+async function getAllUserBookmarks(userId) {
+    const user = await User.findOne({ _id: userId });
+    if (!user) throw new createHttpError.BadRequest(AuthMessages.UserNotFound);
+    if (!user.bookmarks || !user.bookmarks.length) throw new createHttpError.BadRequest(AdMessages.BookmarkNotFound);
+
+    return user.bookmarks;
+}
+
 module.exports = {
     createAd,
     getOptionsFromBody,
     getAllAds,
     getMyAds,
     getAdById,
-    deleteAdById
+    deleteAdById,
+    bookmarkAd,
+    unBookmarkAd,
+    getAllUserBookmarks
 }

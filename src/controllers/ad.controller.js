@@ -143,11 +143,55 @@ async function deleteAdById(req, res, next) {
     }
 }
 
+async function bookmarkAd(req, res, next) {
+    try {
+        const { adId } = req.params;
+        const userId = req.user._id;
+        await AdService.bookmarkAd(adId, userId);
+
+        return res.json({
+            message: AdMessages.AdBookmarked
+        });
+    } catch (error) {
+        next(error);        
+    }
+}
+
+async function unBookmarkAd(req, res, next) {
+    try {
+        const { adId } = req.params;
+        const userId = req.user._id;
+        await AdService.unBookmarkAd(adId, userId);
+
+        return res.json({
+            message: AdMessages.AdUnBookmarked
+        });
+    } catch (error) {
+        next(error);        
+    }
+}
+
+async function getAllUserBookmarks(req, res, next) {
+    try {
+        const userId = req.user._id;
+        const bookmarks = await AdService.getAllUserBookmarks(userId);
+
+        return res.json({
+            bookmarks
+        });
+    } catch (error) {
+        next(error);        
+    }
+}
+
 module.exports = {
     createAdForm,
     createAd,
     getAllAds,
     getMyAds,
     getAdById,
-    deleteAdById
+    deleteAdById,
+    bookmarkAd,
+    unBookmarkAd,
+    getAllUserBookmarks
 }

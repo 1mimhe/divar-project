@@ -104,7 +104,7 @@
  *      tags:
  *          -   Ad
  *      responses:
- *          201:
+ *          200:
  *              description: successful
  */
 
@@ -123,7 +123,7 @@
  *            schema:
  *              type: string
  *      responses:
- *          201:
+ *          200:
  *              description: successful
  */
 
@@ -133,6 +133,57 @@
  * /ad/{adId}:
  *  delete:
  *      summary: delete ad by id.
+ *      tags:
+ *          -   Ad
+ *      parameters:
+ *          - in: path
+ *            name: adId
+ *            required: true
+ *            schema:
+ *              type: string
+ *      responses:
+ *          200:
+ *              description: successful
+ */
+
+/**
+ * @swagger
+ *
+ * /ad/bookmark:
+ *  get:
+ *      summary: get all authorized user's bookmarked ads.
+ *      tags:
+ *          -   Ad
+ *      responses:
+ *          200:
+ *              description: successful
+ */
+
+/**
+ * @swagger
+ *
+ * /ad/bookmark/{adId}:
+ *  post:
+ *      summary: bookmark an ad.
+ *      tags:
+ *          -   Ad
+ *      parameters:
+ *          - in: path
+ *            name: adId
+ *            required: true
+ *            schema:
+ *              type: string
+ *      responses:
+ *          200:
+ *              description: successful
+ */
+
+/**
+ * @swagger
+ *
+ * /ad/unbookmark/{adId}:
+ *  post:
+ *      summary: unbookmark an ad.
  *      tags:
  *          -   Ad
  *      parameters:
