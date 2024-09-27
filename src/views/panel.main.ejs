@@ -21,6 +21,10 @@
                 <%- include("./partials/panel.create-ad.ejs") %>
             <% } else if (operation === "show-ads") { %>
                 <%- include("./partials/panel.ads.ejs") %>
+            <% } else if (operation === "bookmarks") { %>
+                <%- include("./partials/panel.bookmarks.ejs") %>
+            <% } else if (operation === "notes") { %>
+                <%- include("./partials/panel.notes.ejs") %>
             <% } %>
         </div>
     </div>

@@ -37,6 +37,10 @@ const noteSchema = new mongoose.Schema({
         ref: "Ad",
         required: true,
         unique: true
+    },
+    adTitle: {
+        type: String,
+        required: true
     }
 });
 

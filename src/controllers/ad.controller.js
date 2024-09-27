@@ -165,6 +165,11 @@ async function unBookmarkAd(req, res, next) {
         const userId = req.user._id;
         await AdService.unBookmarkAd(adId, userId);
 
+        if (req.query.render === "true") {
+            message = AdMessages.AdUnBookmarked;
+            return res.redirect("/ad/bookmark/?render=true");
+        }
+
         return res.json({
             message: AdMessages.AdUnBookmarked
         });
@@ -177,6 +182,14 @@ async function getAllUserBookmarks(req, res, next) {
     try {
         const userId = req.user._id;
         const bookmarks = await AdService.getAllUserBookmarks(userId);
+
+        if (req.query.render === "true") {
+            return res.render("panel.main.ejs", {
+                operation: "bookmarks",
+                user: req.user,
+                bookmarks
+            });
+        }
 
         return res.json({
             bookmarks
@@ -207,6 +220,11 @@ async function deleteNote(req, res, next) {
         const userId = req.user._id;
         await AdService.deleteNote(adId, userId);
 
+        if (req.query.render === "true") {
+            message = AdMessages.AdNoteDeleted;
+            return res.redirect("/ad/note/?render=true");
+        }
+
         return res.json({
             message: AdMessages.AdNoteDeleted
         });
@@ -219,6 +237,14 @@ async function getAllUserNotes(req, res, next) {
     try {
         const userId = req.user._id;
         const notes = await AdService.getAllUserNotes(userId);
+
+        if (req.query.render === "true") {
+            return res.redirect("panel.notes.ejs", {
+                operation: "notes",
+                user: req.user,
+                notes
+            });
+        }
 
         return res.json({
             notes

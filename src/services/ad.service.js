@@ -131,8 +131,10 @@ async function addNote(adId, userId, content) {
     if (adId && isValidObjectId(adId)) {
         const noteIndex = user.notes.findIndex(note => note.for == adId);
         if (noteIndex === -1) {
+            const ad = await getAdById(adId);
             user.notes.push({
-                for: adId,
+                for: ad._id,
+                adTitle: ad.title,
                 content
             });
         } else {
