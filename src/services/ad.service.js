@@ -74,7 +74,7 @@ async function getAllAds(search, category, city) {
 
 async function getMyAds(userId) {
     if (!isValidObjectId(userId)) throw new createHttpError.BadRequest(AuthMessages.UserIdIsInvalid);
-    return Ad.find({ "publishedBy._id": userId }, {}, { sort: { _id: -1 } });
+    return Ad.find({ "publishedBy._id": userId }, {}, { sort: { _id: -1 } }).populate("category");
 }
 
 async function getAdById(adId) {

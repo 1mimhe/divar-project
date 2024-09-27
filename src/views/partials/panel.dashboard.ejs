@@ -3,49 +3,44 @@
     <div class="col-lg-8 d-flex align-items-stretch">
       <div class="card w-100">
         <div class="card-body p-4">
-          <h5 class="card-title fw-semibold mb-4">کاربران</h5>
-          <div class="row">
-            <div class="mb-3">
-              <input type="text" class="form-control" placeholder="جستجو" />
-            </div>
-          </div>
+          <h5 class="card-title fw-semibold mb-4">آگهی‌های اخیرا منتشر شده</h5>
           <div class="table-responsive">
             <table class="table text-nowrap mb-0 align-middle">
               <thead class="text-dark fs-4">
                 <tr>
                   <th class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0">شناسه</h6>
+                    <h6 class="fw-semibold mb-0">شناسه آگهی</h6>
                   </th>
                   <th class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0">نام</h6>
+                    <h6 class="fw-semibold mb-0">عنوان</h6>
                   </th>
                   <th class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0">نام خانوادگی</h6>
+                    <h6 class="fw-semibold mb-0">زمان انتشار</h6>
                   </th>
                   <th class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0">آگهی‌های منتشر شده</h6>
+                    <h6 class="fw-semibold mb-0">دسته بندی</h6>
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0">1</h6>
-                  </td>
-                  <td class="border-bottom-0">
-                    <h6 class="fw-semibold mb-1">محمد</h6>
-                  </td>
-                  <td class="border-bottom-0">
-                    <p class="mb-0 fw-normal">حسینی</p>
-                  </td>
-                  <td class="border-bottom-0">
-                    <div class="d-flex align-items-center gap-2">
-                      <span class="badge bg-primary rounded-3 fw-semibold"
-                        >10</span
-                      >
-                    </div>
-                  </td>
-                </tr>
+                <% for (let i = 0; i < 4; i++) { %>
+                  <tr>
+                    <td class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0"><%= myAds[i]._id %></h6>
+                    </td>
+                    <td class="border-bottom-0">
+                      <h6 class="fw-semibold mb-1"><%= myAds[i].title.slice(0, 30) %><%= myAds[i].title.length > 30 ? "..." : "" %></h6>
+                    </td>
+                    <td class="border-bottom-0">
+                      <p class="mb-0 fw-normal"><%= moment(myAds[i].createdAt).locale("fa").format("HH:mm ,jDD jMMMM jYYYY") %></p>
+                    </td>
+                    <td class="border-bottom-0">
+                      <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary rounded-3 fw-semibold"><%= myAds[i].category.name %></span>
+                      </div>
+                    </td>
+                  </tr>
+                <% } %>
               </tbody>
             </table>
           </div>
@@ -55,18 +50,15 @@
     <div class="col-lg-4">
       <div class="row">
         <div class="col-lg-12">
-          <!-- Yearly Breakup -->
           <div class="card overflow-hidden">
             <div class="card-body p-4">
               <h5 class="card-title mb-9 fw-semibold">تعداد کل آگهی‌ها</h5>
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h4 class="fw-semibold mb-3">36,358</h4>
+                  <h4 class="fw-semibold mb-3"><%= totalAds %></h4>
                   <div class="d-flex align-items-center mb-3">
-                    <span
-                      class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center"
-                    >
-                      <i class="ti ti-file-description text-success"></i>
+                    <span class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
+                      <i class="ti ti-user text-success"></i>
                     </span>
                   </div>
                 </div>
@@ -75,18 +67,16 @@
           </div>
         </div>
         <div class="col-lg-12">
-          <!-- Monthly Earnings -->
           <div class="card">
             <div class="card-body">
               <div class="row alig n-items-start">
                 <div class="col-8">
-                  <h5 class="card-title mb-9 fw-semibold">تعداد کل کاربران</h5>
-                  <h4 class="fw-semibold mb-3">6,820</h4>
+                  <h5 class="card-title mb-9 fw-semibold">تعداد آگهی‌های من</h5>
+                  <h4 class="fw-semibold mb-3"><%= myAds.length %></h4>
                   <div class="d-flex align-items-center pb-1">
                     <span
-                      class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center"
-                    >
-                      <i class="ti ti-users text-danger"></i>
+                      class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                      <i class="ti ti-file-description text-danger"></i>
                     </span>
                   </div>
                 </div>
@@ -136,9 +126,7 @@
                   </td>
                   <td class="border-bottom-0">
                     <div class="d-flex align-items-center gap-2">
-                      <span class="badge bg-primary rounded-3 fw-semibold"
-                        >کیف و کفش</span
-                      >
+                      <span class="badge bg-primary rounded-3 fw-semibold">کیف و کفش</span>
                     </div>
                   </td>
                 </tr>

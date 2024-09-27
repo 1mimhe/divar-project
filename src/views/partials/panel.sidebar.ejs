@@ -15,8 +15,10 @@
     <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
       <ul id="sidebarnav">
         <li class="nav-small-cap">
-          <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-          <span class="hide-menu">پروفایل</span>
+          <i class="ti ti-user"></i>
+          <span class="hide-menu">کاربر دیوار</span>
+        </br>
+          <span class="hide-menu"><%= `← ${user.mobile}` %></span>
         </li>
         <li class="sidebar-item">
           <a class="sidebar-link" href="/user/me?render=true" aria-expanded="false">
@@ -26,17 +28,17 @@
             <span class="hide-menu">داشبورد</span>
           </a>
         </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="/auth/logout?render=true" aria-expanded="false">
+            <span>
+              <i class="ti ti-logout"></i>
+            </span>
+            <span class="hide-menu">خروج از حساب کاربری</span>
+          </a>
+        </li>
         <li class="nav-small-cap">
           <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
           <span class="hide-menu">مدیریت</span>
-        </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="/user?render=true" aria-expanded="false">
-            <span>
-              <i class="ti ti-users"></i>
-            </span>
-            <span class="hide-menu">کاربران</span>
-          </a>
         </li>
         <li class="sidebar-item">
           <a class="sidebar-link" href="/" aria-expanded="false">
@@ -52,6 +54,30 @@
               <i class="ti ti-file-description"></i>
             </span>
             <span class="hide-menu">آگهی‌های من</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="/ad/bookmark?render=true" aria-expanded="false">
+            <span>
+              <i class="ti ti-bookmark"></i>
+            </span>
+            <span class="hide-menu">نشان‌ها</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="/ad/note?render=true" aria-expanded="false">
+            <span>
+              <i class="ti ti-notes"></i>
+            </span>
+            <span class="hide-menu">یادداشت‌ها</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="/ad/my?render=true" aria-expanded="false">
+            <span>
+              <i class="ti ti-history"></i>
+            </span>
+            <span class="hide-menu">بازدیدهای اخیر</span>
           </a>
         </li>
         <li class="nav-small-cap">
@@ -72,14 +98,6 @@
               <i class="ti ti-user-plus"></i>
             </span>
             <span class="hide-menu">ثبت نام</span>
-          </a>
-        </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="/auth/logout?render=true" aria-expanded="false">
-            <span>
-              <i class="ti ti-logout"></i>
-            </span>
-            <span class="hide-menu">خروج از حساب کاربری</span>
           </a>
         </li>
       </ul>

@@ -1,4 +1,5 @@
 const UserService = require("../services/user.service");
+const AdService = require("../services/ad.service");
 
 async function getAllUsers(req, res, next) {
     try {
@@ -13,9 +14,14 @@ async function getAllUsers(req, res, next) {
 async function whoAmI(req, res, next) {
     try {
         if (req.query.render === "true") {
+            const totalAds = (await AdService.getAllAds()).length;
+            const myAds = (await AdService.getMyAds(req.user._id));
+
             return res.render('panel.main.ejs', {
                 operation: "home",
-                user: req.user
+                user: req.user,
+                totalAds,
+                myAds
             });
         }
 

@@ -23,6 +23,7 @@ async function createAdForm(req, res, next) {
 
         return res.render('panel.main.ejs', {
             operation: "create-ad",
+            user: req.user,
             category,
             categories,
             options
@@ -90,6 +91,7 @@ async function getMyAds(req, res, next) {
         if (req.query.render === "true") {
             res.render("panel.main.ejs", {
                 operation: "show-ads",
+                user: req.user,
                 message,
                 ads
             });
