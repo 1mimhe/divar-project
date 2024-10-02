@@ -1,0 +1,81 @@
+[{
+  "_id": {
+    "$oid": "66fd1cb382b527f9d5e20b4b"
+  },
+  "name": "املاک",
+  "slug": "real-estate",
+  "icon": "home.svg",
+  "parents": []
+},
+{
+  "_id": {
+    "$oid": "66fd1d0582b527f9d5e20b4e"
+  },
+  "name": "وسایل نقلیه",
+  "slug": "vehicles",
+  "icon": "car.svg",
+  "parents": []
+},
+{
+  "_id": {
+    "$oid": "66fd1d5f82b527f9d5e20b51"
+  },
+  "name": "کالای دیجیتال",
+  "slug": "electronic-devices",
+  "icon": "mobile.svg",
+  "parents": []
+},
+{
+  "_id": {
+    "$oid": "66fd1d7c82b527f9d5e20b54"
+  },
+  "name": "خانه و آشپزخانه",
+  "slug": "home-kitchen",
+  "icon": "home.svg",
+  "parents": []
+},
+{
+  "_id": {
+    "$oid": "66fd1d9882b527f9d5e20b57"
+  },
+  "name": "خدمات",
+  "slug": "services",
+  "icon": "paint.svg",
+  "parents": []
+},
+{
+  "_id": {
+    "$oid": "66fd1db382b527f9d5e20b5a"
+  },
+  "name": "وسایل شخصی",
+  "slug": "personal-accessories",
+  "icon": "mobile.svg",
+  "parents": []
+},
+{
+  "_id": {
+    "$oid": "66fd1dcb82b527f9d5e20b5d"
+  },
+  "name": "سرگرمی و فراغت",
+  "slug": "entertainment",
+  "icon": "dice.svg",
+  "parents": []
+},
+{
+  "_id": {
+    "$oid": "66fd1df382b527f9d5e20b60"
+  },
+  "name": "تجهیزات و صنعتی",
+  "slug": "industrial-tools",
+  "icon": "chair.svg",
+  "parents": []
+},
+{
+  "_id": {
+    "$oid": "66fd1e0a82b527f9d5e20b63"
+  },
+  "name": "استخدام و کاریابی",
+  "slug": "jobs",
+  "icon": "suitcase.svg",
+  "parents": []
+}]
