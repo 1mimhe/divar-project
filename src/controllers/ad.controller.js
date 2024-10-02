@@ -111,11 +111,13 @@ async function getAdById(req, res, next) {
         const ad = await AdService.getAdById(adId);
         
         if (req.query.render === "true") {
-            const category = await CategoryService.checkExistsById(ad.category);
+            const userId = req.user?._id;
+            const note = userId ? await AdService.getNoteByAdId(adId, userId) : undefined;
             return res.render("website.main.ejs", {
                 operation: "show-ad",
                 ad,
-                category,
+                category: ad.category,
+                note: note.content,
                 city: ad.city,
                 search: undefined
             });
@@ -202,9 +204,14 @@ async function getAllUserBookmarks(req, res, next) {
 async function addNote(req, res, next) {
     try {
         const { adId } = req.params;
-        const { content } = req.body;
+        const { note } = req.body;
         const userId = req.user._id;
-        await AdService.addNote(adId, userId, content);
+        await AdService.addNote(adId, userId, note);
+
+        if (req.query.render === "true") {    
+            message = AdMessages.AdNoteAdded;
+            return res.redirect(`/ad/${adId}?render=true`);
+        }
 
         return res.json({
             message: AdMessages.AdNoteAdded
@@ -239,7 +246,7 @@ async function getAllUserNotes(req, res, next) {
         const notes = await AdService.getAllUserNotes(userId);
 
         if (req.query.render === "true") {
-            return res.redirect("panel.notes.ejs", {
+            return res.render("panel.main.ejs", {
                 operation: "notes",
                 user: req.user,
                 notes
@@ -248,6 +255,20 @@ async function getAllUserNotes(req, res, next) {
 
         return res.json({
             notes
+        });
+    } catch (error) {
+        next(error);        
+    }
+}
+
+async function getNoteByAdId(req, res, next) {
+    try {
+        const { adId } = req.params;
+        const userId = req.user._id;
+        const note = await AdService.getNoteByAdId(adId, userId);
+
+        return res.json({
+            note
         });
     } catch (error) {
         next(error);        
@@ -266,5 +287,6 @@ module.exports = {
     getAllUserBookmarks,
     addNote,
     deleteNote,
-    getAllUserNotes
+    getAllUserNotes,
+    getNoteByAdId
 }

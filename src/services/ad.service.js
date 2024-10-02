@@ -79,7 +79,7 @@ async function getMyAds(userId) {
 
 async function getAdById(adId) {
     if (!isValidObjectId(adId)) throw new createHttpError.BadRequest(AdMessages.AdIdIsInvalid);
-    const ad = await Ad.findOne({ _id: adId });
+    const ad = await Ad.findOne({ _id: adId }).populate("category");
     if (!ad) throw new createHttpError.NotFound(AdMessages.AdNotFound);
     return ad;
 }
@@ -165,6 +165,14 @@ async function getAllUserNotes(userId) {
     return user.notes;
 }
 
+async function getNoteByAdId(adId, userId) {
+    const user = await UserService.getUserById(userId);
+    if (!user.notes.length) throw new createHttpError.BadRequest(AdMessages.NoteNotFound);
+    if (adId && isValidObjectId(adId)) {
+        return user.notes.find(note => note.for == adId);
+    } else throw new createHttpError.BadRequest(AdMessages.AdIdIsInvalid);
+}
+
 module.exports = {
     createAd,
     getOptionsFromBody,
@@ -177,5 +185,6 @@ module.exports = {
     getAllUserBookmarks,
     addNote,
     deleteNote,
-    getAllUserNotes
+    getAllUserNotes,
+    getNoteByAdId
 }

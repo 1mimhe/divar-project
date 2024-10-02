@@ -62,7 +62,7 @@ async function findCategoryBySlug(slug) {
 }
 
 async function checkSlugExists(slug) {
-    const category = await findCategoryBySlug(slug);
+    const category = await Category.findBySlug(slug);
     if (category) throw new createHttpError.Conflict(CategoryMessages.SlugExists);
     return false;
 }

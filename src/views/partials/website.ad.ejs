@@ -9,7 +9,9 @@
             <div class="post-action">
               <button class="post-button-action button" id="call-detail" <%= ad.showNumber ? "" : "disabled" %>>اطلاعات تماس</button>
               <button class="post-button-chat button" <%= ad.isActiveChat ? "" : "disabled" %>>چت</button>
-              <img class="post-bookmark" src="/home/img/bookmark.svg" alt=""/>
+              <form action="/ad/bookmark/<%= ad._id %>?render=true" method="post">
+                <i class="" alt=""/>
+              </form>
               <img src="/home/img/share.svg" class="post-share" alt=""/>
             </div>
             <div class="post-list">
@@ -59,10 +61,13 @@
             </div>
             <br/>
             <div class="post-note">
-              <div class="post-note-input">
-                <textarea name="note" id="note" placeholder="یادداشت شما..."></textarea>
-              </div>
-              <p>این یادداشت تنها برای شما قابل دیدن است و پس از حذف آگهی پاک خواهد شد.</p>
+              <form action="/ad/note/<%= ad._id %>?render=true" method="post">
+                <div class="post-note-input">
+                  <textarea name="note" id="note" placeholder="یادداشت شما..."><%= note %></textarea>
+                </div>
+                <button type="submit" class="button post-button-chat" style="margin-top: 5px;">ثبت یادداشت</button>
+                <p>این یادداشت تنها برای شما قابل دیدن است و پس از حذف آگهی پاک خواهد شد.</p>
+              </form>
             </div>
             <div>
               <a href="#" class="post-privacy-link">

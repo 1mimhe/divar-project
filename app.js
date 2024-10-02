@@ -5,7 +5,7 @@ const path = require('path');
 const moment = require("jalali-moment");
 const methodOverride = require("method-override");
 const allRouters = require("./src/routes/index.route");
-const {notFoundError, allErrorHandler} = require("./src/middlewares/errorHandler.middleware");
+const { notFoundError, allErrorHandler } = require("./src/middlewares/errorHandler.middleware");
 const SwaggerConfig = require("./src/config/swagger.config");
 
 const app = express();

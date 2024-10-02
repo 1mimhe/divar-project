@@ -23,4 +23,19 @@ async function authorization(req, res, next) {
     }
 }
 
-module.exports = authorization;
+async function addUserToReq(req, res, next) {
+    try {
+        const token = req.cookies?.[cookieNames.AccessToken];
+        const payload = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+        if (payload?.id) {
+            const user = await User.findById(payload.id, { _id: 1, mobile: 1, createdAt: 1 });
+            req.user = user;
+        }
+        return next();
+    } catch (error) {}
+}
+
+module.exports = {
+    authorization,
+    addUserToReq
+}    
