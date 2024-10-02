@@ -1,7 +1,9 @@
 
 # Divar Project
-<img src="./public/assets/images/logos/DivarLogo.png" alt="Divar Project" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"/>
 
+<div align="center">
+    <img src="./public/assets/images/logos/DivarLogo.png" alt="Divar Project" style="width: 300px;"/>
+</div>
 
 Divar is a popular online classifieds platform in Iran. It allows users to buy, sell, and trade a wide range of items.
 
