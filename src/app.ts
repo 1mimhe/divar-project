@@ -32,12 +32,20 @@ export function createExpressApp(): Express {
   // Central error handler (must be last, 4 args)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
-    const status = typeof err === "object" && err !== null && "status" in err ? Number((err as { status: number }).status) : 500;
+    const rawStatus =
+      typeof err === "object" && err !== null && "status" in err
+        ? Number((err as { status: number }).status)
+        : 500;
+    const status = Number.isInteger(rawStatus) && rawStatus >= 400 && rawStatus < 600 ? rawStatus : 500;
     const message = err instanceof Error ? err.message : "Internal Server Error";
+    const details =
+      typeof err === "object" && err !== null && "details" in err
+        ? (err as { details: unknown }).details
+        : undefined;
     if (env.NODE_ENV !== "production") logger.error({ err }, "Unhandled error");
-    res.status(Number.isInteger(status) && status >= 400 && status < 600 ? status : 500).json({
-      statusCode: Number.isInteger(status) && status >= 400 && status < 600 ? status : 500,
-      error: { message },
+    res.status(status).json({
+      statusCode: status,
+      error: details === undefined ? { message } : { message, details },
     });
   });
 
