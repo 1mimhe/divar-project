@@ -5,6 +5,7 @@ import helmet from "helmet";
 import pinoHttp from "pino-http";
 import { env } from "./config/env.ts";
 import { logger } from "./config/logger.ts";
+import { authRouter } from "./modules/auth/auth.routes.ts";
 
 export function createExpressApp(): Express {
   const app = express();
@@ -21,6 +22,8 @@ export function createExpressApp(): Express {
     res.json({ status: "ok", env: env.NODE_ENV });
   });
 
+  app.use("/api/v1/auth", authRouter);
+
   // 404 — JSON for /api/*, JSON fallback for pages until EJS split (Issue #4)
   app.use((req: Request, res: Response) => {
     res.status(404).json({
@@ -32,12 +35,21 @@ export function createExpressApp(): Express {
   // Central error handler (must be last, 4 args)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
-    const status = typeof err === "object" && err !== null && "status" in err ? Number((err as { status: number }).status) : 500;
+    const rawStatus =
+      typeof err === "object" && err !== null && "status" in err
+        ? Number((err as { status: number }).status)
+        : 500;
+    const status = Number.isInteger(rawStatus) && rawStatus >= 400 && rawStatus < 600 ? rawStatus : 500;
     const message = err instanceof Error ? err.message : "Internal Server Error";
-    if (env.NODE_ENV !== "production") logger.error({ err }, "Unhandled error");
-    res.status(Number.isInteger(status) && status >= 400 && status < 600 ? status : 500).json({
-      statusCode: Number.isInteger(status) && status >= 400 && status < 600 ? status : 500,
-      error: { message },
+    const details =
+      typeof err === "object" && err !== null && "details" in err
+        ? (err as { details: unknown }).details
+        : undefined;
+    // 4xx are routine client errors; only 5xx get logged.
+    if (status >= 500) logger.error({ err }, "Unhandled error");
+    res.status(status).json({
+      statusCode: status,
+      error: details === undefined ? { message } : { message, details },
     });
   });
 
