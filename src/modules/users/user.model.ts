@@ -15,25 +15,13 @@ export interface RefreshTokenSubdoc {
   createdAt: Date;
 }
 
-export interface BookmarkSubdoc {
-  adId: mongoose.Types.ObjectId;
-  adTitle: string;
-}
-
-export interface NoteSubdoc {
-  content: string;
-  for: mongoose.Types.ObjectId;
-  adTitle: string;
-}
-
 export interface UserAttrs {
   fullName?: string;
   mobile: string;
   otp?: OtpSubdoc;
   verifiedMobile: boolean;
+  isAdmin: boolean;
   refreshTokens: RefreshTokenSubdoc[];
-  bookmarks: BookmarkSubdoc[];
-  notes: NoteSubdoc[];
 }
 
 export type UserDoc = HydratedDocument<UserAttrs>;
@@ -59,36 +47,26 @@ const refreshTokenSchema = new Schema<RefreshTokenSubdoc>(
   { _id: false },
 );
 
-const bookmarkSchema = new Schema<BookmarkSubdoc>(
-  {
-    adId: { type: Schema.Types.ObjectId, ref: "Ad", required: true },
-    adTitle: { type: String, required: true },
-  },
-  { _id: false },
-);
-
-// No uniqueness constraint on this path: a unique index here would reject the
-// second user document (empty arrays index as null).
-const noteSchema = new Schema<NoteSubdoc>(
-  {
-    content: { type: String, required: true },
-    for: { type: Schema.Types.ObjectId, ref: "Ad", required: true },
-    adTitle: { type: String, required: true },
-  },
-  { _id: false },
-);
-
 const userSchema = new Schema<UserAttrs, UserModel>(
   {
     fullName: { type: String, required: false },
     mobile: { type: String, required: true, unique: true },
     otp: { type: otpSchema, required: false },
     verifiedMobile: { type: Boolean, required: true, default: false },
+    isAdmin: { type: Boolean, required: true, default: false },
     refreshTokens: { type: [refreshTokenSchema], default: [] },
-    bookmarks: { type: [bookmarkSchema], default: [] },
-    notes: { type: [noteSchema], default: [] },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    toJSON: {
+      transform: (_doc, ret) => {
+        // Secrets never serialize: login codes and session hashes stay in the DB.
+        delete ret.otp;
+        delete ret.refreshTokens;
+        return ret;
+      },
+    },
+  },
 );
 
 /** Finds by mobile or throws 404. */

@@ -15,9 +15,9 @@ function bearerToken(req: Request): string | undefined {
 
 /** Loads the public caller profile; `null` when the user no longer exists. */
 async function loadUser(id: string): Promise<AuthUser | null> {
-  const user = await User.findById(id, { _id: 1, mobile: 1 });
+  const user = await User.findById(id, { _id: 1, mobile: 1, isAdmin: 1 });
   if (!user) return null;
-  return { id: String(user._id), mobile: user.mobile };
+  return { id: String(user._id), mobile: user.mobile, isAdmin: user.isAdmin };
 }
 
 /**
@@ -68,11 +68,15 @@ export async function optionalAuth(
   }
 }
 
-/** Deny-all placeholder until role support exists. */
+/** Restricts a route to admins. Expects `requireAuth` (or equivalent) first. */
 export function requireAdmin(req: Request, _res: Response, next: NextFunction): void {
   if (!req.user) {
     next(ApiError.unauthorized());
     return;
   }
-  next(ApiError.forbidden("Admin only."));
+  if (!req.user.isAdmin) {
+    next(ApiError.forbidden("Admin only."));
+    return;
+  }
+  next();
 }
