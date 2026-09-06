@@ -5,6 +5,7 @@ import helmet from "helmet";
 import pinoHttp from "pino-http";
 import { env } from "./config/env.ts";
 import { logger } from "./config/logger.ts";
+import { authRouter } from "./modules/auth/auth.routes.ts";
 
 export function createExpressApp(): Express {
   const app = express();
@@ -20,6 +21,8 @@ export function createExpressApp(): Express {
   app.get("/health", (_req: Request, res: Response) => {
     res.json({ status: "ok", env: env.NODE_ENV });
   });
+
+  app.use("/api/v1/auth", authRouter);
 
   // 404 — JSON for /api/*, JSON fallback for pages until EJS split (Issue #4)
   app.use((req: Request, res: Response) => {
