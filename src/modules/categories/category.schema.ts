@@ -17,4 +17,13 @@ export const listCategoriesQuerySchema = z.object({
   tree: z.enum(["true", "false"]).default("false"),
 });
 
+/** Kebab-case slug path segment, shared by slug-addressed lookups. */
+export const slugParamSchema = z.object({
+  slug: z
+    .string()
+    .trim()
+    .min(1)
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be kebab-case."),
+});
+
 export type CreateCategoryDto = z.infer<typeof createCategorySchema>;
