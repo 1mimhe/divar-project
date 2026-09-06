@@ -8,7 +8,9 @@ import { logger } from "./config/logger.ts";
 import { errorHandler, notFound } from "./common/middlewares/errorHandler.ts";
 import { authRouter } from "./modules/auth/auth.routes.ts";
 import { adRouter } from "./modules/ads/ad.routes.ts";
+import { bookmarkRouter } from "./modules/bookmarks/bookmark.routes.ts";
 import { categoryRouter } from "./modules/categories/category.routes.ts";
+import { noteRouter } from "./modules/notes/note.routes.ts";
 import { optionRouter } from "./modules/options/option.routes.ts";
 import { userRouter } from "./modules/users/user.routes.ts";
 
@@ -31,6 +33,7 @@ export function createExpressApp(): Express {
   app.use("/api/v1/users", userRouter);
   app.use("/api/v1/categories", categoryRouter);
   app.use("/api/v1/ads", adRouter);
+  app.use("/api/v1", bookmarkRouter, noteRouter);
   app.use("/api/v1/options", optionRouter);
 
   app.use(notFound);
