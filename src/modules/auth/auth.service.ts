@@ -1,11 +1,11 @@
-import { randomInt, randomUUID } from "node:crypto";
+import crypto from "node:crypto";
 import { ApiError } from "../../common/errors/ApiError.ts";
 import { codesEqual, hashToken } from "../../common/utils/crypto.ts";
 import { env } from "../../config/env.ts";
 import { User } from "../users/user.model.ts";
 import type { SmsProvider } from "./sms.provider.ts";
 import { smsProvider as defaultSmsProvider } from "./sms.provider.ts";
-import { signJwt, verifyJwt } from "./tokens.ts";
+import { signJwt, verifyJwt } from "./jwt.ts";
 import {
   ACCESS_TTL_SEC,
   OTP_MAX_ATTEMPTS,
@@ -20,7 +20,7 @@ function issueTokenPair(userId: string, mobile: string): TokenPair {
   // same second produce byte-identical JWTs (second-granularity iat) and
   // rotation/revocation silently no-ops.
   const refreshToken = signJwt(
-    { id: userId, type: "refresh", jti: randomUUID() },
+    { id: userId, type: "refresh", jti: crypto.randomUUID() },
     env.JWT_REFRESH_KEY,
     REFRESH_TTL_SEC,
   );
@@ -44,7 +44,7 @@ export async function sendOTP(
   }
 
   // Stored as a string so numeric JSON input compares correctly.
-  const code = String(randomInt(10000, 99999));
+  const code = String(crypto.randomInt(10000, 99999));
   const otp = { code, expiresIn: now + OTP_TTL_MS, attempts: 0 };
 
   if (existing) {

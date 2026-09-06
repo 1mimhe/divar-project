@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { ApiError } from "../../common/errors/ApiError.ts";
 import { env } from "../../config/env.ts";
-import { verifyJwt } from "./tokens.ts";
+import { verifyJwt } from "./jwt.ts";
 import { User } from "../users/user.model.ts";
 import { ACCESS_COOKIE } from "./auth.constants.ts";
 import type { AccessPayload, AuthUser } from "./auth.types.ts";
