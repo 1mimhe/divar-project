@@ -59,8 +59,7 @@ const refreshTokenSchema = new Schema<RefreshTokenSubdoc>(
   { _id: false },
 );
 
-// Ported from the legacy model; per-user note uniqueness moves to a compound
-// index in Issue #3 (the legacy global `unique: true` on `for` is kept as-is here).
+// Carried over from the legacy model unchanged (domain rules land in Issue #3).
 const bookmarkSchema = new Schema<BookmarkSubdoc>(
   {
     adId: { type: Schema.Types.ObjectId, ref: "Ad", required: true },
@@ -69,9 +68,13 @@ const bookmarkSchema = new Schema<BookmarkSubdoc>(
   { _id: false },
 );
 
+// NOTE: the legacy model declares global `unique: true` on `for`. That index
+// makes the SECOND user insert fail with E11000 `notes.for: null` (an empty
+// `notes: []` is indexed as null), so it is deliberately NOT ported. Per-user
+// note uniqueness becomes a compound index in Issue #3.
 const noteSchema = new Schema<NoteSubdoc>({
   content: { type: String, required: true },
-  for: { type: Schema.Types.ObjectId, ref: "Ad", required: true, unique: true },
+  for: { type: Schema.Types.ObjectId, ref: "Ad", required: true },
   adTitle: { type: String, required: true },
 });
 

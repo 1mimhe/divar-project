@@ -1,4 +1,4 @@
-import { createHash, randomInt, timingSafeEqual } from "node:crypto";
+import { createHash, randomInt, randomUUID, timingSafeEqual } from "node:crypto";
 import { ApiError } from "../../common/errors/ApiError.ts";
 import { env } from "../../config/env.ts";
 import { User, type UserDoc } from "../users/user.model.ts";
@@ -37,7 +37,14 @@ export function hashToken(token: string): string {
 
 function issueTokenPair(userId: string, mobile: string): TokenPair {
   const accessToken = signJwt({ id: userId, mobile }, env.JWT_PRIVATE_KEY, ACCESS_TTL);
-  const refreshToken = signJwt({ id: userId, type: "refresh" }, env.JWT_REFRESH_KEY, REFRESH_TTL);
+  // jti makes every refresh token unique: without it, two rotations within the
+  // same second produce byte-identical JWTs (second-granularity iat) and
+  // rotation/revocation silently no-ops.
+  const refreshToken = signJwt(
+    { id: userId, type: "refresh", jti: randomUUID() },
+    env.JWT_REFRESH_KEY,
+    REFRESH_TTL,
+  );
   return { accessToken, refreshToken };
 }
 
