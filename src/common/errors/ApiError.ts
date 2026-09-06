@@ -1,4 +1,4 @@
-/** Typed HTTP error. The central handler in `src/app.ts` reads `status`. */
+/** Typed HTTP error. The central handler in `common/middlewares/errorHandler.ts` reads `status`. */
 export class ApiError extends Error {
   readonly status: number;
   readonly details?: unknown;
