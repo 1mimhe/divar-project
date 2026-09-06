@@ -11,16 +11,6 @@ import { ApiError } from "../../common/errors/ApiError.ts";
  * drops the dead dependency. Payload shape stays `{id, mobile?, type?}`.
  */
 
-export interface AccessPayload {
-  id: string;
-  mobile: string;
-}
-
-export interface RefreshPayload {
-  id: string;
-  type: "refresh";
-}
-
 function base64url(input: Buffer | string): string {
   return (typeof input === "string" ? Buffer.from(input) : input).toString("base64url");
 }

@@ -15,9 +15,5 @@ export const checkOtpSchema = z.object({
   code: z.coerce.string().regex(/^\d{5}$/, "Code must be 5 digits."),
 });
 
-export const refreshSchema = z.object({
-  refreshToken: z.string().min(1, "Refresh token is required."),
-});
-
 export type SendOtpDto = z.infer<typeof sendOtpSchema>;
 export type CheckOtpDto = z.infer<typeof checkOtpSchema>;

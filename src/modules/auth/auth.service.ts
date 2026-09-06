@@ -1,29 +1,17 @@
 import { createHash, randomInt, randomUUID, timingSafeEqual } from "node:crypto";
 import { ApiError } from "../../common/errors/ApiError.ts";
 import { env } from "../../config/env.ts";
-import { User, type UserDoc } from "../users/user.model.ts";
+import { User } from "../users/user.model.ts";
 import type { SmsProvider } from "./sms.provider.ts";
 import { smsProvider as defaultSmsProvider } from "./sms.provider.ts";
-import { signJwt, verifyJwt, type RefreshPayload } from "./tokens.ts";
-
-export const OTP_TTL_MS = 2 * 60 * 1000;
-export const OTP_MAX_ATTEMPTS = 5;
-const ACCESS_TTL = "15m";
-const REFRESH_TTL = "7d";
-
-export interface OtpSent {
-  retryAfter: number;
-  previewCode?: string;
-}
-
-export interface TokenPair {
-  accessToken: string;
-  refreshToken: string;
-}
-
-export interface VerifiedSession extends TokenPair {
-  user: Pick<UserDoc, "_id" | "mobile" | "verifiedMobile">;
-}
+import { signJwt, verifyJwt } from "./tokens.ts";
+import {
+  ACCESS_TTL_SEC,
+  OTP_MAX_ATTEMPTS,
+  OTP_TTL_MS,
+  REFRESH_TTL_SEC,
+} from "./auth.constants.ts";
+import type { OtpSent, RefreshPayload, TokenPair, VerifiedSession } from "./auth.types.ts";
 
 /** Constant-time compare with a length guard (timingSafeEqual throws on mismatch). */
 export function codesEqual(a: string, b: string): boolean {
@@ -36,14 +24,14 @@ export function hashToken(token: string): string {
 }
 
 function issueTokenPair(userId: string, mobile: string): TokenPair {
-  const accessToken = signJwt({ id: userId, mobile }, env.JWT_PRIVATE_KEY, ACCESS_TTL);
+  const accessToken = signJwt({ id: userId, mobile }, env.JWT_PRIVATE_KEY, ACCESS_TTL_SEC);
   // jti makes every refresh token unique: without it, two rotations within the
   // same second produce byte-identical JWTs (second-granularity iat) and
   // rotation/revocation silently no-ops.
   const refreshToken = signJwt(
     { id: userId, type: "refresh", jti: randomUUID() },
     env.JWT_REFRESH_KEY,
-    REFRESH_TTL,
+    REFRESH_TTL_SEC,
   );
   return { accessToken, refreshToken };
 }
@@ -113,13 +101,7 @@ export async function verifyOTP(mobile: string, code: string): Promise<VerifiedS
 }
 
 export async function refreshSession(refreshToken: string): Promise<TokenPair> {
-  let payload: RefreshPayload;
-  try {
-    payload = verifyJwt<RefreshPayload>(refreshToken, env.JWT_REFRESH_KEY);
-  } catch (err) {
-    if (err instanceof ApiError) throw err;
-    throw ApiError.unauthorized("Invalid token.");
-  }
+  const payload = verifyJwt<RefreshPayload>(refreshToken, env.JWT_REFRESH_KEY);
   if (payload.type !== "refresh" || !payload.id) throw ApiError.unauthorized("Invalid token.");
 
   const user = await User.findById(payload.id);

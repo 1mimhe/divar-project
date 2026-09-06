@@ -6,7 +6,13 @@ import {
   sendOTP,
   verifyOTP,
 } from "./auth.service.ts";
-import { ACCESS_COOKIE, REFRESH_COOKIE } from "../../common/middlewares/auth.ts";
+import {
+  ACCESS_COOKIE,
+  ACCESS_TTL_SEC,
+  REFRESH_COOKIE,
+  REFRESH_TTL_SEC,
+} from "./auth.constants.ts";
+import type { CheckOtpDto, SendOtpDto } from "./auth.schema.ts";
 
 const baseCookie: CookieOptions = {
   httpOnly: true,
@@ -15,26 +21,27 @@ const baseCookie: CookieOptions = {
   path: "/",
 };
 
-const accessCookie: CookieOptions = { ...baseCookie, maxAge: 15 * 60 * 1000 };
-const refreshCookie: CookieOptions = { ...baseCookie, maxAge: 7 * 24 * 60 * 60 * 1000 };
+const accessCookie: CookieOptions = { ...baseCookie, maxAge: ACCESS_TTL_SEC * 1000 };
+const refreshCookie: CookieOptions = { ...baseCookie, maxAge: REFRESH_TTL_SEC * 1000 };
 
 function clearAuthCookies(res: Response): void {
   res.clearCookie(ACCESS_COOKIE, { ...baseCookie, maxAge: undefined });
   res.clearCookie(REFRESH_COOKIE, { ...baseCookie, maxAge: undefined });
 }
 
-export async function send(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function sendOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const result = await sendOTP(req.body.mobile as string);
+    const result = await sendOTP((req.body as SendOtpDto).mobile);
     res.status(200).json({ message: "OTP Sent Successfully.", ...result });
   } catch (err) {
     next(err);
   }
 }
 
-export async function verify(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function verifyOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const session = await verifyOTP(req.body.mobile as string, req.body.code as string);
+    const { mobile, code } = req.body as CheckOtpDto;
+    const session = await verifyOTP(mobile, code);
     res.cookie(ACCESS_COOKIE, session.accessToken, accessCookie);
     res.cookie(REFRESH_COOKIE, session.refreshToken, refreshCookie);
     res.status(200).json({
@@ -47,7 +54,7 @@ export async function verify(req: Request, res: Response, next: NextFunction): P
   }
 }
 
-export async function refresh(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function refreshTokens(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const presented = (req.body?.refreshToken as string | undefined) ?? req.cookies?.[REFRESH_COOKIE];
     if (!presented) {
