@@ -1,2 +1,8 @@
 /node_modules/
 /.idea
+.env
+dist/
+coverage/
+public/uploads/*
+!public/uploads/.gitkeep
+*.log

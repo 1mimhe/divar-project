@@ -1,0 +1,3 @@
+npx --no-install tsc --noEmit -p tsconfig.json
+npx --no-install eslint src tests
+
