@@ -239,6 +239,14 @@ describe("OTP flow (needs local Mongo)", { skip: !dbUp }, () => {
       assert.equal(me.status, 200);
       const meBody = (await me.json()) as { user: { mobile: string } };
       assert.equal(meBody.user.mobile, mobile);
+
+      // The code is single-use: verifying again fails (same mobile, no extra send).
+      const replay = await fetch(`${base}/api/v1/auth/otp/verify`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ mobile, code: sentBody.previewCode }),
+      });
+      assert.equal(replay.status, 400);
     } finally {
       close();
     }

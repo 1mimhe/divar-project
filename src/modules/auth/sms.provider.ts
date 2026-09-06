@@ -6,7 +6,7 @@ export interface SendResult {
   previewCode?: string;
 }
 
-/** Swap this for a real gateway (Kavenegar, Ghasedak, …) without touching the service. */
+/** Delivery channel for OTP codes. Swap the implementation without touching callers. */
 export interface SmsProvider {
   sendOtp(mobile: string, code: string): Promise<SendResult>;
 }

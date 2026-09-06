@@ -27,6 +27,10 @@ function issueTokenPair(userId: string, mobile: string): TokenPair {
   return { accessToken, refreshToken };
 }
 
+/**
+ * Issues a code for `mobile`, creating the user on first request.
+ * @throws {ApiError} 429 with `retryAfter` seconds while a live code exists.
+ */
 export async function sendOTP(
   mobile: string,
   sms: SmsProvider = defaultSmsProvider,
@@ -39,8 +43,7 @@ export async function sendOTP(
     throw ApiError.tooManyRequests("OTP Code is not Expired. Please Try Later.", { retryAfter });
   }
 
-  // Stored as string: the legacy service stored a Number that Mongoose cast to
-  // String, then compared with strict !== and false-negatived numeric input.
+  // Stored as a string so numeric JSON input compares correctly.
   const code = String(randomInt(10000, 99999));
   const otp = { code, expiresIn: now + OTP_TTL_MS, attempts: 0 };
 
@@ -55,6 +58,13 @@ export async function sendOTP(
   return { retryAfter: OTP_TTL_MS / 1000, ...sent };
 }
 
+/**
+ * Consumes a code: single-use, expires after the TTL, locks after too many
+ * wrong attempts. Success clears the code, marks the mobile verified and
+ * opens a session.
+ * @throws {ApiError} 400 without a pending code, 401 for expired/wrong codes,
+ * 429 once the attempt cap is hit.
+ */
 export async function verifyOTP(mobile: string, code: string): Promise<VerifiedSession> {
   const user = await User.findByMobile(mobile);
   const now = Date.now();
@@ -91,6 +101,11 @@ export async function verifyOTP(mobile: string, code: string): Promise<VerifiedS
   };
 }
 
+/**
+ * Rotates a refresh token: the presented token is revoked and a new pair is
+ * issued, so reuse of a stolen token fails closed.
+ * @throws {ApiError} 401 for unknown, revoked or cross-secret tokens.
+ */
 export async function refreshSession(refreshToken: string): Promise<TokenPair> {
   const payload = verifyJwt<RefreshPayload>(refreshToken, env.JWT_REFRESH_KEY);
   if (payload.type !== "refresh" || !payload.id) throw ApiError.unauthorized("Invalid token.");
@@ -110,7 +125,7 @@ export async function refreshSession(refreshToken: string): Promise<TokenPair> {
   return tokens;
 }
 
-/** Revoke one refresh token, or all sessions when no token is presented. */
+/** Revokes one refresh token, or every session when none is presented. */
 export async function logout(userId: string, refreshToken?: string): Promise<void> {
   const user = await User.findById(userId);
   if (!user) return;

@@ -29,6 +29,7 @@ function clearAuthCookies(res: Response): void {
   res.clearCookie(REFRESH_COOKIE, { ...baseCookie, maxAge: undefined });
 }
 
+/** Dispatches an OTP. Off-production the code is echoed back for the demo. */
 export async function sendOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const result = await sendOTP((req.body as SendOtpDto).mobile);
@@ -38,6 +39,10 @@ export async function sendOtp(req: Request, res: Response, next: NextFunction): 
   }
 }
 
+/**
+ * Verifies an OTP and opens a session. Tokens travel as `httpOnly` cookies;
+ * the access token is also returned in the body for non-browser clients.
+ */
 export async function verifyOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { mobile, code } = req.body as CheckOtpDto;
@@ -54,6 +59,7 @@ export async function verifyOtp(req: Request, res: Response, next: NextFunction)
   }
 }
 
+/** Rotates the presented refresh token (body or cookie) and re-cookies the pair. */
 export async function refreshTokens(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const presented = (req.body?.refreshToken as string | undefined) ?? req.cookies?.[REFRESH_COOKIE];
@@ -73,7 +79,7 @@ export async function refreshTokens(req: Request, res: Response, next: NextFunct
   }
 }
 
-/** Always clears cookies — even for anonymous/expired callers (fixes legacy view logout). */
+/** Ends the session and clears both cookies, even when no session exists. */
 export async function logoutHandler(
   req: Request,
   res: Response,
@@ -89,6 +95,7 @@ export async function logoutHandler(
   }
 }
 
+/** Returns the caller attached by `requireAuth`. */
 export function me(req: Request, res: Response): void {
   res.status(200).json({ user: req.user });
 }

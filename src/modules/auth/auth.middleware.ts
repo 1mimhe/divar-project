@@ -6,12 +6,14 @@ import { User } from "../users/user.model.ts";
 import { ACCESS_COOKIE } from "./auth.constants.ts";
 import type { AccessPayload, AuthUser } from "./auth.types.ts";
 
+/** Extracts a `Bearer` token from the authorization header, if present. */
 function bearerToken(req: Request): string | undefined {
   const header = req.headers.authorization;
   if (header?.startsWith("Bearer ")) return header.slice("Bearer ".length);
   return undefined;
 }
 
+/** Loads the public caller profile; `null` when the user no longer exists. */
 async function loadUser(id: string): Promise<AuthUser | null> {
   const user = await User.findById(id, { _id: 1, mobile: 1 });
   if (!user) return null;
@@ -19,8 +21,8 @@ async function loadUser(id: string): Promise<AuthUser | null> {
 }
 
 /**
- * Required auth: cookie first, Bearer fallback. 401 JSON — no redirects here
- * (API-only; view redirects land in Issue #4). Always `return`s after responding.
+ * Required auth: cookie first, `Bearer` fallback. Rejects with 401 JSON —
+ * no redirects on API routes.
  */
 export async function requireAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
   const token = req.cookies?.[ACCESS_COOKIE] ?? bearerToken(req);
@@ -43,8 +45,8 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
 }
 
 /**
- * Optional auth: attaches `req.user` when a valid token is present, otherwise
- * continues anonymously. Never hangs, never throws (fixes legacy `addUserToReq`).
+ * Optional auth: attaches `req.user` for valid tokens, otherwise continues
+ * anonymously. Never throws.
  */
 export async function optionalAuth(
   req: Request,
@@ -66,11 +68,11 @@ export async function optionalAuth(
   }
 }
 
-/** Placeholder until roles land in Issue #3 — denies everything with a clear 403. */
+/** Deny-all placeholder until role support exists. */
 export function requireAdmin(req: Request, _res: Response, next: NextFunction): void {
   if (!req.user) {
     next(ApiError.unauthorized());
     return;
   }
-  next(ApiError.forbidden("Admin only. Roles are introduced in the domain phase."));
+  next(ApiError.forbidden("Admin only."));
 }

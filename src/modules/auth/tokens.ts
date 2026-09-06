@@ -2,13 +2,10 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { ApiError } from "../../common/errors/ApiError.ts";
 
 /**
- * Minimal HS256 JWT sign/verify on `node:crypto`.
+ * Minimal HS256 JWT sign/verify on `node:crypto` (HS256 + `exp` only).
  *
- * Why not `jsonwebtoken`: v9's transitive `jwa → buffer-equal-constant-time`
- * touches the long-removed `SlowBuffer` API, so `require("jsonwebtoken")`
- * throws on Node 22+. The surface used here (HS256 + `exp`) is small enough
- * to implement in auditable lines; swap back to the library once upstream
- * drops the dead dependency. Payload shape stays `{id, mobile?, type?}`.
+ * @remarks Implemented directly on `node:crypto` because the pinned
+ * `jsonwebtoken` transitive chain throws at import on Node 22+.
  */
 
 function base64url(input: Buffer | string): string {
@@ -25,6 +22,7 @@ export function ttlToSeconds(ttl: number | string): number {
   return value * unit;
 }
 
+/** Signs `{...payload, iat, exp}` with HMAC-SHA256. */
 export function signJwt(
   payload: Record<string, unknown>,
   secret: string,
@@ -39,6 +37,10 @@ export function signJwt(
   return `${head}.${body}.${sig.toString("base64url")}`;
 }
 
+/**
+ * Verifies structure, algorithm, signature (constant-time) and expiry.
+ * @throws {ApiError} 401 for any malformed, forged or expired token.
+ */
 export function verifyJwt<T>(token: string, secret: string): T {
   const parts = token.split(".");
   if (parts.length !== 3) throw ApiError.unauthorized("Invalid token.");

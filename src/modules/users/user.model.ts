@@ -59,7 +59,6 @@ const refreshTokenSchema = new Schema<RefreshTokenSubdoc>(
   { _id: false },
 );
 
-// Carried over from the legacy model unchanged (domain rules land in Issue #3).
 const bookmarkSchema = new Schema<BookmarkSubdoc>(
   {
     adId: { type: Schema.Types.ObjectId, ref: "Ad", required: true },
@@ -68,10 +67,8 @@ const bookmarkSchema = new Schema<BookmarkSubdoc>(
   { _id: false },
 );
 
-// NOTE: the legacy model declares global `unique: true` on `for`. That index
-// makes the SECOND user insert fail with E11000 `notes.for: null` (an empty
-// `notes: []` is indexed as null), so it is deliberately NOT ported. Per-user
-// note uniqueness becomes a compound index in Issue #3.
+// No uniqueness constraint on this path: a unique index here would reject the
+// second user document (empty arrays index as null).
 const noteSchema = new Schema<NoteSubdoc>(
   {
     content: { type: String, required: true },
@@ -94,6 +91,7 @@ const userSchema = new Schema<UserAttrs, UserModel>(
   { timestamps: true },
 );
 
+/** Finds by mobile or throws 404. */
 userSchema.statics.findByMobile = async function (mobile: string): Promise<UserDoc> {
   const user = await this.findOne({ mobile });
   if (!user) throw ApiError.notFound("User Not Found.");
