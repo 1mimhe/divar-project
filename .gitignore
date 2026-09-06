@@ -6,3 +6,4 @@ coverage/
 public/uploads/*
 !public/uploads/.gitkeep
 *.log
+docs/
