@@ -16,9 +16,6 @@ import type { OtpSent, RefreshPayload, TokenPair, VerifiedSession } from "./auth
 
 function issueTokenPair(userId: string, mobile: string): TokenPair {
   const accessToken = signJwt({ id: userId, mobile }, env.JWT_PRIVATE_KEY, ACCESS_TTL_SEC);
-  // jti makes every refresh token unique: without it, two rotations within the
-  // same second produce byte-identical JWTs (second-granularity iat) and
-  // rotation/revocation silently no-ops.
   const refreshToken = signJwt(
     { id: userId, type: "refresh", jti: crypto.randomUUID() },
     env.JWT_REFRESH_KEY,
