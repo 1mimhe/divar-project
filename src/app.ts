@@ -45,7 +45,8 @@ export function createExpressApp(): Express {
       typeof err === "object" && err !== null && "details" in err
         ? (err as { details: unknown }).details
         : undefined;
-    if (env.NODE_ENV !== "production") logger.error({ err }, "Unhandled error");
+    // 4xx are routine client errors; only 5xx get logged.
+    if (status >= 500) logger.error({ err }, "Unhandled error");
     res.status(status).json({
       statusCode: status,
       error: details === undefined ? { message } : { message, details },
