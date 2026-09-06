@@ -2,8 +2,8 @@ import { z } from "zod";
 import { objectIdSchema } from "../../common/middlewares/validate.ts";
 import { OPTION_TYPES } from "./option.model.ts";
 
-/** Accepts real booleans and `"true"`/`"false"` form strings. */
-const booleanish = z.preprocess((value) => value === "true" || value === true, z.boolean());
+/** Accepts real booleans and `"true"`/`"false"` form strings. Shared with ad input. */
+export const booleanish = z.preprocess((value) => value === "true" || value === true, z.boolean());
 
 /** Accepts an array or a comma-separated string. */
 const enumish = z.union([

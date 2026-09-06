@@ -18,6 +18,7 @@ function toStatus(err: unknown): number {
     // Data-layer errors, duck-typed so `common` never imports Mongoose.
     if (record.name === "CastError") return 400;
     if (record.name === "ValidationError") return 400;
+    if (record.name === "MulterError") return 400;
     if (record.code === 11000) return 409;
     const status = record.status ?? record.statusCode;
     if (typeof status === "number" && Number.isInteger(status) && status >= 400 && status < 600) {
