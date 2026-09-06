@@ -1,26 +1,25 @@
-import { rateLimit } from "express-rate-limit";
+import { rateLimit, type RateLimitExceededEventHandler } from "express-rate-limit";
 
 /** 429 body matches the app's `{statusCode, error}` shape. */
-function tooManyHandler(message: string) {
-  return (_req: unknown, res: { status: (c: number) => { json: (b: unknown) => void } }) => {
+function tooManyHandler(message: string): RateLimitExceededEventHandler {
+  return (_req, res) => {
     res.status(429).json({ statusCode: 429, error: { message } });
   };
 }
 
-/** OTP send: 5 requests / hour / IP. Brute-forceable 5-digit codes need a tight tap. */
-export const otpLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  limit: 5,
-  standardHeaders: "draft-7",
-  legacyHeaders: false,
-  handler: tooManyHandler("Too many OTP requests. Please try again later."),
-});
+export interface ApiLimiterOptions {
+  windowMs: number;
+  limit: number;
+  message: string;
+}
 
-/** OTP verify: 10 attempts / 10 min / IP — backstop behind the per-code attempt cap. */
-export const verifyLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000,
-  limit: 10,
-  standardHeaders: "draft-7",
-  legacyHeaders: false,
-  handler: tooManyHandler("Too many verification attempts. Please try again later."),
-});
+/** Builds an IP rate limiter that answers 429s in the app's error shape. */
+export function createApiLimiter({ windowMs, limit, message }: ApiLimiterOptions) {
+  return rateLimit({
+    windowMs,
+    limit,
+    standardHeaders: "draft-7",
+    legacyHeaders: false,
+    handler: tooManyHandler(message),
+  });
+}

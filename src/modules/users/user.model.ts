@@ -72,16 +72,19 @@ const bookmarkSchema = new Schema<BookmarkSubdoc>(
 // makes the SECOND user insert fail with E11000 `notes.for: null` (an empty
 // `notes: []` is indexed as null), so it is deliberately NOT ported. Per-user
 // note uniqueness becomes a compound index in Issue #3.
-const noteSchema = new Schema<NoteSubdoc>({
-  content: { type: String, required: true },
-  for: { type: Schema.Types.ObjectId, ref: "Ad", required: true },
-  adTitle: { type: String, required: true },
-});
+const noteSchema = new Schema<NoteSubdoc>(
+  {
+    content: { type: String, required: true },
+    for: { type: Schema.Types.ObjectId, ref: "Ad", required: true },
+    adTitle: { type: String, required: true },
+  },
+  { _id: false },
+);
 
 const userSchema = new Schema<UserAttrs, UserModel>(
   {
     fullName: { type: String, required: false },
-    mobile: { type: String, required: true, unique: true, index: true },
+    mobile: { type: String, required: true, unique: true },
     otp: { type: otpSchema, required: false },
     verifiedMobile: { type: Boolean, required: true, default: false },
     refreshTokens: { type: [refreshTokenSchema], default: [] },

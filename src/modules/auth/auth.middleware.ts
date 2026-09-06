@@ -6,15 +6,6 @@ import { User } from "../users/user.model.ts";
 import { ACCESS_COOKIE } from "./auth.constants.ts";
 import type { AccessPayload, AuthUser } from "./auth.types.ts";
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace Express {
-    interface Request {
-      user?: AuthUser;
-    }
-  }
-}
-
 function bearerToken(req: Request): string | undefined {
   const header = req.headers.authorization;
   if (header?.startsWith("Bearer ")) return header.slice("Bearer ".length);

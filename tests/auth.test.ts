@@ -9,7 +9,7 @@ import {
   checkOtpSchema,
   sendOtpSchema,
 } from "../src/modules/auth/auth.schema.ts";
-import { codesEqual } from "../src/modules/auth/auth.service.ts";
+import { codesEqual } from "../src/common/utils/crypto.ts";
 import { signJwt, ttlToSeconds, verifyJwt } from "../src/modules/auth/tokens.ts";
 import { User } from "../src/modules/users/user.model.ts";
 

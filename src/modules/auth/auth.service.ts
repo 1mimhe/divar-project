@@ -1,5 +1,6 @@
-import { createHash, randomInt, randomUUID, timingSafeEqual } from "node:crypto";
+import { randomInt, randomUUID } from "node:crypto";
 import { ApiError } from "../../common/errors/ApiError.ts";
+import { codesEqual, hashToken } from "../../common/utils/crypto.ts";
 import { env } from "../../config/env.ts";
 import { User } from "../users/user.model.ts";
 import type { SmsProvider } from "./sms.provider.ts";
@@ -12,16 +13,6 @@ import {
   REFRESH_TTL_SEC,
 } from "./auth.constants.ts";
 import type { OtpSent, RefreshPayload, TokenPair, VerifiedSession } from "./auth.types.ts";
-
-/** Constant-time compare with a length guard (timingSafeEqual throws on mismatch). */
-export function codesEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(Buffer.from(a), Buffer.from(b));
-}
-
-export function hashToken(token: string): string {
-  return createHash("sha256").update(token).digest("hex");
-}
 
 function issueTokenPair(userId: string, mobile: string): TokenPair {
   const accessToken = signJwt({ id: userId, mobile }, env.JWT_PRIVATE_KEY, ACCESS_TTL_SEC);
