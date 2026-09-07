@@ -24,7 +24,17 @@ const baseCookie: CookieOptions = {
 const accessCookie: CookieOptions = { ...baseCookie, maxAge: ACCESS_TTL_SEC * 1000 };
 const refreshCookie: CookieOptions = { ...baseCookie, maxAge: REFRESH_TTL_SEC * 1000 };
 
-function clearAuthCookies(res: Response): void {
+/** Sets the session cookie pair (shared with the view layer). */
+export function setAuthCookies(
+  res: Response,
+  tokens: { accessToken: string; refreshToken: string },
+): void {
+  res.cookie(ACCESS_COOKIE, tokens.accessToken, accessCookie);
+  res.cookie(REFRESH_COOKIE, tokens.refreshToken, refreshCookie);
+}
+
+/** Clears the session cookie pair (shared with the view layer). */
+export function clearAuthCookies(res: Response): void {
   res.clearCookie(ACCESS_COOKIE, { ...baseCookie, maxAge: undefined });
   res.clearCookie(REFRESH_COOKIE, { ...baseCookie, maxAge: undefined });
 }
@@ -47,8 +57,7 @@ export async function verifyOtp(req: Request, res: Response, next: NextFunction)
   try {
     const { mobile, code } = req.body as CheckOtpDto;
     const session = await verifyOTP(mobile, code);
-    res.cookie(ACCESS_COOKIE, session.accessToken, accessCookie);
-    res.cookie(REFRESH_COOKIE, session.refreshToken, refreshCookie);
+    setAuthCookies(res, session);
     res.status(200).json({
       message: "User login successfully.",
       user: session.user,
@@ -71,8 +80,7 @@ export async function refreshTokens(req: Request, res: Response, next: NextFunct
       return;
     }
     const tokens = await refreshSession(presented);
-    res.cookie(ACCESS_COOKIE, tokens.accessToken, accessCookie);
-    res.cookie(REFRESH_COOKIE, tokens.refreshToken, refreshCookie);
+    setAuthCookies(res, tokens);
     res.status(200).json({ message: "Token refreshed.", accessToken: tokens.accessToken });
   } catch (err) {
     next(err);

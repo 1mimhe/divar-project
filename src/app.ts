@@ -16,6 +16,7 @@ import { noteRouter } from "./modules/notes/note.routes.ts";
 import { optionRouter } from "./modules/options/option.routes.ts";
 import { userRouter } from "./modules/users/user.routes.ts";
 import { flashLocals, flashMiddleware, sessionMiddleware } from "./web/session.ts";
+import { authViews } from "./web/auth.views.ts";
 import { siteRouter } from "./web/site.routes.ts";
 
 export function createExpressApp(): Express {
@@ -49,6 +50,7 @@ export function createExpressApp(): Express {
   app.use("/api/v1/options", optionRouter);
 
   app.use("/", siteRouter);
+  app.use("/", authViews);
 
   app.use(notFound);
   app.use(errorHandler);
