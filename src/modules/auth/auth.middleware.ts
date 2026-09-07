@@ -14,7 +14,7 @@ function bearerToken(req: Request): string | undefined {
 }
 
 /** Loads the public caller profile; `null` when the user no longer exists. */
-async function loadUser(id: string): Promise<AuthUser | null> {
+export async function loadUser(id: string): Promise<AuthUser | null> {
   const user = await User.findById(id, { _id: 1, mobile: 1, isAdmin: 1 });
   if (!user) return null;
   return { id: String(user._id), mobile: user.mobile, isAdmin: user.isAdmin };

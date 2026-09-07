@@ -1,7 +1,9 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express, { type Express } from "express";
+import express, { type Express, type Request, type Response } from "express";
 import helmet from "helmet";
+import moment from "jalali-moment";
+import path from "node:path";
 import pinoHttp from "pino-http";
 import { env } from "./config/env.ts";
 import { logger } from "./config/logger.ts";
@@ -13,6 +15,7 @@ import { categoryRouter } from "./modules/categories/category.routes.ts";
 import { noteRouter } from "./modules/notes/note.routes.ts";
 import { optionRouter } from "./modules/options/option.routes.ts";
 import { userRouter } from "./modules/users/user.routes.ts";
+import { flashLocals, flashMiddleware, sessionMiddleware } from "./web/session.ts";
 
 export function createExpressApp(): Express {
   const app = express();
@@ -24,6 +27,14 @@ export function createExpressApp(): Express {
   app.use(cookieParser(env.COOKIE_PRIVATE_KEY));
   app.use(pinoHttp({ logger }));
   app.use(express.static("public"));
+
+  app.set("views", path.join(process.cwd(), "src", "views"));
+  app.set("view engine", "ejs");
+  app.locals.moment = moment;
+
+  app.use(sessionMiddleware());
+  app.use(flashMiddleware());
+  app.use(flashLocals);
 
   app.get("/health", (_req: Request, res: Response) => {
     res.json({ status: "ok", env: env.NODE_ENV });
