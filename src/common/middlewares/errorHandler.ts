@@ -18,6 +18,7 @@ function toStatus(err: unknown): number {
     // Data-layer errors, duck-typed so `common` never imports Mongoose.
     if (record.name === "CastError") return 400;
     if (record.name === "ValidationError") return 400;
+    if (record.name === "ZodError") return 400;
     if (record.name === "MulterError") return 400;
     if (record.code === 11000) return 409;
     const status = record.status ?? record.statusCode;
@@ -38,6 +39,18 @@ function toDetails(err: unknown): unknown {
   if (err instanceof ApiError) return err.details;
   if (typeof err === "object" && err !== null) {
     const record = err as Record<string, unknown>;
+    if (record.name === "ZodError" && Array.isArray(record.issues)) {
+      return {
+        fields: Object.fromEntries(
+          record.issues
+            .filter(
+              (issue): issue is { path: Array<string | number>; message: unknown } =>
+                typeof issue === "object" && issue !== null && Array.isArray((issue as { path: unknown }).path),
+            )
+            .map((issue) => [issue.path.join("."), String(issue.message)]),
+        ),
+      };
+    }
     if (record.name === "ValidationError" && typeof record.errors === "object" && record.errors !== null) {
       const fields: Record<string, string> = {};
       for (const [field, entry] of Object.entries(record.errors as Record<string, unknown>)) {
