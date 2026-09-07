@@ -17,6 +17,7 @@ import { optionRouter } from "./modules/options/option.routes.ts";
 import { userRouter } from "./modules/users/user.routes.ts";
 import { flashLocals, flashMiddleware, sessionMiddleware } from "./web/session.ts";
 import { authViews } from "./web/auth.views.ts";
+import { panelRouter } from "./web/panel.routes.ts";
 import { siteRouter } from "./web/site.routes.ts";
 
 export function createExpressApp(): Express {
@@ -51,6 +52,7 @@ export function createExpressApp(): Express {
 
   app.use("/", siteRouter);
   app.use("/", authViews);
+  app.use("/panel", panelRouter);
 
   app.use(notFound);
   app.use(errorHandler);

@@ -23,24 +23,31 @@
                 </tr>
               </thead>
               <tbody>
-                <% for (let i = 0; i < 4; i++) { %>
+                <% if (!myAds.length) { %>
                   <tr>
-                    <td class="border-bottom-0">
-                      <h6 class="fw-semibold mb-0"><%= myAds[i]._id %></h6>
-                    </td>
-                    <td class="border-bottom-0">
-                      <h6 class="fw-semibold mb-1"><%= myAds[i].title.slice(0, 30) %><%= myAds[i].title.length > 30 ? "..." : "" %></h6>
-                    </td>
-                    <td class="border-bottom-0">
-                      <p class="mb-0 fw-normal"><%= moment(myAds[i].createdAt).locale("fa").format("HH:mm ,jDD jMMMM jYYYY") %></p>
-                    </td>
-                    <td class="border-bottom-0">
-                      <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-primary rounded-3 fw-semibold"><%= myAds[i].category.name %></span>
-                      </div>
+                    <td colspan="4">
+                      <p class="alert alert-warning text-center">در حال حاضر آگهی ثبت‌ شده ندارید.</p>
                     </td>
                   </tr>
                 <% } %>
+                <% myAds.slice(0, 4).forEach((ad) => { %>
+                  <tr>
+                    <td class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0"><%= ad._id %></h6>
+                    </td>
+                    <td class="border-bottom-0">
+                      <h6 class="fw-semibold mb-1"><%= ad.title.slice(0, 30) %><%= ad.title.length > 30 ? "..." : "" %></h6>
+                    </td>
+                    <td class="border-bottom-0">
+                      <p class="mb-0 fw-normal"><%= moment(ad.createdAt).locale("fa").format("HH:mm ,jDD jMMMM jYYYY") %></p>
+                    </td>
+                    <td class="border-bottom-0">
+                      <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary rounded-3 fw-semibold"><%= ad.category ? ad.category.name : "—" %></span>
+                      </div>
+                    </td>
+                  </tr>
+                <% }) %>
               </tbody>
             </table>
           </div>
@@ -82,56 +89,6 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-12 d-flex align-items-stretch">
-      <div class="card w-100">
-        <div class="card-body p-4">
-          <h5 class="card-title fw-semibold mb-4">آگهی‌های تایید نشده</h5>
-          <div class="row">
-            <div class="mb-3">
-              <input type="text" class="form-control" placeholder="جستجو" />
-            </div>
-          </div>
-          <div class="table-responsive">
-            <table class="table text-nowrap mb-0 align-middle">
-              <thead class="text-dark fs-4">
-                <tr>
-                  <th class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0">شناسه</h6>
-                  </th>
-                  <th class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0">عنوان آگهی</h6>
-                  </th>
-                  <th class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0">منتشر کننده</h6>
-                  </th>
-                  <th class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0">دسته‌بندی</h6>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0">1</h6>
-                  </td>
-                  <td class="border-bottom-0">
-                    <h6 class="fw-semibold mb-1">کفش آدیداس</h6>
-                  </td>
-                  <td class="border-bottom-0">
-                    <p class="mb-0 fw-normal">محمد حسینی</p>
-                  </td>
-                  <td class="border-bottom-0">
-                    <div class="d-flex align-items-center gap-2">
-                      <span class="badge bg-primary rounded-3 fw-semibold">کیف و کفش</span>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </div>

@@ -129,6 +129,11 @@ const SORTS = {
   expensive: { price: -1 },
 } as const;
 
+/** Total ad count (dashboard stat). */
+export async function countAds(): Promise<number> {
+  return Ad.countDocuments({});
+}
+
 /** Searches ads with escaped filters, subtree expansion and pagination. */
 export async function listAds(query: ListAdsQuery): Promise<Page<AdDoc>> {
   const filter: Record<string, unknown> = {};
