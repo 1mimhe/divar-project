@@ -3,8 +3,17 @@ import { env } from "../../config/env.ts";
 import { logger } from "../../config/logger.ts";
 import { ApiError } from "../errors/ApiError.ts";
 
-/** 404 for unmatched routes, in the app error shape. */
+/** JSON for API routes, the error page everywhere else. */
+function wantsJson(req: Request): boolean {
+  return typeof req.path !== "string" || req.path.startsWith("/api/");
+}
+
+/** 404 for unmatched routes, in the app error shape (or the error page). */
 export function notFound(req: Request, res: Response): void {
+  if (!wantsJson(req)) {
+    res.status(404).render("error.ejs", { statusCode: 404, message: "Page not found." });
+    return;
+  }
   res.status(404).json({
     statusCode: 404,
     error: { message: `Route ${req.method} ${req.path} not found` },
@@ -75,11 +84,15 @@ function toDetails(err: unknown): unknown {
  * 5xx are logged with the error. 500 messages are masked in production.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction): void {
+export function errorHandler(err: unknown, req: Request, res: Response, _next: NextFunction): void {
   const status = toStatus(err);
   const message = toMessage(err, status);
   const details = toDetails(err);
   if (status >= 500) logger.error({ err }, "Unhandled error");
+  if (!wantsJson(req)) {
+    res.status(status).render("error.ejs", { statusCode: status, message });
+    return;
+  }
   res.status(status).json({
     statusCode: status,
     error: details === undefined ? { message } : { message, details },
