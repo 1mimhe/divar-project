@@ -6,11 +6,14 @@ import { errorHandler, notFound } from "../src/common/middlewares/errorHandler.t
 interface Captured {
   code?: number;
   body?: unknown;
+  view?: string;
+  locals?: unknown;
 }
 
 function mockRes(): Captured & {
   status(code: number): unknown;
   json(body: unknown): unknown;
+  render(view: string, locals: unknown): unknown;
 } {
   const captured: Captured = {};
   return {
@@ -23,30 +26,53 @@ function mockRes(): Captured & {
       captured.body = body;
       return this;
     },
+    render(view: string, locals: unknown) {
+      captured.view = view;
+      captured.locals = locals;
+      return this;
+    },
     get code() {
       return captured.code;
     },
     get body() {
       return captured.body;
     },
-  } as Captured & { status(code: number): unknown; json(body: unknown): unknown };
+    get view() {
+      return captured.view;
+    },
+    get locals() {
+      return captured.locals;
+    },
+  } as Captured & {
+    status(code: number): unknown;
+    json(body: unknown): unknown;
+    render(view: string, locals: unknown): unknown;
+  };
 }
 
-function handled(err: unknown): Captured {
+function handled(err: unknown, path?: string): Captured {
   const res = mockRes();
-  errorHandler(err, {} as never, res as never, () => undefined);
+  errorHandler(err, { path } as never, res as never, () => undefined);
   return res;
 }
 
 describe("notFound", () => {
-  test("answers 404 in the error shape", () => {
+  test("answers JSON for API routes", () => {
     const res = mockRes();
-    notFound({ method: "GET", path: "/nope" } as never, res as never);
+    notFound({ method: "GET", path: "/api/v1/nope" } as never, res as never);
     assert.equal(res.code, 404);
     assert.deepEqual(res.body, {
       statusCode: 404,
-      error: { message: "Route GET /nope not found" },
+      error: { message: "Route GET /api/v1/nope not found" },
     });
+  });
+
+  test("renders the error page for page routes", () => {
+    const res = mockRes();
+    notFound({ method: "GET", path: "/nope" } as never, res as never);
+    assert.equal(res.code, 404);
+    assert.equal(res.view, "error.ejs");
+    assert.deepEqual(res.locals, { statusCode: 404, message: "Page not found." });
   });
 });
 
@@ -109,5 +135,12 @@ describe("errorHandler", () => {
   test("non-error throwables become 500", () => {
     const res = handled("boom");
     assert.equal(res.code, 500);
+  });
+
+  test("renders the error page for page routes", () => {
+    const res = handled(ApiError.notFound("Ad not found."), "/a/123");
+    assert.equal(res.code, 404);
+    assert.equal(res.view, "error.ejs");
+    assert.deepEqual(res.locals, { statusCode: 404, message: "Ad not found." });
   });
 });

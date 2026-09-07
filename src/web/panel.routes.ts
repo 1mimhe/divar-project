@@ -102,7 +102,20 @@ panelRouter.post("/ads", (req, res, next) => {
       const body = req.body as Record<string, unknown>;
       const categoryId = typeof body.category === "string" ? body.category : undefined;
       const definitions = categoryId ? await listOptionsByCategory(categoryId) : [];
-      const options: Record<string, unknown> = {};
+      // Option values arrive as flat fields (`name="<key>"`); a JSON `options`
+      // string is also accepted, with flat fields winning on conflict.
+      let fromJson: Record<string, unknown> = {};
+      if (typeof body.options === "string") {
+        try {
+          const parsedJson: unknown = JSON.parse(body.options);
+          if (typeof parsedJson === "object" && parsedJson !== null) {
+            fromJson = parsedJson as Record<string, unknown>;
+          }
+        } catch {
+          fromJson = {};
+        }
+      }
+      const options: Record<string, unknown> = { ...fromJson };
       for (const definition of definitions) {
         const value = body[definition.key];
         if (value !== undefined && value !== "") options[definition.key] = value;
