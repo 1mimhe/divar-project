@@ -40,7 +40,7 @@ export async function createCategory(dto: CreateCategoryDto): Promise<CategoryDo
 
 /** Lists root categories, or the whole tree when `tree` is set. */
 export async function listCategories(tree: boolean): Promise<CategoryDoc[] | CategoryNode[]> {
-  const categories = await Category.find({}, {}, { sort: { name: 1 } }).lean();
+  const categories = await Category.find(tree ? {} : { parent: null }, {}, { sort: { name: 1 } }).lean();
   if (!tree) return categories as CategoryDoc[];
   return buildTree(categories);
 }
