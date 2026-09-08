@@ -2,6 +2,7 @@
     <div class="col-lg-12 d-flex align-items-stretch">
       <div class="card w-100">
         <div class="card-body p-4">
+          <%- include("./flash.ejs") %>
           <div class="row">
             <h5 class="card-title fw-semibold mb-4 col-lg-6">یادداشت‌ها</h5>
           </div>
@@ -18,25 +19,32 @@
                   <th class="border-bottom-0">
                     <h6 class="fw-semibold mb-0">یادداشت</h6>
                   </th>
-                  <th class="border-bottom-0"></th>
+                  <th class="border-bottom-0">
                     <h6 class="fw-semibold mb-0">مدیریت</h6>
                   </th>
                 </tr>
               </thead>
               <tbody>
-                    <% notes.forEach(note => { %>
-                        <tr>
-                            <td><%= note.for %></td>
-                            <td><%= note.adTitle %></td>
-                            <td><%= note.content %></td>
-                            <td>
-                                <form action="/ad/note/<%= note.for %>?_method=delete&render=true" method="post" class="d-inline">
-                                  <button type="submit" class="btn btn-danger">حذف</button>
-                                </form>                              
-                                <a href="/ad/<%= note.for %>?render=true" class="btn btn-success">مشاهده</a>
-                            </td>
-                        </tr>
-                    <% }) %>
+                <% if (!notes.length) { %>
+                <tr>
+                  <td colspan="4">
+                    <p class="alert alert-warning text-center">یادداشتی ثبت نشده است.</p>
+                  </td>
+                </tr>
+                <% } %>
+                <% notes.forEach(note => { %>
+                    <tr>
+                        <td><%= note.ad._id || note.ad %></td>
+                        <td><%= note.adTitle %></td>
+                        <td><%= note.content %></td>
+                        <td>
+                            <form action="/panel/notes/<%= note.ad._id || note.ad %>/remove" method="post" class="d-inline">
+                              <button type="submit" class="btn btn-danger">حذف</button>
+                            </form>
+                            <a href="/a/<%= note.ad._id || note.ad %>" class="btn btn-success">مشاهده</a>
+                        </td>
+                    </tr>
+                <% }) %>
               </tbody>
             </table>
           </div>

@@ -19,16 +19,20 @@ test("GET /health returns ok", async () => {
   }
 });
 
-test("unknown route returns 404 JSON", async () => {
+test("unknown API route returns 404 JSON, unknown page renders HTML", async () => {
   const app = createExpressApp();
   const server = app.listen(0);
   await new Promise<void>((resolve) => server.once("listening", resolve));
   const port = (server.address() as { port: number }).port;
   try {
-    const res = await fetch(`http://127.0.0.1:${port}/nope-404`);
-    assert.equal(res.status, 404);
-    const body = (await res.json()) as { statusCode: number };
+    const api = await fetch(`http://127.0.0.1:${port}/api/v1/nope-404`);
+    assert.equal(api.status, 404);
+    const body = (await api.json()) as { statusCode: number };
     assert.equal(body.statusCode, 404);
+
+    const page = await fetch(`http://127.0.0.1:${port}/nope-404`);
+    assert.equal(page.status, 404);
+    assert.match(page.headers.get("content-type") ?? "", /text\/html/);
   } finally {
     server.close();
   }

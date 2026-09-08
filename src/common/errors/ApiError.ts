@@ -1,4 +1,4 @@
-/** Typed HTTP error. The central handler in `src/app.ts` reads `status`. */
+/** Typed HTTP error. The central handler in `common/middlewares/errorHandler.ts` reads `status`. */
 export class ApiError extends Error {
   readonly status: number;
   readonly details?: unknown;
@@ -24,6 +24,10 @@ export class ApiError extends Error {
 
   static notFound(message = "Not found."): ApiError {
     return new ApiError(404, message);
+  }
+
+  static conflict(message: string, details?: unknown): ApiError {
+    return new ApiError(409, message, details);
   }
 
   static tooManyRequests(message: string, details?: unknown): ApiError {

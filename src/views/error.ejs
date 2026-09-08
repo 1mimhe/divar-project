@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="shortcut icon" type="image/png" href="/assets/images/logos/DivarLogo.png" />
+    <link rel="stylesheet" href="/home/global.css"/>
+    <title>خطا <%= statusCode %></title>
+</head>
+<body dir="rtl">
+<section class="grid">
+    <main>
+        <div class="main-grid-card" style="text-align: center; padding: 60px 20px;">
+            <h1><%= statusCode %></h1>
+            <p><%= message %></p>
+            <a href="/">بازگشت به صفحه اصلی</a>
+        </div>
+    </main>
+</section>
+</body>
+</html>

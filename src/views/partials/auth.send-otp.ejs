@@ -8,10 +8,12 @@
                             <img src="/assets/images/logos/DivarLogo.png" width="120" alt="">
                         </a>
                         <p class="text-center">ورود به حساب کاربری/ ثبت نام</p>
-                        <form action="/auth/send-otp?render=true" method="post">
+                        <%- include("./flash.ejs") %>
+                        <form action="/auth/otp/send" method="post">
                             <div class="mb-3">
                                 <label for="mobile" class="form-label">شماره موبایل</label>
-                                <input type="tel" class="form-control" id="mobile" name="mobile" required>
+                                <input type="tel" class="form-control" id="mobile" name="mobile" required
+                                    value="<%= typeof input !== "undefined" && input && input.mobile ? input.mobile : "" %>">
                             </div>
                             <button type="submit" class="btn btn-red w-100 py-8 fs-4 mb-4 rounded-2">دریافت کد تایید</button>
                         </form>

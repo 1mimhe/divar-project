@@ -9,8 +9,8 @@
             <div class="post-action">
               <button class="post-button-action button" id="call-detail" <%= ad.showNumber ? "" : "disabled" %>>اطلاعات تماس</button>
               <button class="post-button-chat button" <%= ad.isActiveChat ? "" : "disabled" %>>چت</button>
-              <form action="/ad/bookmark/<%= ad._id %>?render=true" method="post">
-                <i class="" alt=""/>
+              <form action="/a/<%= ad._id %>/bookmark" method="post" class="d-inline">
+                <button type="submit" class="post-button-action button">نشان کردن</button>
               </form>
               <img src="/home/img/share.svg" class="post-share" alt=""/>
             </div>
@@ -32,10 +32,10 @@
                 <div class="post-list-detail"><%= ad.price ? `${ad.price} تومان` : "قیمت توافقی" %></div>
               </div>
               <hr/>
-              <% for (let key in ad.options) { %>
+              <% for (const [key, value] of options) { %>
                 <div class="post-list-item post-row">
-                  <div class="post-list-title"><%= key %></div>
-                  <div class="post-list-detail"><%= ad.options[key] %></div>
+                  <div class="post-list-title"><%= optionTitles.get(key) || key %></div>
+                  <div class="post-list-detail"><%= Array.isArray(value) ? value.join("، ") : value %></div>
                 </div>
                 <hr/>
               <% } %>
@@ -61,9 +61,9 @@
             </div>
             <br/>
             <div class="post-note">
-              <form action="/ad/note/<%= ad._id %>?render=true" method="post">
+              <form action="/a/<%= ad._id %>/note" method="post">
                 <div class="post-note-input">
-                  <textarea name="note" id="note" placeholder="یادداشت شما..."><%= note %></textarea>
+                  <textarea name="content" id="note" placeholder="یادداشت شما..."><%= note %></textarea>
                 </div>
                 <button type="submit" class="button post-button-chat" style="margin-top: 5px;">ثبت یادداشت</button>
                 <p>این یادداشت تنها برای شما قابل دیدن است و پس از حذف آگهی پاک خواهد شد.</p>

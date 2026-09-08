@@ -1,11 +1,25 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express, { type Express, type NextFunction, type Request, type Response } from "express";
+import express, { type Express, type Request, type Response } from "express";
 import helmet from "helmet";
+import moment from "jalali-moment";
+import path from "node:path";
 import pinoHttp from "pino-http";
 import { env } from "./config/env.ts";
 import { logger } from "./config/logger.ts";
+import { errorHandler, notFound } from "./common/middlewares/errorHandler.ts";
 import { authRouter } from "./modules/auth/auth.routes.ts";
+import { adRouter } from "./modules/ads/ad.routes.ts";
+import { bookmarkRouter } from "./modules/bookmarks/bookmark.routes.ts";
+import { categoryRouter } from "./modules/categories/category.routes.ts";
+import { noteRouter } from "./modules/notes/note.routes.ts";
+import { optionRouter } from "./modules/options/option.routes.ts";
+import { userRouter } from "./modules/users/user.routes.ts";
+import { flashLocals, flashMiddleware, sessionMiddleware } from "./web/session.ts";
+import { adActions } from "./web/ad.actions.ts";
+import { authViews } from "./web/auth.views.ts";
+import { panelRouter } from "./web/panel.routes.ts";
+import { siteRouter } from "./web/site.routes.ts";
 
 export function createExpressApp(): Express {
   const app = express();
@@ -18,40 +32,32 @@ export function createExpressApp(): Express {
   app.use(pinoHttp({ logger }));
   app.use(express.static("public"));
 
+  app.set("views", path.join(process.cwd(), "src", "views"));
+  app.set("view engine", "ejs");
+  app.locals.moment = moment;
+
+  app.use(sessionMiddleware());
+  app.use(flashMiddleware());
+  app.use(flashLocals);
+
   app.get("/health", (_req: Request, res: Response) => {
     res.json({ status: "ok", env: env.NODE_ENV });
   });
 
   app.use("/api/v1/auth", authRouter);
+  app.use("/api/v1/users", userRouter);
+  app.use("/api/v1/categories", categoryRouter);
+  app.use("/api/v1/ads", adRouter);
+  app.use("/api/v1", bookmarkRouter, noteRouter);
+  app.use("/api/v1/options", optionRouter);
 
-  // 404 — JSON for /api/*, JSON fallback for pages until EJS split (Issue #4)
-  app.use((req: Request, res: Response) => {
-    res.status(404).json({
-      statusCode: 404,
-      error: { message: `Route ${req.method} ${req.path} not found` },
-    });
-  });
+  app.use("/", siteRouter);
+  app.use("/", authViews);
+  app.use("/", adActions);
+  app.use("/panel", panelRouter);
 
-  // Central error handler (must be last, 4 args)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
-    const rawStatus =
-      typeof err === "object" && err !== null && "status" in err
-        ? Number((err as { status: number }).status)
-        : 500;
-    const status = Number.isInteger(rawStatus) && rawStatus >= 400 && rawStatus < 600 ? rawStatus : 500;
-    const message = err instanceof Error ? err.message : "Internal Server Error";
-    const details =
-      typeof err === "object" && err !== null && "details" in err
-        ? (err as { details: unknown }).details
-        : undefined;
-    // 4xx are routine client errors; only 5xx get logged.
-    if (status >= 500) logger.error({ err }, "Unhandled error");
-    res.status(status).json({
-      statusCode: status,
-      error: details === undefined ? { message } : { message, details },
-    });
-  });
+  app.use(notFound);
+  app.use(errorHandler);
 
   return app;
 }
