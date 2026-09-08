@@ -1,0 +1,27 @@
+# Render blueprint: Docker web service + Atlas MongoDB (provisioned separately).
+# Set the env vars below in the Render dashboard (or render.yaml envVars).
+services:
+  - type: web
+    name: divar-v2
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: MONGODB_URL
+        sync: false # mongodb+srv://<user>:<pass>@<cluster>/divar-store
+      - key: JWT_PRIVATE_KEY
+        generateValue: true
+      - key: JWT_REFRESH_KEY
+        generateValue: true
+      - key: COOKIE_PRIVATE_KEY
+        generateValue: true
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: SMS_PROVIDER
+        value: mock
+      - key: ADMIN_MOBILE
+        sync: false
