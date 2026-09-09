@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { after, describe, test } from "node:test";
 import mongoose from "mongoose";
-import { createExpressApp } from "../src/app.ts";
-import { deleteUploads } from "../src/modules/uploads/upload.ts";
-import { User } from "../src/modules/users/user.model.ts";
+import { createExpressApp } from "../../src/app.ts";
+import { deleteUploads } from "../../src/modules/uploads/upload.ts";
+import { User } from "../../src/modules/users/user.model.ts";
 
 // ---------------------------------------------------------------------------
 // Setup: fresh slate (drops domain collections incl. stale indexes),
@@ -11,7 +11,7 @@ import { User } from "../src/modules/users/user.model.ts";
 // ---------------------------------------------------------------------------
 
 const TEST_DB =
-  process.env.TEST_MONGODB_URL ?? "mongodb://127.0.0.1:27017/divar-store-test";
+  process.env.TEST_MONGODB_URL ?? "mongodb://127.0.0.1:27018/divar-store-test";
 
 let dbUp = false;
 try {
