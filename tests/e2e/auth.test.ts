@@ -42,7 +42,7 @@ describe("auth routes without token", () => {
 // ---------------------------------------------------------------------------
 
 const TEST_DB =
-  process.env.TEST_MONGODB_URL ?? "mongodb://127.0.0.1:27017/divar-store-test";
+  process.env.TEST_MONGODB_URL ?? "mongodb://127.0.0.1:27018/divar-store-test";
 
 // Gate on a real write round-trip, not just TCP connect: the local Mongo may
 // require auth, in which case reads/writes fail and these tests must skip.

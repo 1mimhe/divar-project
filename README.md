@@ -12,8 +12,38 @@ A full-stack rewrite of a classified-ads platform ([Divar.ir](https://divar.ir/)
 plus server-rendered Persian (RTL, Jalali dates) pages from the same services. Built as a portfolio project
 to demonstrate API design, auth hardening, domain modeling, testing and shipping.
 
-> Live demo: *(URL goes here after the Render deploy — see [Deploy checklist](#deploy-checklist-render--atlas))*
 > Screenshots: *to be added from a seeded run.*
+
+## Requirements
+
+- Node.js >= 22.6, npm
+- MongoDB: either `docker compose up -d` (dev database on `127.0.0.1:27018`, no auth)
+  or your own instance (point `MONGODB_URL` at it)
+
+## Setup
+
+```sh
+git clone https://github.com/1mimhe/divar-project
+cd divar-project
+npm install
+cp .env.example .env   # fill the four *-SECRET values (min 32 chars each)
+docker compose up -d   # skip if you already run MongoDB yourself
+npm run seed           # categories (+ promotes ADMIN_MOBILE when set)
+npm run dev            # http://localhost:3000
+```
+
+Demo login: use any `09xxxxxxxxx` number; off-production the code is shown on the
+verify page. Set `ADMIN_MOBILE` in `.env` before seeding to promote your user —
+category/option writes are admin-only.
+
+| Script          | What it does                                              |
+| --------------- | --------------------------------------------------------- |
+| `npm test`      | Full suite: unit (no DB) then e2e (needs MongoDB)         |
+| `npm run test:unit` | Offline unit tests only                               |
+| `npm run test:e2e`  | App-level and DB-backed flows (skips cleanly without Mongo) |
+| `npm run seed`  | Idempotent category seed + optional admin promotion       |
+| `npm run dev`   | Watch-mode server                                         |
+| `npm start`     | Production-mode server (`NODE_ENV=production`)            |
 
 ## Features
 
@@ -27,35 +57,6 @@ to demonstrate API design, auth hardening, domain modeling, testing and shipping
 - Persian SSR pages: home grid, ad detail with gallery, OTP login, panel
   (dashboard, ad publishing with inline errors, my ads, bookmarks, notes)
 - OpenAPI docs at `/swagger`, health at `/health`
-
-## Quickstart (Docker)
-
-```sh
-cp .env.example .env   # fill the *-SECRET values (min 32 chars)
-docker compose up --build -d
-docker compose exec app node --experimental-strip-types scripts/seed.ts
-open http://localhost:3000
-```
-
-Demo login: use any `09xxxxxxxxx` number; off-production the code is shown on the
-verify page (`previewCode`). Set `ADMIN_MOBILE` in `.env` before seeding to promote
-your user, then manage categories/options (writes are admin-only).
-
-## Quickstart (local Node >= 22.6 + MongoDB)
-
-```sh
-npm install
-cp .env.example .env   # point MONGODB_URL at your instance
-npm run seed
-npm run dev            # http://localhost:3000
-```
-
-| Script         | What it does                                              |
-| -------------- | --------------------------------------------------------- |
-| `npm test`     | Full suite (`node:test`, serial; DB-backed parts need Mongo) |
-| `npm run seed` | Idempotent category seed + optional admin promotion       |
-| `npm run dev`  | Watch-mode server                                         |
-| `npm start`    | Production-mode server                                    |
 
 ## Architecture
 
@@ -110,25 +111,12 @@ Limits: OTP dispatch 5/hour/IP, verification 10/10 min/IP plus 5 attempts per co
 | Panel: bookmarks, notes           | `GET /panel/bookmarks`, `GET /panel/notes` |
 
 Forms re-render `422` with the error and preserved input; one-off messages use
-session flash. The legacy `app.js` prototype is retired but kept for reference.
-
-## Deploy checklist (Render + Atlas)
-
-1. Create a free Atlas M0 cluster, a database user, and allow Render outbound IPs.
-2. In Render: **New → Blueprint**, point at this repo (`render.yaml`).
-3. Set `MONGODB_URL` to the Atlas `mongodb+srv://…/divar-store` string and
-   `ADMIN_MOBILE` to your number (secrets auto-generate).
-4. Deploy, then in the Render shell: `node --experimental-strip-types scripts/seed.ts`.
-5. Open the service URL, log in, verify `/swagger` and the seeded categories.
-6. Put the URL at the top of this README and in the repo About section.
-
-Uploads on Render need a persistent disk (free instances lose `public/uploads`
-on restart) — attach one at `/srv/app/public/uploads` or move to object storage.
+session flash. Tests live in `tests/unit` (no database) and `tests/e2e`
+(ephemeral apps plus Mongo-gated flows); CI runs both.
 
 ## Roadmap
 
 - [ ] Screenshots + GIF walkthrough above
-- [ ] Live demo URL
 - [ ] Refresh-token device list ("log out everywhere" UI)
 - [ ] Full-text search + image thumbnails
 - [ ] fa/en language toggle (Persian-only today)

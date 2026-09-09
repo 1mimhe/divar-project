@@ -65,7 +65,7 @@ describe("pages without DB", () => {
 // ---------------------------------------------------------------------------
 
 const TEST_DB =
-  process.env.TEST_MONGODB_URL ?? "mongodb://127.0.0.1:27017/divar-store-test";
+  process.env.TEST_MONGODB_URL ?? "mongodb://127.0.0.1:27018/divar-store-test";
 
 let dbUp = false;
 try {
