@@ -4,17 +4,20 @@
   "description": "A store project with node.js and express",
   "main": "app.js",
   "private": true,
+  "engines": {
+    "node": ">=22.6"
+  },
   "scripts": {
-    "dev": "node --watch src/server.ts",
+    "dev": "node --experimental-strip-types --watch src/server.ts",
     "dev:legacy": "nodemon app.js",
-    "build": "node --test --test-concurrency=1 tests/*.test.ts",
-    "start": "node src/server.ts",
+    "build": "node --experimental-strip-types --test --test-concurrency=1 tests/*.test.ts",
+    "start": "node --experimental-strip-types src/server.ts",
     "start:legacy": "node app.js",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint src tests",
     "format": "prettier --write \"src/**/*.{ts,js,json}\" \"tests/**/*.{ts,js,json}\"",
-    "test": "node --test --test-concurrency=1 tests/*.test.ts",
-    "seed": "node scripts/seed.ts"
+    "test": "node --experimental-strip-types --test --test-concurrency=1 tests/*.test.ts",
+    "seed": "node --experimental-strip-types scripts/seed.ts"
   },
   "dependencies": {
     "connect-flash": "^0.1.1",

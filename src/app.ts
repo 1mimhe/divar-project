@@ -7,6 +7,7 @@ import path from "node:path";
 import pinoHttp from "pino-http";
 import { env } from "./config/env.ts";
 import { logger } from "./config/logger.ts";
+import { setupSwagger } from "./config/swagger.ts";
 import { errorHandler, notFound } from "./common/middlewares/errorHandler.ts";
 import { authRouter } from "./modules/auth/auth.routes.ts";
 import { adRouter } from "./modules/ads/ad.routes.ts";
@@ -50,6 +51,8 @@ export function createExpressApp(): Express {
   app.use("/api/v1/ads", adRouter);
   app.use("/api/v1", bookmarkRouter, noteRouter);
   app.use("/api/v1/options", optionRouter);
+
+  setupSwagger(app);
 
   app.use("/", siteRouter);
   app.use("/", authViews);
