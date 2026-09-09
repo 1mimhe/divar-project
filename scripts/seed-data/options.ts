@@ -1,0 +1,66 @@
+export interface SeedOption {
+  title: string;
+  key: string;
+  type: "number" | "string" | "boolean" | "array";
+  categorySlug: string;
+  required?: boolean;
+  enum?: (string | number)[];
+  guide?: string;
+}
+
+export const seedOptions = [
+  { categorySlug: "apartment", title: "متراژ", key: "area", type: "number", required: true, guide: "متراژ به متر مربع" },
+  { categorySlug: "apartment", title: "تعداد اتاق", key: "rooms", type: "number", required: true, enum: [1, 2, 3, 4, 5, 6] },
+  { categorySlug: "apartment", title: "تعداد حمام", key: "bathrooms", type: "number", enum: [1, 2, 3, 4] },
+  { categorySlug: "apartment", title: "سازمان", key: "building_age", type: "array", required: true, enum: ["0-5 سال", "5-10 سال", "10-20 سال", "بیش از 20 سال"] },
+  { categorySlug: "apartment", title: "پارکینگ", key: "parking", type: "boolean", required: true },
+  { categorySlug: "apartment", title: "آسانسور", key: "elevator", type: "boolean" },
+  { categorySlug: "apartment", title: "انباری", key: "storage", type: "boolean" },
+  { categorySlug: "apartment", title: "بالکن", key: "balcony", type: "boolean" },
+  { categorySlug: "villa", title: "متراژ زمین", key: "land_area", type: "number", required: true },
+  { categorySlug: "villa", title: "متراژ زیربنا", key: "floor_area", type: "number", required: true },
+  { categorySlug: "villa", title: "تعداد طبقه", key: "floors", type: "number", enum: [1, 2, 3, 4] },
+  { categorySlug: "villa", title: "تعداد اتاق", key: "rooms", type: "number", required: true },
+  { categorySlug: "villa", title: "حیاط", key: "yard", type: "boolean" },
+  { categorySlug: "villa", title: "استخر", key: "pool", type: "boolean" },
+  { categorySlug: "land", title: "متراژ", key: "area", type: "number", required: true },
+  { categorySlug: "land", title: "نوع سند", key: "deed_type", type: "array", required: true, enum: ["ملکی", "ملك", "قبیض", "سند رسمی", "سند غیررسمی"] },
+  { categorySlug: "car", title: "برند", key: "brand", type: "string", required: true },
+  { categorySlug: "car", title: "مدل", key: "model", type: "string", required: true },
+  { categorySlug: "car", title: "سال تولید", key: "year", type: "number", required: true },
+  { categorySlug: "car", title: "کارکرد", key: "mileage", type: "number", required: true },
+  { categorySlug: "car", title: "رنگ", key: "color", type: "string", enum: ["سفید", "مشکی", "نقره‌ای", "خاکستری", "آبی", "قرمز", "سفید صدفی", "طلایی", "قهوه‌ای", "سبز", "سایر"] },
+  { categorySlug: "car", title: "گیربکس", key: "transmission", type: "array", required: true, enum: ["اتوماتیک", "دنده‌ای", "نیمه‌اتوماتیک", "CVT"] },
+  { categorySlug: "car", title: "نوع سوخت", key: "fuel_type", type: "array", required: true, enum: ["بنزین", "دوگانه (بنزین/سی‌ان‌جی)", "برقی", "هیبرید", "دیزل"] },
+  { categorySlug: "car", title: "کارکرد واقعی", key: "real_mileage", type: "boolean" },
+  { categorySlug: "car", title: "بدون رنگ‌آموزی", key: "no_paint", type: "boolean" },
+  { categorySlug: "car", title: "بدون تعویض قطعه", key: "no_part_replace", type: "boolean" },
+  { categorySlug: "motorcycle", title: "برند", key: "brand", type: "string", required: true },
+  { categorySlug: "motorcycle", title: "مدل", key: "model", type: "string", required: true },
+  { categorySlug: "motorcycle", title: "سال تولید", key: "year", type: "number", required: true },
+  { categorySlug: "motorcycle", title: "کارکرد", key: "mileage", type: "number", required: true },
+  { categorySlug: "motorcycle", title: "حجم موتور", key: "engine_cc", type: "number", required: true },
+  { categorySlug: "mobile-tablet", title: "برند", key: "brand", type: "string", required: true },
+  { categorySlug: "mobile-tablet", title: "مدل", key: "model", type: "string", required: true },
+  { categorySlug: "mobile-tablet", title: "ظرفیت حافظه", key: "storage", type: "array", required: true, enum: ["۱۶ گیگ", "۳۲ گیگ", "۶۴ گیگ", "۱۲۸ گیگ", "۲۵۶ گیگ", "۵۱۲ گیگ", "۱ ترابایت"] },
+  { categorySlug: "mobile-tablet", title: "رم", key: "ram", type: "array", enum: ["۲ گیگ", "۳ گیگ", "۴ گیگ", "۶ گیگ", "۸ گیگ", "۱۲ گیگ", "۱۶ گیگ"] },
+  { categorySlug: "mobile-tablet", title: "وضعیت فیزیکی", key: "condition", type: "array", required: true, enum: ["نو", "استعمالی - عالی", "استعمالی - خوب", "استعمالی - معمولی"] },
+  { categorySlug: "laptop-computer", title: "برند", key: "brand", type: "string", required: true },
+  { categorySlug: "laptop-computer", title: "پردازنده", key: "cpu", type: "string", required: true },
+  { categorySlug: "laptop-computer", title: "رم", key: "ram", type: "array", required: true, enum: ["۴ گیگ", "۸ گیگ", "۱۶ گیگ", "۳۲ گیگ", "۳۲ گیگ+"] },
+  { categorySlug: "laptop-computer", title: "هارد/SSD", key: "storage", type: "array", required: true, enum: ["۱۲۸ گیگ SSD", "۲۵۶ گیگ SSD", "۵۱۲ گیگ SSD", "۱ ترابایت SSD", "۱ ترابایت HDD", "ترکیبی"] },
+  { categorySlug: "laptop-computer", title: "کارت گرافیک", key: "gpu", type: "string" },
+  { categorySlug: "furniture", title: "نوع مبلمان", key: "type", type: "array", required: true, enum: ["مبل راحتی", "مبل کلاسیک", "مبل مودرن", "مبل نئوکلاسیک", "مبل سکشنال", "کرنر", "مبل اداری", "صندلی"] },
+  { categorySlug: "furniture", title: "جنس", key: "material", type: "array", enum: ["چوب", "ام دی اف", "ام دی اف و چوب", "فلز", "پوست", "پارچه", "کتان", "کتونی"] },
+  { categorySlug: "furniture", title: "رنگ", key: "color", type: "string" },
+  { categorySlug: "appliances", title: "نوع لوازم", key: "type", type: "array", required: true, enum: ["یخچال", "یخچال‌فریزر", "ماشین لباسشویی", "ماشین ظرفشویی", "فر", "ماکروویو", "اگاس", "هود", "سایدبی‌ساید", "فریزر"] },
+  { categorySlug: "appliances", title: "برند", key: "brand", type: "string" },
+  { categorySlug: "appliances", title: "ضمانت", key: "warranty", type: "array", enum: ["دارای ضمانت‌نامه معتبر", "بدون ضمانت‌نامه", "گارانتی شرکتی", "گارانتی فروشگاه"] },
+  { categorySlug: "auto-parts", title: "نوع قطعه", key: "part_type", type: "string", required: true },
+  { categorySlug: "auto-parts", title: "سازگار با", key: "compatible_with", type: "string" },
+  { categorySlug: "education", title: "نوع آموزش", key: "type", type: "array", required: true, enum: ["آموزش زبان", "آموزش برنامه‌نویسی", "آموزش طراحی", "آموزش مهارت", "پشتیبانی تحصیلی", "مشاوره تحصیلی"] },
+  { categorySlug: "education", title: "نحوه برگزاری", key: "format", type: "array", enum: ["آنلاین", "حضوری", "ترکیبی"] },
+  { categorySlug: "programming-jobs", title: "نوع همکاری", key: "employment_type", type: "array", required: true, enum: ["تمام وقت", "پاره وقت", "ریموت", "فریلنسر", "قراردادی", "معماری"] },
+  { categorySlug: "programming-jobs", title: "سطح مهارت", key: "experience", type: "array", required: true, enum: ["جونیور", "میان", "سینیور", "لید/آرکیتکت"] },
+  { categorySlug: "programming-jobs", title: "مهارت‌ها", key: "skills", type: "array", required: true, guide: "با کاما جدا کنید" },
+];
