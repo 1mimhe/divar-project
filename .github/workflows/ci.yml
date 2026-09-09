@@ -4,8 +4,25 @@ on:
   push:
   pull_request:
 
+env:
+  JWT_PRIVATE_KEY: ci-access-secret-min-32-chars-0000
+  JWT_REFRESH_KEY: ci-refresh-secret-min-32-chars-00
+  COOKIE_PRIVATE_KEY: ci-cookie-secret-min-32-chars-000
+  SESSION_SECRET: ci-session-secret-min-32-chars-000
+
 jobs:
-  test:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test:unit
+
+  e2e:
     runs-on: ubuntu-latest
     services:
       mongo:
@@ -21,4 +38,4 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm test
+      - run: npm run test:e2e

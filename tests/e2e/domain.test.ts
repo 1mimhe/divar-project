@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { after, describe, test } from "node:test";
 import mongoose from "mongoose";
-import { createExpressApp } from "../src/app.ts";
-import { deleteUploads } from "../src/modules/uploads/upload.ts";
-import { User } from "../src/modules/users/user.model.ts";
+import { createExpressApp } from "../../src/app.ts";
+import { deleteUploads } from "../../src/modules/uploads/upload.ts";
+import { User } from "../../src/modules/users/user.model.ts";
 
 // ---------------------------------------------------------------------------
 // Setup: fresh slate (drops domain collections incl. stale indexes),

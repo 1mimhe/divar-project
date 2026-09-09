@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createExpressApp } from "../src/app.ts";
+import { createExpressApp } from "../../src/app.ts";
 
 test("GET /health returns ok", async () => {
   const app = createExpressApp();

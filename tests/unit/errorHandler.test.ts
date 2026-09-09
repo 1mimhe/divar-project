@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { ApiError } from "../src/common/errors/ApiError.ts";
-import { errorHandler, notFound } from "../src/common/middlewares/errorHandler.ts";
+import { ApiError } from "../../src/common/errors/ApiError.ts";
+import { errorHandler, notFound } from "../../src/common/middlewares/errorHandler.ts";
 
 interface Captured {
   code?: number;
