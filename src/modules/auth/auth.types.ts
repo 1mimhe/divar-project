@@ -4,6 +4,7 @@ import type { UserDoc } from "../users/user.model.ts";
 export interface AuthUser {
   id: string;
   mobile: string;
+  isAdmin: boolean;
 }
 
 /** Payload of a short-lived access token. */

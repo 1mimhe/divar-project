@@ -20,3 +20,10 @@ export function validate(source: Source, schema: z.ZodTypeAny) {
 export const validateBody = (schema: z.ZodTypeAny) => validate("body", schema);
 export const validateQuery = (schema: z.ZodTypeAny) => validate("query", schema);
 export const validateParams = (schema: z.ZodTypeAny) => validate("params", schema);
+
+/** 24-hex Mongo identifier. */
+export const objectIdSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid id.");
+
+/** Rejects malformed ids at the edge so handlers never see a CastError. */
+export const validateObjectIdParam = (name: string) =>
+  validateParams(z.object({ [name]: objectIdSchema }));

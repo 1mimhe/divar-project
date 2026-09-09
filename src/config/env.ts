@@ -8,6 +8,7 @@ const envSchema = z.object({
   JWT_PRIVATE_KEY: z.string().min(32, "JWT_PRIVATE_KEY must be at least 32 chars"),
   JWT_REFRESH_KEY: z.string().min(32, "JWT_REFRESH_KEY must be at least 32 chars"),
   COOKIE_PRIVATE_KEY: z.string().min(32, "COOKIE_PRIVATE_KEY must be at least 32 chars"),
+  SESSION_SECRET: z.string().min(32, "SESSION_SECRET must be at least 32 chars"),
   SMS_PROVIDER: z.enum(["mock", "sms"]).default("mock"),
 });
 

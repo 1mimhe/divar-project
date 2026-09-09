@@ -2,11 +2,11 @@
     <div class="container">
         <nav>
             <div class="logo">
-                <a href="/?render=true">
+                <a href="/">
                     <img class="logo-img" src="/home/img/download.svg" alt="" />
                 </a>
                 <hr/>
-                <form action="/?render=true" method="get">
+                <form action="/" method="get">
                     <div class="inline-input">
                         <input type="search" name="city" class="input-city" placeholder="<%= city ? "شهر" : "همهٔ شهرها" %>" value="<%= city %>"/>
                     </div>
@@ -23,18 +23,10 @@
             <div class="navbar">
                 <div class="btn-header">
                     <img class="icon-header" src="/home/img/user.svg" alt=""/>
-                    <a href="/user/me?render=true" style="color: #777;">دیوار من</a>
-                </div>
-                <div class="btn-header">
-                    <img class="icon-header" src="/home/img/message.svg" alt=""/>
-                    <a href="/chat" style="color: #777;">چت</a>
-                </div>
-                <div class="btn-header">
-                    <img class="icon-header" src="/home/img/people.svg" alt=""/>
-                    <a href="/?render=true" style="color: #777;">پشتیبانی</a>
+                    <a href="/panel" style="color: #777;">دیوار من</a>
                 </div>
                 <div class="btn-header btn-red">
-                    <a href="/ad/create?render=true" style="color: white;">ثبت آگهی</a>
+                    <a href="/panel/ads/new" style="color: white;">ثبت آگهی</a>
                 </div>
             </div>
         </nav>
