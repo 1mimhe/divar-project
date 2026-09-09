@@ -16,18 +16,24 @@ to demonstrate API design, auth hardening, domain modeling, testing and shipping
 
 ## Requirements
 
-- Node.js >= 22.6, npm
-- MongoDB: either `docker compose up -d` (dev database on `127.0.0.1:27018`, no auth)
-  or your own instance (point `MONGODB_URL` at it)
+- Node.js >= 22.6, npm, Docker (for the container path)
 
-## Setup
+## Setup (containers)
 
 ```sh
 git clone https://github.com/1mimhe/divar-project
 cd divar-project
-npm install
 cp .env.example .env   # fill the four *-SECRET values (min 32 chars each)
-docker compose up -d   # skip if you already run MongoDB yourself
+docker compose up --build -d
+docker compose exec app node --experimental-strip-types scripts/seed.ts
+open http://localhost:3000
+```
+
+## Setup (local)
+
+```sh
+npm install
+cp .env.example .env   # fill secrets; need MongoDB on 27018 (`docker compose up mongo -d`) or point MONGODB_URL at your own
 npm run seed           # categories (+ promotes ADMIN_MOBILE when set)
 npm run dev            # http://localhost:3000
 ```

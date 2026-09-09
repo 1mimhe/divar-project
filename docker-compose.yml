@@ -27,6 +27,11 @@ services:
 
   mongo:
     image: mongo:8
+    # Host port for local development (`npm run dev`, tests). The app service
+    # above reaches it as `mongo:27017` internally; 27018 avoids clashing with
+    # another local Mongo on the standard port.
+    ports:
+      - "27018:27017"
     volumes:
       - mongodata:/data/db
     healthcheck:
