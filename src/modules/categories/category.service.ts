@@ -1,14 +1,9 @@
-import slugify from "slugify";
 import { ApiError } from "../../common/errors/ApiError.ts";
+import { toSlug } from "../../common/utils/slug.ts";
 import { Ad } from "../ads/ad.model.ts";
 import { Option } from "../options/option.model.ts";
 import { Category, requireCategory, type CategoryDoc, type CategoryNode } from "./category.model.ts";
 import type { CreateCategoryDto } from "./category.schema.ts";
-
-/** Local slug: lowercase kebab-case, no network, no surprises. */
-export function toSlug(value: string): string {
-  return slugify(value, { lower: true, strict: true });
-}
 
 /**
  * Creates a category. Slugs must be unique; a parent must exist and must not

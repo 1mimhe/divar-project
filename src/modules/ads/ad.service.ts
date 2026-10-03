@@ -2,14 +2,14 @@ import { ApiError } from "../../common/errors/ApiError.ts";
 import { toPage, type Page } from "../../common/utils/pagination.ts";
 import { escapeRegExp } from "../../common/utils/regex.ts";
 import { Category, requireCategory } from "../categories/category.model.ts";
-import { Option, type OptionDoc } from "../options/option.model.ts";
+import { Option, type OptionAttrs } from "../options/option.model.ts";
 import { deleteUploads } from "../uploads/upload.ts";
 import { Ad, type AdDoc } from "./ad.model.ts";
 import type { CreateAdDto, ListAdsQuery } from "./ad.schema.ts";
 
 /** Coerces one submitted value against its option definition. */
 function coerceOptionValue(
-  definition: OptionDoc,
+  definition: Pick<OptionAttrs, "type">,
   raw: unknown,
 ): { ok: true; value: unknown } | { ok: false; reason: string } {
   switch (definition.type) {

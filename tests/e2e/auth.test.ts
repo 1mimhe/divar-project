@@ -49,11 +49,13 @@ const TEST_DB =
 let dbUp = false;
 try {
   await mongoose.connect(TEST_DB, { serverSelectionTimeoutMS: 3000 });
-  await mongoose.connection.db.collection("__gate").insertOne({ at: new Date() });
-  await mongoose.connection.db.collection("__gate").deleteMany({});
+  const gateDb = mongoose.connection.db;
+  if (!gateDb) throw new Error("No DB connection for test gate.");
+  await gateDb.collection("__gate").insertOne({ at: new Date() });
+  await gateDb.collection("__gate").deleteMany({});
   // Fresh slate: drops indexes from earlier runs (notably a stale unique
   // `notes.for_1`); schema-declared indexes rebuild on first model use.
-  await mongoose.connection.db.collection("users").drop().catch(() => undefined);
+  await gateDb.collection("users").drop().catch(() => undefined);
   dbUp = true;
 } catch {
   dbUp = false;

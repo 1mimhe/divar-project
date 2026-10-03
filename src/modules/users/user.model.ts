@@ -61,8 +61,8 @@ const userSchema = new Schema<UserAttrs, UserModel>(
     toJSON: {
       transform: (_doc, ret) => {
         // Secrets never serialize: login codes and session hashes stay in the DB.
-        delete ret.otp;
-        delete ret.refreshTokens;
+        delete (ret as { otp?: unknown }).otp;
+        delete (ret as { refreshTokens?: unknown }).refreshTokens;
         return ret;
       },
     },

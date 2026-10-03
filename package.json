@@ -4,6 +4,7 @@
   "description": "Classified ads: versioned JSON API plus server-rendered pages",
   "main": "src/server.ts",
   "private": true,
+  "type": "module",
   "engines": {
     "node": ">=22.6"
   },

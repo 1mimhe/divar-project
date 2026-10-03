@@ -1,13 +1,8 @@
-import slugify from "slugify";
 import { ApiError } from "../../common/errors/ApiError.ts";
+import { toOptionKey } from "../../common/utils/slug.ts";
 import { Category, requireCategory } from "../categories/category.model.ts";
 import { Option, type OptionDoc } from "./option.model.ts";
 import type { CreateOptionDto, UpdateOptionDto } from "./option.schema.ts";
-
-/** Machine key: lowercase, `_` separators. */
-export function toOptionKey(value: string): string {
-  return slugify(value, { lower: true, replacement: "_" });
-}
 
 /** Options live on leaves — the categories ads post into. */
 async function requireLeaf(categoryId: unknown): Promise<void> {
