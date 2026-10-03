@@ -70,8 +70,10 @@ const TEST_DB =
 let dbUp = false;
 try {
   await mongoose.connect(TEST_DB, { serverSelectionTimeoutMS: 3000 });
-  await mongoose.connection.db.collection("__gate").insertOne({ at: new Date() });
-  await mongoose.connection.db.collection("__gate").deleteMany({});
+  const gateDb = mongoose.connection.db;
+  if (!gateDb) throw new Error("No DB connection for test gate.");
+  await gateDb.collection("__gate").insertOne({ at: new Date() });
+  await gateDb.collection("__gate").deleteMany({});
   dbUp = true;
 } catch {
   dbUp = false;
@@ -310,6 +312,7 @@ after(async () => {
   try {
     await deleteUploads(leftoverImages);
     const db = mongoose.connection.db;
+    if (!db) throw new Error("No DB connection for test cleanup.");
     if (createdIds.ads.length) {
       await db.collection("ads").deleteMany({ _id: { $in: createdIds.ads.map((id) => new mongoose.Types.ObjectId(id)) } });
     }

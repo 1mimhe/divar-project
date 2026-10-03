@@ -4,7 +4,7 @@ import express, { type Express, type Request, type Response } from "express";
 import helmet from "helmet";
 import moment from "jalali-moment";
 import path from "node:path";
-import pinoHttp from "pino-http";
+import { pinoHttp } from "pino-http";
 import { env } from "./config/env.ts";
 import { logger } from "./config/logger.ts";
 import { setupSwagger } from "./config/swagger.ts";

@@ -16,10 +16,12 @@ const TEST_DB =
 let dbUp = false;
 try {
   await mongoose.connect(TEST_DB, { serverSelectionTimeoutMS: 3000 });
-  await mongoose.connection.db.collection("__gate").insertOne({ at: new Date() });
-  await mongoose.connection.db.collection("__gate").deleteMany({});
+  const gateDb = mongoose.connection.db;
+  if (!gateDb) throw new Error("No DB connection for test gate.");
+  await gateDb.collection("__gate").insertOne({ at: new Date() });
+  await gateDb.collection("__gate").deleteMany({});
   for (const name of ["categories", "options", "ads", "bookmarks", "notes"]) {
-    await mongoose.connection.db.collection(name).drop().catch(() => undefined);
+    await gateDb.collection(name).drop().catch(() => undefined);
   }
   dbUp = true;
 } catch {
@@ -610,8 +612,10 @@ after(async () => {
   if (!dbUp) return;
   try {
     await deleteUploads(leftoverImages);
+    const db = mongoose.connection.db;
+    if (!db) throw new Error("No DB connection for test cleanup.");
     for (const name of ["categories", "options", "ads", "bookmarks", "notes"]) {
-      await mongoose.connection.db.collection(name).deleteMany({});
+      await db.collection(name).deleteMany({});
     }
     if (usedMobiles.length) {
       await User.deleteMany({ mobile: { $in: usedMobiles } });
